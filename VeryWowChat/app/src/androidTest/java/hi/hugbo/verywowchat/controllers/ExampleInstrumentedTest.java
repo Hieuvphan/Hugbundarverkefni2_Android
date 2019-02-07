@@ -1,4 +1,4 @@
-package com.example.verywowchat;
+package hi.hugbo.verywowchat.controllers;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.verywowchat", appContext.getPackageName());
+        assertEquals("hi.hugbo.verywowchat.controllers", appContext.getPackageName());
     }
 }

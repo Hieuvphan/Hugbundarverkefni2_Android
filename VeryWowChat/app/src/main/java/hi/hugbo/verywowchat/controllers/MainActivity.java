@@ -1,4 +1,4 @@
-package com.example.verywowchat;
+package hi.hugbo.verywowchat.controllers;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

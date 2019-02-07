@@ -1,4 +1,4 @@
-package com.example.verywowchat;
+package hi.hugbo.verywowchat.controllers;
 
 import org.junit.Test;
 
