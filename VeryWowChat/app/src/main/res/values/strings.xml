@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">VeryWowChat</string>
+    <string name="login_header">Login</string>
+    <string name="login_field_username">Username</string>
+    <string name="login_field_password">Password</string>
+    <string name="login_button_content">Login</string>
+    <string name="login_register_button_content">Register</string>
 </resources>
