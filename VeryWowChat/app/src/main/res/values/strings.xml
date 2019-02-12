@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">VeryWowChat</string>
     <string name="login_header">Login</string>
-    <string name="login_field_username">Username</string>
+    <string name="login_field_username">User name</string>
     <string name="login_field_password">Password</string>
     <string name="login_button_content">Login</string>
     <string name="login_register_button_content">Register</string>
+    <string name="register_header">Register</string>
+    <string name="register_field_displayname">Display Name</string>
+    <string name="register_field_username">User name</string>
+    <string name="register_field_email">Email</string>
+    <string name="register_field_password">Password</string>
+    <string name="register_field_password_reapet">Repeat Password</string>
+    <string name="register_button_submit">Register</string>
+
 </resources>

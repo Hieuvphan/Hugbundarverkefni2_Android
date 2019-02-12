@@ -67,7 +67,7 @@ public class API_caller {
         *  We always send the empty token and body its up to the server to decide if it
         *  wants to process those things */
         Request request = new Request.Builder()
-                .url("http://192.168.1.67:9090/"+urlEndPoint)
+                .url("http://130.208.151.68:9090/"+urlEndPoint)
                 .method(method,Rbody)
                 .header("Authorization", token)
                 .addHeader("content-type", "application/json; charset=utf-8")
