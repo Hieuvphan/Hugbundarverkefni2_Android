@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // get a referance of the widgets
-        mLogginUserName = findViewById(R.id.edit_username);
-        mLogginPassword = findViewById(R.id.edit_password);
+        mLogginUserName = findViewById(R.id.edit_login_username);
+        mLogginPassword = findViewById(R.id.edit_login_password);
 
         /* Since phones work way differently, its good practice like with buttons to assign
         *  a reference to them and right away asign whatever the button needs to have like in
