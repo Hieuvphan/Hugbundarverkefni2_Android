@@ -1,5 +1,7 @@
 package hi.hugbo.verywowchat.services;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +69,7 @@ public class API_caller {
         *  We always send the empty token and body its up to the server to decide if it
         *  wants to process those things */
         Request request = new Request.Builder()
-                .url("http://130.208.151.68:9090/"+urlEndPoint)
+                .url("http://192.168.1.74:9090/"+urlEndPoint)
                 .method(method,Rbody)
                 .header("Authorization", token)
                 .addHeader("content-type", "application/json; charset=utf-8")
@@ -79,9 +81,7 @@ public class API_caller {
         /* Since we dont want to pass down the whole response we create our own object
         *  that will hold 2 things 1: status code of the response 2: the response body in json string form */
         Map<String, String>  resp = new HashMap<String, String>();
-        JSONObject WrappedData = new JSONObject(response.body().string());
 
-        // add the status code
         resp.put("status", String.valueOf(response.code()));
 
         // if the status code is 204 then we know there is no content
@@ -90,6 +90,7 @@ public class API_caller {
             return resp;
         }
 
+        JSONObject WrappedData = new JSONObject(response.body().string());
         /* The server can throw some random stuff at us and we want to know what happens if it does */
         if(WrappedData.has("message")){
             resp.put("response",null);
