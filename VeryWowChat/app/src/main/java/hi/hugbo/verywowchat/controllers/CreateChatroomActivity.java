@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import hi.hugbo.verywowchat.entities.Chatroom;
 import hi.hugbo.verywowchat.services.ChatroomService;
 import hi.hugbo.verywowchat.services.ChatroomServiceImplementation;
 
@@ -21,6 +26,7 @@ public class CreateChatroomActivity extends AppCompatActivity {
     private TextView edit_chatroom_description;
     private Switch switch_listed;
     private Switch switch_invited_only;
+    private TextView edit_chatroom_tags;
     private Button btn_create_chatroom;
 
     @Override
@@ -34,6 +40,7 @@ public class CreateChatroomActivity extends AppCompatActivity {
         switch_listed = findViewById(R.id.switch_listed);
         switch_invited_only = findViewById(R.id.switch_invited_only);
         btn_create_chatroom = findViewById(R.id.btn_create_chatroom);
+        edit_chatroom_tags = findViewById(R.id.edit_chatroom_tags);
 
         btn_create_chatroom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,8 +50,19 @@ public class CreateChatroomActivity extends AppCompatActivity {
                 String description= edit_chatroom_description.getText()+"";
                 Boolean listed = switch_listed.isChecked();
                 Boolean invitedOnly = switch_invited_only.isChecked();
+                String tagInput = edit_chatroom_tags.getText()+"";
+                List<String> tags = Arrays.asList(tagInput.split(","));
 
-                chatroomService.createChatroom(chatroomName, displayName, description, listed, invitedOnly);
+                Log.d("createChatroom", "tags len: "+tags.size());
+
+                try{
+                    Chatroom c = chatroomService.createChatroom(chatroomName, displayName, description, listed, invitedOnly, tags);
+
+                    Log.d("createChatroom", c.toString());
+                } catch(Exception e) {
+                    // TODO: use toast for error messages
+                    Log.e("createChatroom", "exception caught when calling service:"+e.getMessage());
+                }
             }
         });
     }
