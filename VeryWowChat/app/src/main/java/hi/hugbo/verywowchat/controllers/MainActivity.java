@@ -5,24 +5,18 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.entities.Errors;
 import hi.hugbo.verywowchat.services.API_caller;
-import okhttp3.Response;
 
 /**
  * @Author : Róman
