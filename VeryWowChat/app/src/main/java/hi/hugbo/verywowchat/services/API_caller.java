@@ -29,7 +29,7 @@ public class API_caller {
     private static final API_caller ourInstance = new API_caller();
 
     /**
-     * We use the okHttp libary to make all of our HTTP Requests
+     * We use the okHttp library to make all of our HTTP Requests
      * Example i like : https://guides.codepath.com/android/Using-OkHttp
      * */
     private final OkHttpClient client = new OkHttpClient();
@@ -82,6 +82,7 @@ public class API_caller {
         *  that will hold 2 things 1: status code of the response 2: the response body in json string form */
         Map<String, String>  resp = new HashMap<String, String>();
 
+        // add the status code to the response
         resp.put("status", String.valueOf(response.code()));
 
         // if the status code is 204 then we know there is no content
@@ -90,17 +91,26 @@ public class API_caller {
             return resp;
         }
 
+        // if the response is not 204 then there is some kind of body that we need to receive
         JSONObject WrappedData = new JSONObject(response.body().string());
-        /* The server can throw some random stuff at us and we want to know what happens if it does */
+
+        /* The server can throw some random stuff at us and we want to know what happens if it does
+         * We  log it's content out in LogCat but we send null to the controller */
         if(WrappedData.has("message")){
+            Log.e("Api_Caller","Unexpected response from the server \n"+WrappedData.toString());
             resp.put("response",null);
             return resp;
         }
 
-        // if the status code is 200-2xx then its a success
+        /* Our Server wraps our data in response bodies GoodResp,BadResp depending on the response
+        *  we unwrapp the data correctly */
+
+        /* if the status code is 200-2xx then its a success */
         if(response.code() >= 200 && response.code() < 300 ) {
             resp.put("response",WrappedData.get("GoodResp").toString());
         }
+
+        /* if the status code is 300-3xx then its a errpor */
         if(response.code() >= 400 && response.code() < 500 ) {
             resp.put("response",WrappedData.get("BadResp").toString());
         }
