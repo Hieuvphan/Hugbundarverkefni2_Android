@@ -6,7 +6,9 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import hi.hugbo.verywowchat.entities.Chatroom;
@@ -37,6 +39,22 @@ public class ChatroomServiceImplementation implements ChatroomService {
             Log.d("createChatroom", "status: "+status);
             JSONObject resp_body = new JSONObject(result.get("response"));
             Log.d("createChatroom", "body: "+resp_body.toString());
+
+            if(status == 201){
+                Chatroom newChatroom = new Chatroom(
+                        resp_body.getString("chatroomName"),
+                        resp_body.getString("displayName"),
+                        resp_body.getString("description"),
+                        resp_body.getBoolean("listed"),
+                        resp_body.getBoolean("invited_only"),
+                        (List<String>)resp_body.getJSONArray("tags"),
+                        resp_body.getLong("created"),
+                        resp_body.getLong("lastMessageReceived"),
+                        resp_body.getLong("lastRead"),
+                        resp_body.getString("userRelation")
+                );
+            }
+
         }catch (Exception e) {
             Log.e("createChatroom", "http req error: "+e.getMessage());
             e.printStackTrace();

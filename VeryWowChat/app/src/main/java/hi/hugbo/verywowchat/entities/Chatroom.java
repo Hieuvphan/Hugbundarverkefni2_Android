@@ -35,6 +35,8 @@ public class Chatroom {
     private Long lastMessageReceived;
     // the chatroom's tags
     private List<String> tags;
+    // the user's relation to the chatroom: OWNER, ADMIN, or MEMBER
+    private String userRelation;
 
     /**
      * @param chatroomName
@@ -46,7 +48,7 @@ public class Chatroom {
      * @param tags
      */
     public Chatroom(String chatroomName, String displayName, String description, Boolean listed,
-                    Boolean invited_only, Long lastMessageReceived, List<String> tags) {
+                    Boolean invited_only, Long lastMessageReceived, List<String> tags, String owner) {
         this.chatroomName = chatroomName;
         this.displayName = displayName;
         this.description = description;
