@@ -12,5 +12,12 @@
     <string name="register_field_password">Password</string>
     <string name="register_field_password_reapet">Repeat Password</string>
     <string name="register_button_submit">Register</string>
+    <string name="chatroom_name">Chatroom Name</string>
+    <string name="chatroom_create">Create Chatroom</string>
+    <string name="chatroom_display_name">Display Name</string>
+    <string name="chatroom_description">Description</string>
+    <string name="chatroom_tags">Tags</string>
+    <string name="chatroom_listed" >Listed</string>
+    <string name="chatroom_invited_only" >Private</string>
 
 </resources>

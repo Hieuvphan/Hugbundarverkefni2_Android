@@ -1,7 +1,5 @@
 package hi.hugbo.verywowchat.services;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +67,7 @@ public class API_caller {
         *  We always send the empty token and body its up to the server to decide if it
         *  wants to process those things */
         Request request = new Request.Builder()
-                .url("http://192.168.1.74:9090/"+urlEndPoint)
+                .url("http://130.208.151.138:9090/"+urlEndPoint)
                 .method(method,Rbody)
                 .header("Authorization", token)
                 .addHeader("content-type", "application/json; charset=utf-8")
@@ -99,10 +97,10 @@ public class API_caller {
 
         // if the status code is 200-2xx then its a success
         if(response.code() >= 200 && response.code() < 300 ) {
-            resp.put("response",WrappedData.getJSONArray("GoodResp").toString());
+            resp.put("response",WrappedData.getJSONObject("GoodResp").toString());
         }
         if(response.code() >= 400 && response.code() < 500 ) {
-            resp.put("response",WrappedData.getJSONArray("BadResp").toString());
+            resp.put("response",WrappedData.getJSONObject("BadResp").toString());
         }
 
         return resp;
