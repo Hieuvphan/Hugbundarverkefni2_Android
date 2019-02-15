@@ -1,4 +1,4 @@
-package hi.hugbo.verywowchat.services;
+package hi.hugbo.verywowchat.Models;
 
 import hi.hugbo.verywowchat.entities.Chatroom;
 

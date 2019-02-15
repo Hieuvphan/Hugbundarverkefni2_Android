@@ -1,9 +1,7 @@
-package hi.hugbo.verywowchat.services;
+package hi.hugbo.verywowchat.Models;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;

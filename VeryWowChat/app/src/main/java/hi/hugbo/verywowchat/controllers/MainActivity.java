@@ -14,9 +14,10 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.services.API_caller;
+import hi.hugbo.verywowchat.Models.API_caller;
 
 /**
  * @Author : Róman
@@ -107,10 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     Map<String, String> result = api_caller.HttpRequest("login","POST","",params);
                     int status = Integer.parseInt(result.get("status"));
                     JSONArray resp_body = new JSONArray(result.get("response"));
-                    /* Talk to team if they really want to map result to object
-                     * Its possible but all of our data is inside array inside json inside array
-                      * creating billions Of enities is not such a smart thing in andriod cuz we would
-                      * be wating resources compared to using f.x JSONObject class */
+
                     if(status >= 200 && status < 300 ){
                         /* Since its a successful request we know we should recive user information
                         *  so we store this information in the shared preferences */
@@ -126,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     if(status >= 400 && status < 500){
+
                         String errors_msg = "";
                         for (int i = 0; i< resp_body.getJSONObject(0).getJSONArray("errors").length(); i++) {
                             errors_msg += resp_body.getJSONObject(0).getJSONArray("errors").getJSONObject(i).getString("message");

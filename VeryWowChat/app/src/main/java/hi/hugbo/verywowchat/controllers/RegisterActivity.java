@@ -1,6 +1,5 @@
 package hi.hugbo.verywowchat.controllers;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.services.API_caller;
+import hi.hugbo.verywowchat.Models.API_caller;
 
 /**
  * @Author : Róman
