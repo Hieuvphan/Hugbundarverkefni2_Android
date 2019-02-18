@@ -3,6 +3,7 @@ package hi.hugbo.verywowchat.Models;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -11,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import hi.hugbo.verywowchat.entities.Error;
@@ -38,7 +40,7 @@ public class ErrorLogger {
 
     /**
      *  <pre>
-     *  Usage : CreateListOfErrors(string errorsString)
+     *  Usage : ErrorLogger.CreateListOfErrors(string errorsString)
      *    For : errorsString is a JsonArray object in string form
      *          example of a valid JsonArray
      *           [
@@ -54,28 +56,58 @@ public class ErrorLogger {
      * @return returns List<Error>
      */
     public List<Error> CreateListOfErrors(String errorsString) throws JSONException {
-        // Use JSONArray for mapping of object
-        JSONArray errorsJson = new JSONArray(errorsString);
-        // the return object
-        List<Error> errorsPojos = new ArrayList<Error>();
+        List<Error> errorsPojos = new ArrayList<Error>() ; //initialize the constructor
+        JSONArray errorsJson = new JSONArray(errorsString); // parse the string into a JSONARRAY
 
-        // itterate over the errors and map them to Error Objects
-        for (int i = 0; i < errorsJson.length(); i++) {
-            JSONObject error = errorsJson.getJSONObject(i);
-            errorsPojos.add(new Error(error.getString("field"),error.getString("message")));
+        // Iterate over each json object
+        for (int i = 0; i < errorsJson.length(); i++){
+            // get the current Json object
+            JSONObject errorJson = errorsJson.getJSONObject(i);
+            // map the error json object to error pojo
+            Error newError = new Error(errorJson.getString("field").toString(),errorJson.get("message").toString());
+            // Add the newError to Errors List
+            errorsPojos.add(newError);
         }
-        // return the Errors as POJOS
-        return  errorsPojos;
+
+        return errorsPojos;
+    }
+
+    /** Overload if u want to return a JSONArray object that is also possible */
+    public List<Error> CreateListOfErrors(JSONArray errorsJson) throws JSONException {
+        List<Error> errorsPojos = new ArrayList<Error>() ; //initialize the constructor
+
+        // itarate over each json object
+        for (int i = 0; i < errorsJson.length(); i++){
+            // get the current Json object
+            JSONObject errorJson = errorsJson.getJSONObject(i);
+            // map the error json object to error pojo
+            Error newError = new Error(errorJson.getString("field").toString(),errorJson.get("message").toString());
+            // Add the newError to Errors List
+            errorsPojos.add(newError);
+        }
+
+        return errorsPojos;
     }
 
 
     /**
-     *
-     * @param errors
-     * @return
+     * <pre>
+     *  Usage : ErrorLogger.ErrorsToString(List<Error> errors);
+     *    For : errors is a List of Error Pojos
+     *   After: Reads all the Error Objects and concatenates them into one string
+     *          Each error message has its own Line.
+     * </pre>
+     * @param errors is a List<Error>
+     * @return All Error.message's concatenated into one string
      */
     public String ErrorsToString(List<Error> errors){
-
+        String returnString = "";
+        // Iterate over each Error Pojo
+        for(int i =0; i < errors.size(); i++) {
+            // append the error message to the return string and make a new line
+            returnString += errors.get(i).getMessage()+" \n";
+        }
+        return returnString;
     }
 
 }

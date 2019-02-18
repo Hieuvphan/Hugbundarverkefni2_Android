@@ -15,46 +15,73 @@ import java.util.List;
  *      tags                    list of tags for the chatroom
  */
 public class Chatroom {
-    // unique name serving as an identifier
-    private String chatroomName;
-    // non-unique name to be displayed
-    private String displayName;
-    // description of the chatroom
-    private String description;
-    // denotes the visibility of the chatroom: true means listed, false means
-    // unlisted
-    private Boolean listed;
-    // denots the accessability of the chatroom: true means users can only join with
-    // an invite, false means anyone can join
-    private Boolean invited_only;
-    // the username of the owner of the chatroom
-    private String ownerUsername;
-    // when the chatroom was created
-    private Long created;
-    // timestamp of when the latest message was received
-    private Long lastMessageReceived;
-    // the chatroom's tags
-    private List<String> tags;
+    String chatroomName;
+    String displayName;
+    String description;
+    Boolean listed;
+    Boolean invited_only;
+    String ownerUsername;
+    Long created;
+    Long lastMessageReceived;
+    List<String> tags;
+
 
     /**
+     *
      * @param chatroomName
      * @param displayName
      * @param description
      * @param listed
      * @param invited_only
+     * @param ownerUsername
+     * @param created
      * @param lastMessageReceived
      * @param tags
      */
-    public Chatroom(String chatroomName, String displayName, String description, Boolean listed,
-                    Boolean invited_only, Long lastMessageReceived, List<String> tags) {
+    public Chatroom(
+            String chatroomName,
+            String displayName,
+            String description,
+            Boolean listed,
+            Boolean invited_only,
+            String ownerUsername,
+            Long created,
+            Long lastMessageReceived,
+            List<String> tags
+    ) {
         this.chatroomName = chatroomName;
         this.displayName = displayName;
         this.description = description;
         this.listed = listed;
         this.invited_only = invited_only;
+        this.ownerUsername = ownerUsername;
+        this.created = created;
         this.lastMessageReceived = lastMessageReceived;
         this.tags = tags;
     }
+
+    @Override
+    public String toString(){
+
+        String tagItems = "";
+        for (int i = 0; i < this.tags.size(); i++) {
+            tagItems += "        "+this.tags.get(i)+"\n";
+        }
+
+        return  "{" +
+                "\n    chatroomName: " + this.chatroomName +
+                "\n    displayName: " + this.displayName +
+                "\n    description: " + this.description +
+                "\n    listed: " + this.listed +
+                "\n    invited_only: " + this.invited_only +
+                "\n    ownerUsername: " + this.ownerUsername +
+                "\n    created: " + this.created +
+                "\n    lastMessageReceived: " + this.lastMessageReceived +
+                "\n    tags: [" +tagItems +
+                "\n    ]" +
+                "\n}";
+    }
+
     // getters
 
     public String getChatroomName() {
@@ -89,12 +116,7 @@ public class Chatroom {
         return lastMessageReceived;
     }
 
-    public void setLastMessageReceived(Long lastMessageReceived) {
-        this.lastMessageReceived = lastMessageReceived;
-    }
-
     public List<String> getTags() {
         return tags;
     }
-
 }
