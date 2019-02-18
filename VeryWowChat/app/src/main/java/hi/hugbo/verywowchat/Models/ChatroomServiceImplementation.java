@@ -1,6 +1,5 @@
-package hi.hugbo.verywowchat.services;
+package hi.hugbo.verywowchat.Models;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.JsonArray;

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,9 +15,12 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.services.API_caller;
+import hi.hugbo.verywowchat.Models.API_caller;
+import hi.hugbo.verywowchat.Models.ErrorLogger;
+import hi.hugbo.verywowchat.entities.Error;
 
 /**
  * @Author : Róman
@@ -41,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
      * */
     private API_caller api_caller = API_caller.getInstance();
 
+    /**
+     * The ErrorLogger is used to map Json String objects into POJOS and it also should be
+     * a singleton so we are dependant on receiving a instance of it from someone else
+     * */
+    private ErrorLogger errorLogger = ErrorLogger.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         // Check if the token exists in the storage if it does then we redirect the user to the HomeActivity
         if(UserInfo.contains("token")) {
             Intent inten = new Intent(getApplicationContext(),HomeActivity.class);
-            inten.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(inten);
         }
 
@@ -75,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
         mLogginPassword = findViewById(R.id.edit_login_password);
 
         /* Since phones work way differently, its good practice like with buttons to assign
-        *  a reference to them and right away asign whatever the button needs to have like in
-         *  this case a listener. We add a listener to the button whenever its clicked it will
-         *  display a Registation form */
+        *  a reference to them and assign a listener right away.
+        *  We add a listener to the button whenever its clicked it will  display a Registation form
+        *  */
         mbtnRegister = findViewById(R.id.btn_register);
         mbtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +102,12 @@ public class MainActivity extends AppCompatActivity {
         mbtnLoggin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // if the user has not filled the form then we dont make the HTTP Request since it will result in an error
                 if(mLogginPassword.getText().toString().isEmpty() || mLogginUserName.getText().toString().isEmpty() ){
                     Toast.makeText(getApplicationContext(),"Please fill all the fields",Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 // Create a Map from the data provided by the user
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("password", mLogginPassword.getText().toString());
@@ -104,37 +116,46 @@ public class MainActivity extends AppCompatActivity {
                 /* Send the HTTP request for login through the api_caller and then map the object
                 *  correctly based of the status code */
                 try {
+                    // Make the HTTP Request
                     Map<String, String> result = api_caller.HttpRequest("login","POST","",params);
+                    // Parse the HTTP status code
                     int status = Integer.parseInt(result.get("status"));
+                    // Parse the Json String into a JSON array
                     JSONArray resp_body = new JSONArray(result.get("response"));
-                    /* Talk to team if they really want to map result to object
-                     * Its possible but all of our data is inside array inside json inside array
-                      * creating billions Of enities is not such a smart thing in andriod cuz we would
-                      * be wating resources compared to using f.x JSONObject class */
+
+                    // HTTP Request was a success
                     if(status >= 200 && status < 300 ){
-                        /* Since its a successful request we know we should recive user information
-                        *  so we store this information in the shared preferences */
+                        /* Since its a successful request we know we should receive user information
+                        *  so we store this information in the shared preferences so that next time
+                        *  the use opens the app he will already be logged in */
                         SharedPreferences.Editor editor = UserInfo.edit();
                         editor.putString("username",resp_body.getJSONObject(0).get("username").toString());
                         editor.putString("displayname",resp_body.getJSONObject(0).get("displayname").toString());
                         editor.putString("token",resp_body.getJSONObject(0).get("token").toString());
-                        editor.commit();
-                        /* We want to clear all history and start a new Actitivity */
+                        editor.commit(); // ALWAYS REMEMBER TO COMMIT ELSE IT WONT SAVE !
+                        // Start the Homepage Activity for the user
                         Intent inten = new Intent(getApplicationContext(),HomeActivity.class);
-                        inten.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(inten);
                         return;
                     }
+
+                    // HTTP Request was a failure
                     if(status >= 400 && status < 500){
-                        String errors_msg = "";
-                        for (int i = 0; i< resp_body.getJSONObject(0).getJSONArray("errors").length(); i++) {
-                            errors_msg += resp_body.getJSONObject(0).getJSONArray("errors").getJSONObject(i).getString("message");
-                        }
-                        Toast.makeText(getApplicationContext(),errors_msg,Toast.LENGTH_LONG).show();
+                        /* Since its an error we know we receive a array of errors which we have to
+                        *  map into POJOS and then display them.
+                        *  (NOTE : You do not have to map them to POJOS in my opinion it just adds more work
+                        *          and drains phone resources u can solve everything with JSONArray and JSONObject classes) */
+                        // Create a List of errors
+                        List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
+                        // Display a pop-up error message to the user with the errors received from the API
+                        Toast.makeText(getApplicationContext(),errorLogger.ErrorsToString(errors),Toast.LENGTH_LONG).show();
                     }
                 } catch (IOException e) {
+                    Log.e("LoginError","IOException in Login \n message :"+e);
                     e.printStackTrace();
                 } catch (JSONException e) {
+                    Log.e("LoginError","JSONException in Login \n message :"+e);
                     e.printStackTrace();
                 }
             }
