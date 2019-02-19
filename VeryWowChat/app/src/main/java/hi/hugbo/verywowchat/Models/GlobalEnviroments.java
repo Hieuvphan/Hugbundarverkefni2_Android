@@ -16,51 +16,9 @@ public class GlobalEnviroments {
     private GlobalEnviroments() { }
 
     // URL to API
-    private final String API_ENDPOINT = "";
+    private final String BASEURL = "";
 
-    // User Credentials
-    private String TOKEN = "";
-    private String USERNAME = "";
-    private String DISPLAYNAME = "";
-
-    /***
-     * <pre>
-     *     Usage : GlobalEnviroments.ClearUserInfo()
-     *       For : Nothing
-     *     After : sets the User Credential fields to empty strings
-     * </pre>
-     */
-    public void ClearUserInfo() {
-        setDISPLAYNAME("");
-        setTOKEN("");
-        setUSERNAME("");
-    }
-
-    public String getAPI_ENDPOINT() {
-        return API_ENDPOINT;
-    }
-
-    public String getTOKEN() {
-        return TOKEN;
-    }
-
-    public void setTOKEN(String TOKEN) {
-        this.TOKEN = TOKEN;
-    }
-
-    public String getUSERNAME() {
-        return USERNAME;
-    }
-
-    public void setUSERNAME(String USERNAME) {
-        this.USERNAME = USERNAME;
-    }
-
-    public String getDISPLAYNAME() {
-        return DISPLAYNAME;
-    }
-
-    public void setDISPLAYNAME(String DISPLAYNAME) {
-        this.DISPLAYNAME = DISPLAYNAME;
+    public String getAPI_BASEURL() {
+        return BASEURL;
     }
 }
