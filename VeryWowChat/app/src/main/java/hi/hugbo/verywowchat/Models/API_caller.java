@@ -36,6 +36,11 @@ public class API_caller {
     private final MediaType JSON  = MediaType.parse("application/json; charset=utf-8");
 
     /**
+     * We depend our receiving BASE_URL from someone else
+     * */
+    private GlobalEnviroments g_envs = GlobalEnviroments.getInstance();
+
+    /**
      * This is used to create a singleton instance of this class, the empty class instantiator is needed.
      * */
     public static API_caller getInstance() {
@@ -81,7 +86,7 @@ public class API_caller {
         *  We always send the empty token and body its up to the server to decide if it
         *  wants to process those things */
         Request request = new Request.Builder()
-                .url("http://192.168.1.87:9090/"+urlEndPoint)
+                .url(g_envs.getAPI_BASEURL()+urlEndPoint)
                 .method(method,Rbody)
                 .header("Authorization", token)
                 .addHeader("content-type", "application/json; charset=utf-8")
