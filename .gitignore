@@ -56,3 +56,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/macos,windows
+
+# Ignore our custom .env file
+VeryWowChat/app/src/main/java/hi/hugbo/verywowchat/Models/GlobalEnviroments.java
