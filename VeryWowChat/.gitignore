@@ -11,3 +11,11 @@
 /build
 /captures
 .externalNativeBuild
+
+#
+# https://stackoverflow.com/questions/28101020/git-status-is-showing-changes-not-staged-for-commit-for-files-listed-in-gitig
+#
+# git rm --cached mllib/pom.xml
+.idea
+
+
