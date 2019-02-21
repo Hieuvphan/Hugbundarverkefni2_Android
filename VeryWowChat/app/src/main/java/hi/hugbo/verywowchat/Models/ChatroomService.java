@@ -1,4 +1,4 @@
-package hi.hugbo.verywowchat.services;
+package hi.hugbo.verywowchat.Models;
 
 import java.util.List;
 

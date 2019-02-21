@@ -1,4 +1,4 @@
-package hi.hugbo.verywowchat.services;
+package hi.hugbo.verywowchat.Models;
 
 import android.util.Log;
 
@@ -36,20 +36,37 @@ public class API_caller {
     private final MediaType JSON  = MediaType.parse("application/json; charset=utf-8");
 
     /**
-     * This is used to create a singleton instance of this class, also the empty class instantiator.
+     * We depend our receiving BASE_URL from someone else
+     * */
+    private GlobalEnviroments g_envs = GlobalEnviroments.getInstance();
+
+    /**
+     * This is used to create a singleton instance of this class, the empty class instantiator is needed.
      * */
     public static API_caller getInstance() {
         return ourInstance;
     }
     private API_caller() {}
 
-    /* Usage : HttpRequest(urlEndPoint,method,token,body)
-    *    FOR : urlEndPoint is a string (Cannot be empty/null)
-    *          method is a string      (Cannot be empty/null)
-    *          token is a string       (can be null)
-    *          body is a  Map          (can be null)
-    *   After: Performs a synchronous HTTP (method) request one BASEURL/urlEndPoint and passes along the optional
-    *          token in the header under "Authorization" and the body in the RequestBody as "application/JSON UTF 8*/
+
+    /**
+     * <pre>
+     *    Usage : HttpRequest(urlEndPoint,method,token,body)
+     *      FOR : urlEndPoint is a string (Cannot be empty/null)
+     *            method is a string      (Cannot be empty/null)
+     *            token is a string       (can be null)
+     *            body is a  Map          (can be null)
+     *     After: Performs a synchronous HTTP (method) request one BASEURL/urlEndPoint and passes along the optional
+     *            token in the header under "Authorization" and the body in the RequestBody as "application/JSON UTF 8
+     * </pre>
+     * @param urlEndPoint endpoint on top of baseurl
+     * @param method  HTTP method
+     * @param token Aut token ( CAN BE NULL)
+     * @param body  Body ( Can Be NULL)
+     * @return  Map<String, String>  with 2 keys 1: status = status code  2: response = response body
+     * @throws IOException
+     * @throws JSONException
+     */
     public Map<String, String> HttpRequest(String urlEndPoint,String method,String token, Map body) throws IOException, JSONException {
 
         /* If the body was passed then we create a request body
@@ -69,7 +86,7 @@ public class API_caller {
         *  We always send the empty token and body its up to the server to decide if it
         *  wants to process those things */
         Request request = new Request.Builder()
-                .url("http://192.168.1.66:9090/"+urlEndPoint)
+                .url(g_envs.getAPI_BASEURL()+urlEndPoint)
                 .method(method,Rbody)
                 .header("Authorization", token)
                 .addHeader("content-type", "application/json; charset=utf-8")

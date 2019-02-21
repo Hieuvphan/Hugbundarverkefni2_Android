@@ -1,6 +1,5 @@
 package hi.hugbo.verywowchat.controllers;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +13,12 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.services.API_caller;
+import hi.hugbo.verywowchat.Models.API_caller;
+import hi.hugbo.verywowchat.Models.ErrorLogger;
+import hi.hugbo.verywowchat.entities.Error;
 
 /**
  * @Author : Róman
@@ -37,8 +39,18 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mRegisterEmail;
     private Button mBtnRegister;
 
-    /* Ensure that the api_called is a singleton instance */
+    /**
+     * The api_caller is used to send http requests to the VeryWowChat server
+     * and also it is a singleton so we are dependant on reciving a instance of it from someone else
+     * */
     private API_caller api_caller = API_caller.getInstance();
+
+    /**
+     * The ErrorLogger is used to map Json String objects into POJOS and it also should be
+     * a singleton so we are dependant on receiving a instance of it from someone else
+     * */
+    private ErrorLogger errorLogger = ErrorLogger.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // if the user left field or fields empty we dont make the HTTP Request
                 if(mRegisterDisplayName.getText().toString().isEmpty() ||
                    mRegisterUsername.getText().toString().isEmpty() ||
                    mRegisterPassword.getText().toString().isEmpty() ||
@@ -67,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Please fill all the fields",Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                // if Both passwords dont Match then we dont make the HTTP Request
                 if(!mRegisterPassword.getText().toString().equals(mRegisterPasswordRepeat.getText().toString())){
                     Toast.makeText(getApplicationContext(),"Both passwords must match",Toast.LENGTH_LONG).show();
                     return;
@@ -81,31 +94,37 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("passwordReap",mRegisterPasswordRepeat.getText().toString());
                 params.put("userName",mRegisterUsername.getText().toString());
 
+                /* Send the HTTP request for Registration through the api_caller and then map the object
+                 *  correctly based of the status code */
                 try {
+                    // Make the Http Request
                     Map<String, String> result = api_caller.HttpRequest("register","POST","",params);
+                    // Parse HTTP Status code
                     int status = Integer.parseInt(result.get("status"));
 
+                    /* If status code is 204 from the API thats means the request was successful and
+                     * no content was returned */
                     if(status == 204) {
+                        // display a message
                         Toast.makeText(getApplicationContext(),"New User has been Created ! \nplease visit your email address for validation",Toast.LENGTH_LONG).show();
                         return;
                     }
-
+                    // if we made it here then it means we have an error and it also means we have a body
+                    // parse the JSON string
                     JSONArray resp_body = new JSONArray(result.get("response"));
                     if(status >= 400 && status < 500){
-                        String errors_msg = "";
-                        for (int i = 0; i< resp_body.getJSONObject(0).getJSONArray("errors").length(); i++) {
-                            errors_msg += resp_body.getJSONObject(0).getJSONArray("errors").getJSONObject(i).getString("message");
-                        }
-                        Toast.makeText(getApplicationContext(),errors_msg,Toast.LENGTH_LONG).show();
-                        return;
+                        // Create a List of errors
+                        List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
+                        // Display a pop-up error message to the user with the errors received from the API
+                        Toast.makeText(getApplicationContext(),errorLogger.ErrorsToString(errors),Toast.LENGTH_LONG).show();
                     }
 
                 }
                 catch (IOException e) {
-                    Log.d("here","IO exeption");
+                    Log.e("RegisterError","IOException in Register \n message :"+e);
                     e.printStackTrace();
                 } catch (JSONException e) {
-                    Log.d("here","jsom exeption");
+                    Log.e("RegisterError","JSONException in Register \n message :"+e);
                     e.printStackTrace();
                 }
             }

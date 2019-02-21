@@ -20,6 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         BtnCreateChatroom = findViewById(R.id.btn_create_chatroom);
         BtnCreateChatroom.setOnClickListener(new View.OnClickListener() {
             @Override
