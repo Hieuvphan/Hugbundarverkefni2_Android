@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,15 +54,12 @@ public class CreateChatroomActivity extends AppCompatActivity {
                 String tagInput = edit_chatroom_tags.getText()+"";
                 List<String> tags = Arrays.asList(tagInput.split(","));
 
-                Log.d("createChatroom", "tags len: "+tags.size());
-
                 try{
                     Chatroom c = chatroomService.createChatroom(chatroomName, displayName, description, listed, invitedOnly, tags);
 
-                    Log.d("createChatroom", c.toString());
+                    Toast.makeText(getApplicationContext(),"Chat created successfully",Toast.LENGTH_LONG).show();
                 } catch(Exception e) {
-                    // TODO: use toast for error messages
-                    Log.e("createChatroom", "exception caught when calling service:"+e.getMessage());
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
