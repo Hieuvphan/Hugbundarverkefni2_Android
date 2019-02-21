@@ -1,10 +1,10 @@
 ################################################################################
 ## Project itself
 
+
 # Ignore our custom .env file
 # TODO: there must be a better way...
-VeryWowChat/app/src/main/java/hi/hugbo/verywowchat/Models/GlobalEnviroments
-
+VeryWowChat/app/src/main/java/hi/hugbo/verywowchat/Models/GlobalEnviroments.java
 
 ################################################################################
 ## macOS 
@@ -38,6 +38,7 @@ Temporary Items
 
 ################################################################################
 ## Windows 
+
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
@@ -62,17 +63,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/macos,windows
 ################################################################################
 ## Eclipse
 
-
-
-# Created by https://www.gitignore.io/api/eclipse
-# Edit at https://www.gitignore.io/?templates=eclipse
-
-### Eclipse ###
-
+# Eclipse
 .metadata
 bin/
 tmp/
@@ -141,18 +135,8 @@ local.properties
 
 .sts4-cache/
 
-# End of https://www.gitignore.io/api/eclipse
-
 ################################################################################
 ## Android Studio
-
-
-
-# Created by https://www.gitignore.io/api/androidstudio
-# Edit at https://www.gitignore.io/?templates=androidstudio
-
-### AndroidStudio ###
-# Covers files to be ignored for android development using Android Studio.
 
 # Built application files
 *.apk
@@ -281,16 +265,9 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.gitignore.io/api/androidstudio
-
 ################################################################################
 ## Android
 
-
-# Created by https://www.gitignore.io/api/android
-# Edit at https://www.gitignore.io/?templates=android
-
-### Android ###
 # Built application files
 *.apk
 *.ap_
@@ -376,17 +353,10 @@ lint/tmp/
 gen-external-apklibs
 output.json
 
-# End of https://www.gitignore.io/api/android
-
 
 ################################################################################
 ## Java
 
-
-# Created by https://www.gitignore.io/api/java
-# Edit at https://www.gitignore.io/?templates=java
-
-### Java ###
 # Compiled class file
 *.class
 
@@ -411,5 +381,4 @@ output.json
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# End of https://www.gitignore.io/api/java
 ################################################################################
