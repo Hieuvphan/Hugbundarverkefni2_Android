@@ -27,7 +27,7 @@ import hi.hugbo.verywowchat.entities.Error;
  * This Activity is responsible for displaying and maitaining the login form and redirecting
  * the user to his/her home page if he/she is logged in.
  * */
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     /**
      * The login form consists of 4 widgets,
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mbtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 

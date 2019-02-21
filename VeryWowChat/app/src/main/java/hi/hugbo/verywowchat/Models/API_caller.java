@@ -1,5 +1,8 @@
 package hi.hugbo.verywowchat.Models;
 
+
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -9,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import hi.hugbo.verywowchat.controllers.R;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,7 +45,10 @@ public class API_caller {
     public static API_caller getInstance() {
         return ourInstance;
     }
-    private API_caller() {}
+
+    private API_caller() {
+
+    }
 
 
     /**
@@ -64,6 +71,13 @@ public class API_caller {
      */
     public Map<String, String> HttpRequest(String urlEndPoint,String method,String token, Map body) throws IOException, JSONException {
 
+        System.out.println("cancer: " + R.string.cancer);
+
+        System.out.println("cancer 2: " + Resources.getSystem().getString(R.string.cancer));
+
+        SharedPreferences
+
+
         /* If the body was passed then we create a request body
         *  to send it with the HTTP request */
         RequestBody Rbody = null;
@@ -80,6 +94,7 @@ public class API_caller {
         /* Create the HTTP Request
         *  We always send the empty token and body its up to the server to decide if it
         *  wants to process those things */
+        // TODO: hard coded URL :(
         Request request = new Request.Builder()
                 .url("http://192.168.1.87:9090/"+urlEndPoint)
                 .method(method,Rbody)
