@@ -14,6 +14,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button mBtnLogout;
     private Button BtnCreateChatroom;
+    private Button OpenChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,20 @@ public class HomeActivity extends AppCompatActivity {
                 SharedPreferences.Editor spreferencesEditor = UserInfo.edit();
                 spreferencesEditor.clear();
                 spreferencesEditor.commit();
+                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+
+        OpenChat = findViewById(R.id.openChatRoom);
+        OpenChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ChatRoomMessageActivity.class);
+                intent.putExtra("chatID","20");
+                startActivity(intent);
             }
         });
     }
