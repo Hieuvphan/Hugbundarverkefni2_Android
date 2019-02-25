@@ -7,23 +7,45 @@ import android.graphics.Bitmap;
  * When we receive a message from API we map that JSON object into this POJO
  * */
 public class ChatMessage {
+    // Username of the sender
+    private String Username;
+    // Displayname of the sender
+    private String DisplayName;
     // chatroom message in text form
     private String Message;
-    // indicates if this message was send by this user ( TO display his messages on right side)
-    private Boolean MyMessage;
+    // timestamp of the last message received from the chatroom
+    private int TimeStamp;
     // hold image if the user send an image
     private Bitmap Bitmap;
+    // indicates if this message was send by this user ( TO display his messages on right side)
+    private Boolean MyMessage;
 
-    public ChatMessage(String Message, Boolean MyMessage) {
-        this.Message = Message;
-        this.MyMessage = MyMessage;
-        this.Bitmap = null;
+    public ChatMessage(String username,String displayName,String message,int timeStamp, String OwnerOfThisAcc) {
+        Username = username;
+        DisplayName = displayName;
+        Message=message;
+        TimeStamp = timeStamp;
+        Bitmap = null;
+        if(username.equals(OwnerOfThisAcc)){
+            MyMessage = true;
+        }
+        else {
+            MyMessage = false;
+        }
     }
 
-    public ChatMessage(boolean MyMessage,Bitmap Bitmap) {
-        this.MyMessage = MyMessage;
-        this.Bitmap = Bitmap;
-        this.MyMessage = null;
+    public ChatMessage(String username,String displayName,Bitmap img,int timeStamp, String OwnerOfThisAcc) {
+        Username = username;
+        DisplayName = displayName;
+        Message=null;
+        TimeStamp = timeStamp;
+        Bitmap = img;
+        if(username.equals(OwnerOfThisAcc)){
+            MyMessage = true;
+        }
+        else {
+            MyMessage = false;
+        }
     }
 
     public String getMessage() {
@@ -38,4 +60,15 @@ public class ChatMessage {
         return Bitmap;
     }
 
+    public String getUsername() {
+        return Username;
+    }
+
+    public String getDisplayName() {
+        return DisplayName;
+    }
+
+    public int getTimeStamp() {
+        return TimeStamp;
+    }
 }
