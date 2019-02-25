@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),ChatRoomMessageActivity.class);
-                intent.putExtra("chatID","20");
+                intent.putExtra("chatID","rruchat");
                 startActivity(intent);
             }
         });

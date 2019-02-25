@@ -21,4 +21,9 @@
     <string name="chatroom_invited_only">Private</string>
     <string name="chatroom_Actvity_SendButton_content">SEND</string>
 
+    <string name="chatroomMSG_Actvity_text">Enter Message</string>
+    <string name="chatroomMSG_Actvity_sendBTN">Submit Text Message</string>
+
+
+
 </resources>
