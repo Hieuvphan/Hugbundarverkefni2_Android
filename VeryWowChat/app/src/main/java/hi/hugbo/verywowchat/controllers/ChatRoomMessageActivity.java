@@ -23,7 +23,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         mChatMessages = new ArrayList<>();
         mChatMessages.add(new ChatMessage("dickbutt",true));
-        mChatMessages.add(new ChatMessage("dickbutt1",true));
+        mChatMessages.add(new ChatMessage("dickbutt1",false));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView recyclerView = findViewById(R.id.chatMessages);
