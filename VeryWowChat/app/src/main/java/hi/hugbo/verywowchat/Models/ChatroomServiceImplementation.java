@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.Models;
 
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
@@ -167,20 +168,21 @@ public class ChatroomServiceImplementation implements ChatroomService {
     }
 
     public void inviteMemberToChatroom(String chatroomName, String userName) throws Exception{
-        String path = "/"+chatroomName+"/invite/"+userName;
+        String path = "auth/chatroom/"+chatroomName+"/invite/"+userName;
         String method = "POST";
         String token = this.getToken();
+        Map<String, Object> body = new ArrayMap<>();
 
         try{
-            Map<String, String> result = api_caller.HttpRequest(path, method, token, null);
+            Map<String, String> result = api_caller.HttpRequest(path, method, token, body);
 
             int status = Integer.parseInt(result.get("status"));
-            JSONObject resp_body = new JSONObject(result.get("response"));
 
             if(status == 204){
                 return; // success
             }
             if(status >= 400 && status < 500){
+                JSONObject resp_body = new JSONObject(result.get("response")); // only need body if error
                 throw new Exception(resp_body.getString("error"));
             }
 
@@ -193,7 +195,30 @@ public class ChatroomServiceImplementation implements ChatroomService {
     }
 
     public void inviteAdminToChatroom(String chatroomName, String userName) throws Exception{
-        throw new UnsupportedOperationException("Not implemented yet");
+        String path = "auth/chatroom/"+chatroomName+"/admininvite/"+userName;
+        String method = "POST";
+        String token = this.getToken();
+        Map<String, Object> body = new ArrayMap<>();
+
+        try{
+            Map<String, String> result = api_caller.HttpRequest(path, method, token, body);
+
+            int status = Integer.parseInt(result.get("status"));
+
+            if(status == 204){
+                return; // success
+            }
+            if(status >= 400 && status < 500){
+                JSONObject resp_body = new JSONObject(result.get("response")); // only need body if error
+                throw new Exception(resp_body.getString("error"));
+            }
+
+            throw new Exception("Something unexpected happened");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     public void leaveChatroom(String userName) throws Exception{

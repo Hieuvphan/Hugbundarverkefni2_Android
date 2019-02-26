@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,7 +20,7 @@ public class ChatroomInviteActivity extends AppCompatActivity {
 
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
 
-    private chatroomName;
+    private String mChatroomName;
 
     private TextView edit_chatroom_invitee;
     private Button btn_chatroom_invite;
@@ -27,7 +28,11 @@ public class ChatroomInviteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_chatroom);
+        setContentView(R.layout.activity_invite_member);
+
+        // get the chatroom name from extra
+        Intent intent = getIntent();
+        mChatroomName = intent.getStringExtra("chatroomName");
 
         edit_chatroom_invitee = findViewById(R.id.edit_chatroom_invitee);
         btn_chatroom_invite = findViewById(R.id.btn_chatroom_invite);
@@ -35,12 +40,12 @@ public class ChatroomInviteActivity extends AppCompatActivity {
         btn_chatroom_invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inviteeName = edit_chatroom_invitee.getText()+"";
+                String inviteeName = edit_chatroom_invitee.getText().toString();
 
                 try{
-                    Chatroom c = chatroomService.inviteMemberToChatroom(chatroomName, inviteeName);
+                    chatroomService.inviteMemberToChatroom(mChatroomName, inviteeName);
 
-                    Toast.makeText(getApplicationContext(),"Chat created successfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Invite successfully sent",Toast.LENGTH_LONG).show();
                 } catch(Exception e) {
                     Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                 }
