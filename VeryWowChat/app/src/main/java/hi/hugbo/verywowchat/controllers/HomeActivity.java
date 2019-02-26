@@ -14,6 +14,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button mBtnLogout;
     private Button BtnCreateChatroom;
+    private Button BtnChatroomInvite;
     private Button OpenChat;
 
     @Override
@@ -27,6 +28,16 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),CreateChatroomActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        BtnChatroomInvite = findViewById(R.id.btn_chatroom_invite);
+        BtnChatroomInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ChatroomInviteActivity.class);
+                intent.putExtra("chatroomName","c6");
                 startActivity(intent);
             }
         });
@@ -52,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),ChatRoomMessageActivity.class);
-                intent.putExtra("chatID","rruchat");
+                intent.putExtra("chatID","c6");
                 startActivity(intent);
             }
         });

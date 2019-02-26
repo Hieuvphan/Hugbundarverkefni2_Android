@@ -29,6 +29,7 @@
             android:noHistory="true" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".CreateChatroomActivity" />
+        <activity android:name=".ChatroomInviteActivity" />
     </application>
 
 </manifest>

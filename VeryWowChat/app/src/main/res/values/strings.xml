@@ -19,11 +19,14 @@
     <string name="chatroom_tags">Tags</string>
     <string name="chatroom_listed">Listed</string>
     <string name="chatroom_invited_only">Private</string>
+    <string name="chatroom_invite">Chatroom Invite</string>
+    <string name="username">Username</string>
     <string name="chatroom_Actvity_SendButton_content">SEND</string>
 
     <string name="chatroomMSG_Actvity_text">Enter Message</string>
     <string name="chatroomMSG_Actvity_sendBTN">Submit Text Message</string>
 
 
+>>>>>>> e0fbbb29ceaddd6e26d2b0ad74cec163ddd3a3ff
 
 </resources>
