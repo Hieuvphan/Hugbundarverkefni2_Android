@@ -46,11 +46,11 @@ public class CreateChatroomActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String chatroomName = edit_chatroom_name.getText()+"";
-                String displayName = edit_chatroom_displayname.getText()+"";
-                String description= edit_chatroom_description.getText()+"";
+                String displayName = edit_chatroom_displayname.getText().toString();
+                String description= edit_chatroom_description.getText().toString();
                 Boolean listed = switch_listed.isChecked();
                 Boolean invitedOnly = switch_invited_only.isChecked();
-                String tagInput = edit_chatroom_tags.getText()+"";
+                String tagInput = edit_chatroom_tags.getText().toString();
                 List<String> tags = Arrays.asList(tagInput.split(","));
 
                 try{

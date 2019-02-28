@@ -33,6 +33,7 @@
             android:name=".RegisterActivity"
             android:noHistory="true" />
         <activity android:name=".CreateChatroomActivity" />
+        <activity android:name=".ChatroomInviteActivity" />
     </application>
 
 </manifest>
