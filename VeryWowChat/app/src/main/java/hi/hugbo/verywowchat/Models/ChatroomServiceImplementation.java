@@ -92,7 +92,8 @@ public class ChatroomServiceImplementation implements ChatroomService {
                         resp_body.getString("ownerUsername"),
                         resp_body.getLong("created"),
                         resp_body.getLong("lastMessageReceived"),
-                        tagList
+                        tagList,
+                        resp_body.getString("userRelation")
                 );
                 return newChatroom;
             }
@@ -143,7 +144,8 @@ public class ChatroomServiceImplementation implements ChatroomService {
                         resp_body.getString("ownerUsername"),
                         resp_body.getLong("created"),
                         resp_body.getLong("lastMessageReceived"),
-                        tagList
+                        tagList,
+                        resp_body.getString("userRelation")
                 );
                 return newChatroom;
             }
@@ -160,7 +162,56 @@ public class ChatroomServiceImplementation implements ChatroomService {
     }
 
     public List<Chatroom> getMyChatrooms() throws Exception{
-        throw new UnsupportedOperationException("Not implemented yet");
+        String path = "auth/user/memberofchatrooms";
+        String method = "GET";
+        String token = this.getToken();
+
+        try{
+            Map<String, String> result = api_caller.HttpRequest(path, method, token, null);
+
+            int status = Integer.parseInt(result.get("status"));
+            Log.d("getMyChatrooms", "status: " + status);
+
+            if(status == 200){
+                JSONArray resp_body = new JSONArray(result.get("response"));
+
+                List<Chatroom> chatrooms = new ArrayList<>();
+                for(int i = 0; i < resp_body.length(); i++) {
+                    JSONObject c = resp_body.getJSONObject(i);
+
+                    // compile the tags into a list
+                    JSONArray jTags = c.getJSONArray("tags");
+                    List<String> tagList = new ArrayList<String>();
+                    for(int j = 0; j < jTags.length(); j++){
+                        tagList.add(jTags.getString(j));
+                    }
+
+                    chatrooms.add(new Chatroom(
+                            c.getString("chatroomName"),
+                            c.getString("displayName"),
+                            c.getString("description"),
+                            c.getBoolean("listed"),
+                            c.getBoolean("invited_only"),
+                            c.getString("ownerUsername"),
+                            c.getLong("created"),
+                            c.getLong("lastMessageReceived"),
+                            tagList,
+                            c.getString("userRelation")
+                    ));
+                }
+                return chatrooms;
+            }
+            if(status >= 400 && status < 500){
+                JSONObject resp_body = new JSONObject(result.get("response"));
+                throw new Exception(resp_body.getString("error"));
+            }
+
+            throw new Exception("Something unexpected happened");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     public List<Chatroom> chatroomSearch(String searchTerm) throws Exception{

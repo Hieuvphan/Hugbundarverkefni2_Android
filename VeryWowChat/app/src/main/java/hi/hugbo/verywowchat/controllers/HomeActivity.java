@@ -16,6 +16,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button BtnCreateChatroom;
     private Button BtnChatroomInvite;
     private Button OpenChat;
+    private Button BtnMyChatrooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,15 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),ChatroomInviteActivity.class);
                 intent.putExtra("chatroomName","c6");
+                startActivity(intent);
+            }
+        });
+
+        BtnMyChatrooms = findViewById(R.id.btn_my_chatrooms);
+        BtnMyChatrooms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MyChatroomsActivity.class);
                 startActivity(intent);
             }
         });
