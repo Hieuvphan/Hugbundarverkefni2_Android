@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/account_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Account Settings" />
+
+        <item
+            android:id="@+id/create_new_chat_room"
+            android:icon="@drawable/add_circle_icon"
+            android:title="Create New Chatroom" />
+        <item
+            android:id="@+id/pending_requests"
+            android:icon="@drawable/people_icon"
+            android:title="View Pending Requests" />
+    </group>
+
+</menu>

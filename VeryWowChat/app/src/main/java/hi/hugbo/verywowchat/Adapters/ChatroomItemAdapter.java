@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
 import hi.hugbo.verywowchat.controllers.MyChatroomsActivity;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.ChatMessage;
@@ -94,8 +95,8 @@ public class ChatroomItemAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    Intent intent = new Intent(context.getApplicationContext(), MyChatroomsActivity.class);
-                    intent.putExtra("chatroomName", chatroom.getChatroomName());
+                    Intent intent = new Intent(context.getApplicationContext(), ChatRoomMessageActivity.class);
+                    intent.putExtra("chatID", chatroom.getChatroomName());
                     context.startActivity(intent);
                 }
             });

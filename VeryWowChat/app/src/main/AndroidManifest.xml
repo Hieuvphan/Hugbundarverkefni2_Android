@@ -14,8 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatRoomMessageActivity"
-                  android:noHistory="true"></activity>
+        <activity
+            android:name=".HomePageActivity"
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ChatRoomMessageActivity"
+            android:noHistory="true" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +32,6 @@
         <activity
             android:name=".RegisterActivity"
             android:noHistory="true" />
-        <activity android:name=".HomeActivity" />
         <activity android:name=".CreateChatroomActivity" />
         <activity android:name=".ChatroomInviteActivity" />
         <activity android:name=".MyChatroomsActivity" />

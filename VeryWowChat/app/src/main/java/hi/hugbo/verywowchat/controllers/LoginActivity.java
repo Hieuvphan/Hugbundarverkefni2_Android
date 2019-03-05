@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if the token exists in the storage if it does then we redirect the user to the HomeActivity
         if(UserInfo.contains("token")) {
-            Intent inten = new Intent(getApplicationContext(),HomeActivity.class);
+            Intent inten = new Intent(getApplicationContext(),HomePageActivity.class);
             inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(inten);
         }
@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token",resp_body.getJSONObject(0).get("token").toString());
                         editor.commit(); // ALWAYS REMEMBER TO COMMIT ELSE IT WONT SAVE !
                         // Start the Homepage Activity for the user
-                        Intent inten = new Intent(getApplicationContext(),HomeActivity.class);
+                        Intent inten = new Intent(getApplicationContext(),HomePageActivity.class);
                         inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(inten);
                         return;
