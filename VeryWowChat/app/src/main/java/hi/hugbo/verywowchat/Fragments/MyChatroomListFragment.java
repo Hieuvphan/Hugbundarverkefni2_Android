@@ -1,63 +1,59 @@
-package hi.hugbo.verywowchat.controllers;
+package hi.hugbo.verywowchat.Fragments;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.ChatMessageAdapter;
 import hi.hugbo.verywowchat.Adapters.ChatroomItemAdapter;
 import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
-/**
- * @Author Vilhelm
- *
- * MyChatroomsActivity gives us a list of all the chatrooms the user is a member of.
- *
- * When a chatroom is selected, a new activity will open, allowing you to view or manage the
- * chatroom.
- *
- * We use shared preferences to get the user and JWT
- *
- * RecycleView used to contain the list of chatrooms.
- */
-public class MyChatroomsActivity extends AppCompatActivity {
+public class MyChatroomListFragment extends Fragment {
+
+    public MyChatroomListFragment(){
+
+    }
 
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
     private ChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.chatroom_list);
+    public static MyChatroomListFragment newInstance(){
+        MyChatroomListFragment fragment = new MyChatroomListFragment();
 
-        SharedPreferences userInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
-        final String token = userInfo.getString("token","n/a");
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("testusmaximus", "in wrong fragment ");
+        View rootView = inflater.inflate(R.layout.chatroom_list, container, false);
+
+        Context context = rootView.getContext();
+
+        SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
+        String token = userInfo.getString("token","n/a");
 
         List<Chatroom> chatrooms = new ArrayList<>();
 
         try {
             chatrooms = chatroomService.getMyChatrooms(token);
 
-            for(Chatroom chatroom : chatrooms) {
-                Log.d("getMyChatrooms", chatroom.toString());
-            }
-
-            Toast.makeText(getApplicationContext(),"Chatrooms successfully fetched",Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(),"Chatrooms successfully fetched",Toast.LENGTH_LONG).show();
         } catch(Exception e) {
-            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -65,10 +61,10 @@ public class MyChatroomsActivity extends AppCompatActivity {
          * --------------------------------- RecycleView INIT START ---------------------------------
          * -----------------------------------------------------------------------------------------*/
 
-        RecyclerView recyclerView = findViewById(R.id.rv_chatrooms);
+        RecyclerView recyclerView = rootView.findViewById(R.id.rv_chatrooms);
 
         // define and assign layout manager for recycle view
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         layoutManager.setStackFromEnd(true); // ???
         recyclerView.setLayoutManager(layoutManager);
 
@@ -79,5 +75,8 @@ public class MyChatroomsActivity extends AppCompatActivity {
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT END ----------------------------------
          * -----------------------------------------------------------------------------------------*/
+
+        return rootView;
     }
+
 }

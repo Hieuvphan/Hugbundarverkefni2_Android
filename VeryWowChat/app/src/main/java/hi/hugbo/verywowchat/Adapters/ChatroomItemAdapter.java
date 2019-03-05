@@ -95,9 +95,10 @@ public class ChatroomItemAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    Intent intent = new Intent(context.getApplicationContext(), ChatRoomMessageActivity.class);
-                    intent.putExtra("chatID", chatroom.getChatroomName());
-                    context.startActivity(intent);
+                    context.startActivity(ChatRoomMessageActivity.newIntent(
+                        context.getApplicationContext(),
+                        chatroom.getChatroomName()
+                    ));
                 }
             });
         }
