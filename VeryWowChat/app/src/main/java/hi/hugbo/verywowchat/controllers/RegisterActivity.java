@@ -1,5 +1,7 @@
 package hi.hugbo.verywowchat.controllers;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -131,5 +133,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public static Intent newIntent(Context packageContext) {
+        Intent i = new Intent(packageContext, RegisterActivity.class);
+        return i;
     }
 }

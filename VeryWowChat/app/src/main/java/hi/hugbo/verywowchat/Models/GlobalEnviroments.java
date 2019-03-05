@@ -16,7 +16,7 @@ public class GlobalEnviroments {
     private GlobalEnviroments() { }
 
 
-    private final String BASEURL = "http://192.168.1.66:9090/";
+    private final String BASEURL = "http://130.208.151.122:9090/";
 
 
     public String getAPI_BASEURL() {
