@@ -1,6 +1,5 @@
 package hi.hugbo.verywowchat.Adapters;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import hi.hugbo.verywowchat.Fragments.MyChatroomListFragment;
+import hi.hugbo.verywowchat.Fragments.SearchChatroomListFragment;
 import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
 import hi.hugbo.verywowchat.controllers.R;
 
@@ -40,11 +41,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         // if the position is 1 then we display User Chat Fragment
         else if(position == 1) {
-            return PlaceholderFragment.newInstance(position + 1);
+            return MyChatroomListFragment.newInstance();
         }
         // else its we display the public chat fragment
         else {
-            return PlaceholderFragment.newInstance(position + 1);
+            //return PlaceholderFragment.newInstance(position + 1);
+            return SearchChatroomListFragment.newInstance();
         }
     }
 
