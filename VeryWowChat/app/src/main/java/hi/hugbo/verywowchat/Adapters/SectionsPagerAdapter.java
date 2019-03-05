@@ -96,9 +96,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             openChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ChatRoomMessageActivity.class);
-                    intent.putExtra("chatID","rruchat");
-                    startActivity(intent);
+                    startActivity(ChatRoomMessageActivity.newIntent(getActivity(),"rruchat"));
                 }
             });
             return rootView;

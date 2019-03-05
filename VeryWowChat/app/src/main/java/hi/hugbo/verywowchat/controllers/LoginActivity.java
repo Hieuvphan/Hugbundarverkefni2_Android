@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
@@ -92,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         mbtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivity(RegisterActivity.newIntent(LoginActivity.this));
             }
         });
 
@@ -134,9 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token",resp_body.getJSONObject(0).get("token").toString());
                         editor.commit(); // ALWAYS REMEMBER TO COMMIT ELSE IT WONT SAVE !
                         // Start the Homepage Activity for the user
-                        Intent inten = new Intent(getApplicationContext(),HomePageActivity.class);
-                        inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(inten);
+                        startActivity(HomePageActivity.newIntent(LoginActivity.this));
                         return;
                     }
 
@@ -161,5 +160,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static Intent newIntent(Context packageContext) {
+        Intent i = new Intent(packageContext, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return i;
     }
 }

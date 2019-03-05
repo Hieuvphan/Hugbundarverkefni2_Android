@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -99,6 +100,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         });*/
     }
 
+    public static Intent newIntent(Context packageContext) {
+        Intent i = new Intent(packageContext, HomePageActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return i;
+    }
 
     /**
      * <pre>
