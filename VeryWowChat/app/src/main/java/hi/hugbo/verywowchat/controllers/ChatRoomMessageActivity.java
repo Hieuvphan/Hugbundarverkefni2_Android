@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,10 @@ import hi.hugbo.verywowchat.entities.ChatMessage;
  * */
 public class ChatRoomMessageActivity extends AppCompatActivity {
 
+    /* constant instead of literals to ensure we use the same key when putting and getting the extra
+    *  this is something that andriod prefers we do.*/
+    private static final String CHAT_ROOM_ID = "CHAT_ID";
+
     // widgets
     private ImageButton mBtnSendTxtMSG; // send text message button
     private TextView mUserTextMSG; // user text input that will be send to the chat
@@ -67,7 +72,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         /* u can and should check if this string exists first but without this string
         *  this activity cannot function so we roll the dice ... (BE PERFECT LIKE HOLY PROGRAMMERS IN DOOM) */
-        mChatRoomID = intent.getStringExtra("chatID"); // get the chatID
+        mChatRoomID = intent.getStringExtra(CHAT_ROOM_ID); // get the chatID
 
         /* -----------------------------------------------------------------------------------------
         * --------------------------------- RecycleView INIT START ---------------------------------
@@ -140,6 +145,12 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         mHandler.post(PollChatMsg);// Start the initial runnable task by posting through the handler
     }
 
+    public static Intent newIntent(Context packageContext,String chatID) {
+        Intent i = new Intent(packageContext, ChatRoomMessageActivity.class);
+        i.putExtra(CHAT_ROOM_ID,chatID);
+        return i;
+    }
+
     /**
      * We need to remember that we could have pending code execution so we need
      * remove all the scheduled executions of a runnable
@@ -158,9 +169,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         spreferencesEditor.clear();
         spreferencesEditor.commit();
         // redirect the user to the login activity
-        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        startActivity(LoginActivity.newIntent(ChatRoomMessageActivity.this));
     }
 
     /**
