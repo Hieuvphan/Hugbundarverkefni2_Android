@@ -120,7 +120,24 @@ public class Chatroom {
         return lastMessageReceived;
     }
 
+    public String getUserRelation() {
+        return userRelation;
+    }
+
     public List<String> getTags() {
         return tags;
+    }
+
+    public String getTagString(){
+        if(tags.isEmpty()){
+            return "";
+        }
+        String tagString = "";
+        for(String tag : tags){
+            tagString += tag+", ";
+        }
+        tagString = tagString.substring(0, tagString.length() -2);
+
+        return tagString;
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.ChatroomItemAdapter;
+import hi.hugbo.verywowchat.Adapters.SearchChatroomItemAdapter;
 import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.controllers.R;
@@ -32,7 +31,7 @@ public class SearchChatroomListFragment extends Fragment {
     }
 
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
-    private ChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
+    private SearchChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     public static SearchChatroomListFragment newInstance(){
         SearchChatroomListFragment fragment = new SearchChatroomListFragment();
@@ -65,7 +64,7 @@ public class SearchChatroomListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // define and assign adapter for recycle view
-        mChatroomAdapter = new ChatroomItemAdapter(mChatrooms);
+        mChatroomAdapter = new SearchChatroomItemAdapter(mChatrooms);
         recyclerView.setAdapter(mChatroomAdapter);
 
         /* -----------------------------------------------------------------------------------------

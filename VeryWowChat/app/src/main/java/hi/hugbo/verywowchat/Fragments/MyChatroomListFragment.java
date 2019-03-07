@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.ChatroomItemAdapter;
+import hi.hugbo.verywowchat.Adapters.MyChatroomItemAdapter;
 import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.controllers.R;
@@ -28,7 +28,7 @@ public class MyChatroomListFragment extends Fragment {
     }
 
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
-    private ChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
+    private MyChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     public static MyChatroomListFragment newInstance(){
         MyChatroomListFragment fragment = new MyChatroomListFragment();
@@ -69,7 +69,7 @@ public class MyChatroomListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // define and assign adapter for recycle view
-        mChatroomAdapter = new ChatroomItemAdapter(chatrooms);
+        mChatroomAdapter = new MyChatroomItemAdapter(chatrooms);
         recyclerView.setAdapter(mChatroomAdapter);
 
         /* -----------------------------------------------------------------------------------------

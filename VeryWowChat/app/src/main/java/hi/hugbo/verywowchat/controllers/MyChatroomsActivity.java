@@ -1,22 +1,17 @@
 package hi.hugbo.verywowchat.controllers;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.ChatMessageAdapter;
-import hi.hugbo.verywowchat.Adapters.ChatroomItemAdapter;
+import hi.hugbo.verywowchat.Adapters.MyChatroomItemAdapter;
 import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.entities.Chatroom;
@@ -36,22 +31,17 @@ import hi.hugbo.verywowchat.entities.Chatroom;
 public class MyChatroomsActivity extends AppCompatActivity {
 
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
-    private ChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
+    private MyChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
+    List<Chatroom> mChatrooms = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.chatroom_list);
-
+    private void loadChatrooms(){
         SharedPreferences userInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
         final String token = userInfo.getString("token","n/a");
 
-        List<Chatroom> chatrooms = new ArrayList<>();
-
         try {
-            chatrooms = chatroomService.getMyChatrooms(token);
+            mChatrooms = chatroomService.getMyChatrooms(token);
 
-            for(Chatroom chatroom : chatrooms) {
+            for(Chatroom chatroom : mChatrooms) {
                 Log.d("getMyChatrooms", chatroom.toString());
             }
 
@@ -60,6 +50,22 @@ public class MyChatroomsActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //reload the chatrooms
+        loadChatrooms();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.chatroom_list);
+
+        // load the chatrroms
+        loadChatrooms();
 
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT START ---------------------------------
@@ -73,7 +79,7 @@ public class MyChatroomsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // define and assign adapter for recycle view
-        mChatroomAdapter = new ChatroomItemAdapter(chatrooms);
+        mChatroomAdapter = new MyChatroomItemAdapter(mChatrooms);
         recyclerView.setAdapter(mChatroomAdapter);
 
         /* -----------------------------------------------------------------------------------------
