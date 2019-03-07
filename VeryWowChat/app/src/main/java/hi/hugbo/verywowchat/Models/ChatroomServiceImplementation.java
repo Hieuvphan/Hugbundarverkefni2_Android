@@ -18,7 +18,6 @@ import hi.hugbo.verywowchat.entities.Chatroom;
 
 public class ChatroomServiceImplementation implements ChatroomService {
 
-    // pæling: láta token vera instance variable?
 
     private API_caller api_caller = API_caller.getInstance();
 
@@ -44,6 +43,48 @@ public class ChatroomServiceImplementation implements ChatroomService {
         body.put("tags", tagArray);
 
         return body;
+    }
+
+    public Chatroom getChatroom(String token, String chatroomName) throws Exception{
+        String path = "auth/chatroom/"+chatroomName;
+        String method = "GET";
+
+        try{
+            Map<String, String> result = api_caller.HttpRequest(path, method, token, null);
+
+            int status = Integer.parseInt(result.get("status"));
+            JSONObject resp_body = new JSONObject(result.get("response"));
+
+            if(status == 200){
+                JSONArray jTags = resp_body.getJSONArray("tags");
+                List<String> tagList = new ArrayList<String>();
+                for(int i = 0; i < jTags.length(); i++){
+                    tagList.add(jTags.getString(i));
+                }
+
+                Chatroom newChatroom = new Chatroom(
+                        resp_body.getString("chatroomName"),
+                        resp_body.getString("displayName"),
+                        resp_body.getString("description"),
+                        resp_body.getBoolean("listed"),
+                        resp_body.getBoolean("invited_only"),
+                        resp_body.getString("ownerUsername"),
+                        resp_body.getLong("created"),
+                        resp_body.getLong("lastMessageReceived"),
+                        tagList,
+                        resp_body.getString("userRelation")
+                );
+                return newChatroom;
+            }
+            if(status >= 400 && status < 500){
+                throw new Exception(resp_body.getString("error"));
+            }
+
+            throw new Exception("Something unexpected happened");
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     /**
@@ -268,6 +309,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
     }
 
     public void inviteMemberToChatroom(String token, String chatroomName, String userName) throws Exception{
+        Log.d("invitee", "invitee: "+userName);
         String path = "auth/chatroom/"+chatroomName+"/invite/"+userName;
         String method = "POST";
         Map<String, Object> body = new ArrayMap<>();
@@ -276,6 +318,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
             Map<String, String> result = api_caller.HttpRequest(path, method, token, body);
 
             int status = Integer.parseInt(result.get("status"));
+            Log.d("invitee", "status: "+status);
 
             if(status == 204){
                 return; // success
@@ -319,12 +362,55 @@ public class ChatroomServiceImplementation implements ChatroomService {
         }
     }
 
-    public void leaveChatroom(String token, String userName) throws Exception{
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void leaveChatroom(String token, String chatroomName) throws Exception{
+        String path = "auth/chatroom/"+chatroomName+"/leave/";
+        String method = "DELETE";
+
+        try{
+            Map<String, String> result = api_caller.HttpRequest(path, method, token, null);
+
+            int status = Integer.parseInt(result.get("status"));
+
+            if(status == 204){
+                return; // success
+            }
+            if(status >= 400 && status < 500){
+                JSONObject resp_body = new JSONObject(result.get("response")); // only need body if error
+                throw new Exception(resp_body.getString("error"));
+            }
+
+            throw new Exception("Something unexpected happened");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     public void joinChatroom(String token, String chatroomName) throws Exception{
-        throw new UnsupportedOperationException("Not implemented yet");
+        String path = "auth/chatroom/"+chatroomName+"/join/";
+        String method = "POST";
+        Map<String, Object> body = new ArrayMap<>();
+
+        try{
+            Map<String, String> result = api_caller.HttpRequest(path, method, token, body);
+
+            int status = Integer.parseInt(result.get("status"));
+
+            if(status == 204){
+                return; // success
+            }
+            if(status >= 400 && status < 500){
+                JSONObject resp_body = new JSONObject(result.get("response")); // only need body if error
+                throw new Exception(resp_body.getString("error"));
+            }
+
+            throw new Exception("Something unexpected happened");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     public void acceptAdminInvite(String token, String chatroomName) throws Exception{

@@ -14,12 +14,15 @@
     <string name="register_button_submit">Register</string>
     <string name="chatroom_name">Chatroom Name</string>
     <string name="chatroom_create">Create Chatroom</string>
+    <string name="chatroom_update">Update Chatroom</string>
     <string name="chatroom_display_name">Display Name</string>
     <string name="chatroom_description">Description</string>
     <string name="chatroom_tags">Tags</string>
     <string name="chatroom_listed">Listed</string>
     <string name="chatroom_invited_only">Private</string>
     <string name="chatroom_invite">Chatroom Invite</string>
+    <string name="chatroom_admin_invite">Administrator Invite</string>
+    <string name="invite_admin_member">Invite Administrator</string>
     <string name="username">Username</string>
     <string name="chatroom_Actvity_SendButton_content">SEND</string>
     <string name="chatroomMSG_Actvity_text">Enter Message</string>
@@ -37,5 +40,8 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="join_chatroom">Join Chatroom</string>
+    <string name="leave_chatroom">Leave Chatroom</string>
+    <string name="invite_member">Invite Member</string>
 
 </resources>

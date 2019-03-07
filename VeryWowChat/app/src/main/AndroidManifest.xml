@@ -35,6 +35,10 @@
         <activity android:name=".CreateChatroomActivity" />
         <activity android:name=".ChatroomInviteActivity" />
         <activity android:name=".MyChatroomsActivity" />
+        <activity android:name=".NotMemberManageChatroomActivity" />
+        <activity android:name=".OwnerManageChatroomActivity" />
+        <activity android:name=".AdminManageChatroomActivity" />
+        <activity android:name=".MemberManageChatroomActivity" />
     </application>
 
 </manifest>

@@ -1,20 +1,22 @@
 package hi.hugbo.verywowchat.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import java.util.List;
 
+import hi.hugbo.verywowchat.controllers.AdminManageChatroomActivity;
 import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
-import hi.hugbo.verywowchat.controllers.MyChatroomsActivity;
+import hi.hugbo.verywowchat.controllers.MemberManageChatroomActivity;
+import hi.hugbo.verywowchat.controllers.OwnerManageChatroomActivity;
 import hi.hugbo.verywowchat.controllers.R;
-import hi.hugbo.verywowchat.entities.ChatMessage;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
 /**
@@ -31,14 +33,14 @@ import hi.hugbo.verywowchat.entities.Chatroom;
  *   - onBindViewHolder to set the view attributes based on the data
  *   - getItemCount to determine the number of items
  * (Note u may be overwriting different variants of this methods based on how you extend the Adapter class)  */
-public class ChatroomItemAdapter extends RecyclerView.Adapter {
+public class MyChatroomItemAdapter extends RecyclerView.Adapter {
 
     /** Holds over all the chat messages we display on the screen */
     private List<Chatroom> mChatrooms;
 
     /** Just reminder for myself : You can pass the Context from the Activity to this constructor
      *  then u can implement listeners and other things on the inflated view widgets.*/
-    public ChatroomItemAdapter(List<Chatroom> chatrooms) {
+    public MyChatroomItemAdapter(List<Chatroom> chatrooms) {
         mChatrooms = chatrooms;
     }
 
@@ -50,7 +52,7 @@ public class ChatroomItemAdapter extends RecyclerView.Adapter {
      */
     @Override
     public ChatroomItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatroom_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_chatroom_list_item, parent, false);
         return new ChatroomItemHolder(view);
     }
 
@@ -80,27 +82,65 @@ public class ChatroomItemAdapter extends RecyclerView.Adapter {
 
     private class ChatroomItemHolder extends RecyclerView.ViewHolder{
 
-        private Button BtnManageChatroom;
+        private Button btn_open_chatroom;
+        private ImageButton btn_manage_chatroom;
 
         public ChatroomItemHolder(View itemView) {
             super(itemView);
-            BtnManageChatroom = itemView.findViewById(R.id.btn_manage_chatroom);
+            btn_open_chatroom = itemView.findViewById(R.id.btn_open_chatroom);
+            btn_manage_chatroom = itemView.findViewById(R.id.btn_manage_chatroom);
         }
 
         public void bind(final Chatroom chatroom) {
             // set the text
-            BtnManageChatroom.setText(chatroom.getDisplayName()+"("+chatroom.getChatroomName()+")");
+            btn_open_chatroom.setText(chatroom.getUserRelation()+": "+chatroom.getDisplayName()+"("+chatroom.getChatroomName()+")");
 
-            BtnManageChatroom.setOnClickListener(new View.OnClickListener() {
+            btn_open_chatroom.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                Context context = v.getContext();
+                context.startActivity(ChatRoomMessageActivity.newIntent(
+                    context.getApplicationContext(),
+                    chatroom.getChatroomName()
+                ));
+                }
+            });
+
+            btn_manage_chatroom.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    context.startActivity(ChatRoomMessageActivity.newIntent(
-                        context.getApplicationContext(),
-                        chatroom.getChatroomName()
-                    ));
+
+                    String r = chatroom.getUserRelation();
+
+                    Log.d("relation", "relation: "+r);
+
+                    switch(r){
+                        case "OWNER":
+                            Log.d("relation", "case: "+"OWNER");
+                            context.startActivity(OwnerManageChatroomActivity.newIntent(
+                                context.getApplicationContext(),
+                                chatroom.getChatroomName()
+                            ));
+                            break;
+                        case "ADMIN":
+                            Log.d("relation", "case: "+"ADMIN");
+                            context.startActivity(AdminManageChatroomActivity.newIntent(
+                                context.getApplicationContext(),
+                                chatroom.getChatroomName()
+                            ));
+                            break;
+                        default: //case "MEMBER":
+                            Log.d("relation", "case: "+"DEFAULT");
+                            context.startActivity(MemberManageChatroomActivity.newIntent(
+                                context.getApplicationContext(),
+                                chatroom.getChatroomName()
+                            ));
+                            break;
+                    }
                 }
             });
+
         }
     }
 }
