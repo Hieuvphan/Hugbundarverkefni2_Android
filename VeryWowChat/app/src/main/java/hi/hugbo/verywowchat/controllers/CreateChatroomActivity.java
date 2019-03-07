@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.controllers;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,10 @@ public class CreateChatroomActivity extends AppCompatActivity {
         btn_create_chatroom = findViewById(R.id.btn_create_chatroom);
         edit_chatroom_tags = findViewById(R.id.edit_chatroom_tags);
 
+
+        SharedPreferences userInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
+        final String token = userInfo.getString("token","n/a");
+
         btn_create_chatroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +59,7 @@ public class CreateChatroomActivity extends AppCompatActivity {
                 List<String> tags = Arrays.asList(tagInput.split(","));
 
                 try{
-                    Chatroom c = chatroomService.createChatroom(chatroomName, displayName, description, listed, invitedOnly, tags);
+                    Chatroom c = chatroomService.createChatroom(token, chatroomName, displayName, description, listed, invitedOnly, tags);
 
                     Toast.makeText(getApplicationContext(),"Chat created successfully",Toast.LENGTH_LONG).show();
                 } catch(Exception e) {

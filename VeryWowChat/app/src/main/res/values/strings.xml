@@ -22,14 +22,13 @@
     <string name="chatroom_invite">Chatroom Invite</string>
     <string name="username">Username</string>
     <string name="chatroom_Actvity_SendButton_content">SEND</string>
-
     <string name="chatroomMSG_Actvity_text">Enter Message</string>
     <string name="chatroomMSG_Actvity_sendBTN">Submit Text Message</string>
+    <string name="my_chatrooms">My Chatrooms</string>
     <string name="title_activity_home_page">HomePageActivity</string>
     <string name="tab_text_1">My Friends</string>
     <string name="tab_text_2">My Chats</string>
     <string name="tab_text_3">Public Chats</string>
-
     <string name="btnlogoutuser_text">Log Out</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_user_home_page">UserHomePageActivity</string>
@@ -38,7 +37,5 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-
->>>>>>> e0fbbb29ceaddd6e26d2b0ad74cec163ddd3a3ff
 
 </resources>

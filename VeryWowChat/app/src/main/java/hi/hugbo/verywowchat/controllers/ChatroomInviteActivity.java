@@ -1,6 +1,7 @@
 package hi.hugbo.verywowchat.controllers;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -37,13 +38,16 @@ public class ChatroomInviteActivity extends AppCompatActivity {
         edit_chatroom_invitee = findViewById(R.id.edit_chatroom_invitee);
         btn_chatroom_invite = findViewById(R.id.btn_chatroom_invite);
 
+        SharedPreferences userInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
+        final String token = userInfo.getString("token","n/a");
+
         btn_chatroom_invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String inviteeName = edit_chatroom_invitee.getText().toString();
 
                 try{
-                    chatroomService.inviteMemberToChatroom(mChatroomName, inviteeName);
+                    chatroomService.inviteMemberToChatroom(token, mChatroomName, inviteeName);
 
                     Toast.makeText(getApplicationContext(),"Invite successfully sent",Toast.LENGTH_LONG).show();
                 } catch(Exception e) {
