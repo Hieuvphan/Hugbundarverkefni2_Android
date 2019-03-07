@@ -1,10 +1,12 @@
 package hi.hugbo.verywowchat.Adapters;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -59,11 +61,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
         Boolean sentByUs = message.getMyMessage();
 
         // if the message is sent to the chat by us and its a text message
-        if (sentByUs && message.getMessage() != null) {
+        if (sentByUs && message.getMessage() != null && message.getBitmap() == null) {
             return SENT_BY_US;
         }
         // if the message is not sent to the chat by us and its a text message
-        else if(!sentByUs && message.getMessage() != null){
+        else if(!sentByUs && message.getMessage() != null && message.getBitmap() == null){
             return SENT_BY_THEM;
         }
         // if the message is sent to the chat by us and its a image
@@ -89,6 +91,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatbouble_send, parent, false);
             return new SentMessageHolder(view);
         }
+        // if we send the img
+        else if(viewType == SENT_BY_US_IMAGE){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatbouble_send_img,parent,false);
+            return new SentImageHolder(view);
+        }
+        else if(viewType == SENT_BY_THEM_IMAGE) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatbouble_received_img,parent,false);
+            return new ReceiveImageHolder(view);
+        }
         else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatbouble_received, parent, false);
             return new ReceivedMessageHolder(view);
@@ -112,6 +123,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
                 break;
             case SENT_BY_THEM:
                 ((ReceivedMessageHolder) viewHolder).bind(message);
+                break;
+            case  SENT_BY_US_IMAGE:
+                ((SentImageHolder) viewHolder).bind(message);
+                break;
+            case  SENT_BY_THEM_IMAGE:
+                ((ReceiveImageHolder) viewHolder).bind(message);
+                break;
         }
     }
 
@@ -152,6 +170,39 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
             textMessage = itemView.findViewById(R.id.text_message_body);
         }
         public void bind(ChatMessage message) {
+            textMessage.setText(message.getMessage());
+        }
+    }
+
+    private class SentImageHolder extends RecyclerView.ViewHolder{
+
+        private TextView textMessage;
+        private ImageView ImgView;
+
+        public SentImageHolder(View itemView) {
+            super(itemView);
+            textMessage = itemView.findViewById(R.id.text_message_body);
+            ImgView = itemView.findViewById(R.id.img_view);
+        }
+
+        public void bind(ChatMessage message) {
+            ImgView.setImageBitmap(message.getBitmap());
+            textMessage.setText(message.getMessage());
+        }
+    }
+    private class ReceiveImageHolder extends RecyclerView.ViewHolder{
+
+        private TextView textMessage;
+        private ImageView ImgView;
+
+        public ReceiveImageHolder(View itemView) {
+            super(itemView);
+            textMessage = itemView.findViewById(R.id.text_message_body);
+            ImgView = itemView.findViewById(R.id.img_view);
+        }
+
+        public void bind(ChatMessage message) {
+            ImgView.setImageBitmap(message.getBitmap());
             textMessage.setText(message.getMessage());
         }
     }
