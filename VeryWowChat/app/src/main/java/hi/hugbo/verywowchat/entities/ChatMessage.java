@@ -34,10 +34,10 @@ public class ChatMessage {
         }
     }
 
-    public ChatMessage(String username,String displayName,Bitmap img,int timeStamp, String OwnerOfThisAcc) {
+    public ChatMessage(String username,String displayName,String message,Bitmap img,int timeStamp, String OwnerOfThisAcc) {
         Username = username;
         DisplayName = displayName;
-        Message=null;
+        Message=message;
         TimeStamp = timeStamp;
         Bitmap = img;
         if(username.equals(OwnerOfThisAcc)){
@@ -48,6 +48,9 @@ public class ChatMessage {
         }
     }
 
+    public void setBitmap(Bitmap img) {
+        Bitmap = img;
+    }
     public String getMessage() {
         return Message;
     }

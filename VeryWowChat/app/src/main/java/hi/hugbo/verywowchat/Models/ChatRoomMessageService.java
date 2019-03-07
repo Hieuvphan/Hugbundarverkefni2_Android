@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.Models;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.gson.JsonObject;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import hi.hugbo.verywowchat.entities.ChatMessage;
+import hi.hugbo.verywowchat.entities.ResourceContent;
 
 /**
  * @Author Róman
@@ -154,14 +156,42 @@ public class ChatRoomMessageService {
                 }
 
                 for(int i = 0; i < resultJson.length(); i++){
+                    ChatMessage newMsg;
                     JSONObject currMsg = resultJson.getJSONObject(i);
                     int timestamp = currMsg.getInt("timestamp");
                     // check if we already have this message displayed in the chat if so we skip mapping
                     if(lastTimeStamp != -1  && timestamp <= lastTimeStamp) {
                         continue;
                     }
+                    // check if the message contins resources such as pictures or files
+                    else if(!currMsg.isNull("resources")){
+                       JSONArray resources = currMsg.getJSONArray("resources"); // fetch the resources
+                       for (int j = 0; j < resources.length(); j++){
+                           String currRes = resources.getString(i);
+                           // fetch the Resource
+                           ResourceContent resourceContent = api_caller.HttpRequestGetResource("auth/chatroom/"+chatId+"/message/"+currMsg.getString("id")+"/"+currRes,token);
+                           // create a new message as assign it all the basic stuff
+                           newMsg = new ChatMessage(
+                                   currMsg.getString("senderUsername"),
+                                   currMsg.getString("senderDisplayName"),
+                                   currMsg.getString("message"),
+                                   timestamp,
+                                   LoggeInUser
+                           );
+                           // since we know that we have content we need to check what type of content it is so we can handle it correctly
+
+                           // if the resource recived we is a picture we can display it.
+                           if(resourceContent.getFile_type().equals("image/jpeg")) {
+                               newMsg.setBitmap(resourceContent.ConvertToBitmap());
+                           }
+
+                           // add the new message to the chat logs
+                           newChatMessages.add(newMsg);
+                       }
+                    }
+                    // otherwise its just a plain text message
                     else {
-                        ChatMessage newMsg = new ChatMessage(
+                        newMsg = new ChatMessage(
                                 currMsg.getString("senderUsername"),
                                 currMsg.getString("senderDisplayName"),
                                 currMsg.getString("message"),
@@ -179,5 +209,4 @@ public class ChatRoomMessageService {
         }
         return newChatMessages;
     }
-
 }
