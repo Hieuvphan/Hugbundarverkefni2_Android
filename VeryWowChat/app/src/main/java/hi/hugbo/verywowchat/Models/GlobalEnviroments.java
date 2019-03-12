@@ -15,9 +15,7 @@ public class GlobalEnviroments {
     public static GlobalEnviroments getInstance() { return ourInstance; }
     private GlobalEnviroments() { }
 
-
-    private final String BASEURL = "http://130.208.151.122:9090/";
-
+    private final String BASEURL = "http://130.208.151.4:9090/";
 
     public String getAPI_BASEURL() {
         return BASEURL;

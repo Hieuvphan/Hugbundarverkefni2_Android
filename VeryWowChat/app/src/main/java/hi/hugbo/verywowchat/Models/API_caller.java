@@ -1,18 +1,19 @@
 package hi.hugbo.verywowchat.Models;
 
-
-import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.controllers.R;
+import hi.hugbo.verywowchat.entities.ResourceContent;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -116,13 +117,13 @@ public class API_caller {
 
         // add the status code to the response
         resp.put("status", String.valueOf(response.code()));
+        resp.put("content-type",response.header("Content-Type")); // need this later for checking for images
 
         // if the status code is 204 then we know there is no content
         if(response.code() == 204) {
             resp.put("response",null);
             return resp;
         }
-
         // if the response is not 204 then there is some kind of body that we need to receive
         JSONObject WrappedData = new JSONObject(response.body().string());
 
@@ -150,4 +151,32 @@ public class API_caller {
         return resp;
     }
 
+    /**
+     * <pre>
+     *     Usage : HttpRequest(urlEndPoint,token)
+     *       For : urlEndPoint is a string (Cannot be empty/null)
+     *             token is a string (Cannot be empty/null)
+     *     After : Send a HTTP GET Request to urlEndPoint with the token and
+     *             returns a ResourceContent object
+     * </pre>
+     * @param urlEndPoint endpoint on top of baseurl
+     * @param token Aut token ( CANNOT BE NULL)
+     * @return ResourceContent
+     */
+    public ResourceContent HttpRequestGetResource(String urlEndPoint, String token) throws IOException {
+        /* Create the HTTP Request
+         *  We always send the empty token and body its up to the server to decide if it
+         *  wants to process those things */
+        Request request = new Request.Builder()
+                .url(g_envs.getAPI_BASEURL()+urlEndPoint)
+                .method("GET",null)
+                .header("Authorization", token)
+                .addHeader("content-type", "application/json; charset=utf-8")
+                .build();
+
+        // Create a Call object and dispatch the network request synchronously
+        Response response = client.newCall(request).execute();
+
+        return  new ResourceContent(response.body().byteStream(),response.header("Content-Type"));
+    }
 }

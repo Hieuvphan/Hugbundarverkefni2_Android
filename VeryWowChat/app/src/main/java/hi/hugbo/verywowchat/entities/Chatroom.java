@@ -24,6 +24,7 @@ public class Chatroom {
     Long created;
     Long lastMessageReceived;
     List<String> tags;
+    String userRelation;
 
 
     /**
@@ -47,7 +48,8 @@ public class Chatroom {
             String ownerUsername,
             Long created,
             Long lastMessageReceived,
-            List<String> tags
+            List<String> tags,
+            String userRelation
     ) {
         this.chatroomName = chatroomName;
         this.displayName = displayName;
@@ -58,6 +60,7 @@ public class Chatroom {
         this.created = created;
         this.lastMessageReceived = lastMessageReceived;
         this.tags = tags;
+        this.userRelation = userRelation;
     }
 
     @Override
@@ -77,7 +80,8 @@ public class Chatroom {
                 "\n    ownerUsername: " + this.ownerUsername +
                 "\n    created: " + this.created +
                 "\n    lastMessageReceived: " + this.lastMessageReceived +
-                "\n    tags: [" +tagItems +
+                "\n    userRelation: " + this.userRelation +
+                "\n    tags: [" + tagItems +
                 "\n    ]" +
                 "\n}";
     }
@@ -116,7 +120,24 @@ public class Chatroom {
         return lastMessageReceived;
     }
 
+    public String getUserRelation() {
+        return userRelation;
+    }
+
     public List<String> getTags() {
         return tags;
+    }
+
+    public String getTagString(){
+        if(tags.isEmpty()){
+            return "";
+        }
+        String tagString = "";
+        for(String tag : tags){
+            tagString += tag+", ";
+        }
+        tagString = tagString.substring(0, tagString.length() -2);
+
+        return tagString;
     }
 }
