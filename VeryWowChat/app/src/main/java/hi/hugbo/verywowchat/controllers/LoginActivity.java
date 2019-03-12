@@ -54,8 +54,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("dh", "LoginActivity: onCreate()");
         super.onCreate(savedInstanceState);
-        // ask teacher if this is a good solution ?
+
+        // TODO: ask teacher if this is a good solution.
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         // -----------------------------------------------------------------------------------------
@@ -81,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         // No token exists so Login form will be displayed
         setContentView(R.layout.activity_main);
 
-        // get a referance of the widgets
+        // Get references to widgets.
         mLogginUserName = findViewById(R.id.edit_login_username);
         mLogginPassword = findViewById(R.id.edit_login_password);
 
@@ -109,23 +111,52 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                final String username = mLogginUserName.getText().toString();
+                final String password = mLogginPassword.getText().toString();
+
                 // Create a Map from the data provided by the user
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("password", mLogginPassword.getText().toString());
-                params.put("userName", mLogginUserName.getText().toString());
+                params.put("password", password);
+                params.put("userName", username);
 
                 /* Send the HTTP request for login through the api_caller and then map the object
                 *  correctly based of the status code */
                 try {
                     // Make the HTTP Request
                     Map<String, String> result = api_caller.HttpRequest("login","POST","",params);
+
+
+
+
                     // Parse the HTTP status code
                     int status = Integer.parseInt(result.get("status"));
+
                     // Parse the Json String into a JSON array
                     JSONArray resp_body = new JSONArray(result.get("response"));
 
-                    // HTTP Request was a success
+                    if (status >= 400 && status < 500) {
+                        // HTTP Request was a failure
+
+
+                        /* Since its an error we know we receive a array of errors which we have to
+                         *  map into POJOS and then display them.
+                         *  (NOTE : You do not have to map them to POJOS in my opinion it just adds more work
+                         *          and drains phone resources u can solve everything with JSONArray and JSONObject classes)
+                         */
+
+                        // Create a List of errors
+                        List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
+
+                        // Display a pop-up error message to the user with the errors received from the API
+                        Toast.makeText(getApplicationContext(), errorLogger.ErrorsToString(errors), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+
+
                     if(status >= 200 && status < 300 ){
+                        // HTTP Request was a success
+
                         /* Since its a successful request we know we should receive user information
                         *  so we store this information in the shared preferences so that next time
                         *  the use opens the app he will already be logged in */
@@ -137,18 +168,6 @@ public class LoginActivity extends AppCompatActivity {
                         // Start the Homepage Activity for the user
                         startActivity(HomePageActivity.newIntent(LoginActivity.this));
                         return;
-                    }
-
-                    // HTTP Request was a failure
-                    if(status >= 400 && status < 500){
-                        /* Since its an error we know we receive a array of errors which we have to
-                        *  map into POJOS and then display them.
-                        *  (NOTE : You do not have to map them to POJOS in my opinion it just adds more work
-                        *          and drains phone resources u can solve everything with JSONArray and JSONObject classes) */
-                        // Create a List of errors
-                        List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
-                        // Display a pop-up error message to the user with the errors received from the API
-                        Toast.makeText(getApplicationContext(),errorLogger.ErrorsToString(errors),Toast.LENGTH_LONG).show();
                     }
                 } catch (IOException e) {
                     Log.e("LoginError","IOException in Login \n message :"+e);

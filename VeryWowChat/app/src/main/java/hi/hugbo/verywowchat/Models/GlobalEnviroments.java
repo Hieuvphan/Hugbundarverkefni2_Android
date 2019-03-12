@@ -15,7 +15,15 @@ public class GlobalEnviroments {
     public static GlobalEnviroments getInstance() { return ourInstance; }
     private GlobalEnviroments() { }
 
-    private final String BASEURL = "http://130.208.151.4:9090/";
+    // TODO: this is a nice hack
+    // TODO: Remember to change this!
+    // TODO: If VeryWowChat server is not running at this HOST, then a corresponding error
+    // should be brought up to the user, e.g. `Cannot connect to server.`.
+    private final String HOST = "130.208.151.153"; // "130.208.151.152"
+    private final int PORT = 9090;
+
+
+    private final String BASEURL = "http:/" + HOST + ":" + PORT + "/";
 
     public String getAPI_BASEURL() {
         return BASEURL;
