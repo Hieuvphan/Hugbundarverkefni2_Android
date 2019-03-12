@@ -85,10 +85,11 @@ public class LoginActivity extends AppCompatActivity {
         mLogginUserName = findViewById(R.id.edit_login_username);
         mLogginPassword = findViewById(R.id.edit_login_password);
 
-        /* Since phones work way differently, its good practice like with buttons to assign
-        *  a reference to them and assign a listener right away.
-        *  We add a listener to the button whenever its clicked it will  display a Registation form
-        *  */
+        /*
+         *Since phones work way differently, its good practice like with buttons to assign
+         *a reference to them and assign a listener right away.
+         *We add a listener to the button whenever its clicked it will  display a Registation form
+         **/
         mbtnRegister = findViewById(R.id.btn_register);
         mbtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,10 +98,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /* Get a referance of the button and assign a listner to it so when ever the button is clicked
-        *  it will obtain the information from the form and pass it down to the api_caller. */
+        /*
+         *Get a referance of the button and assign a listner to it so when ever the button is clicked
+         *it will obtain the information from the form and pass it down to the api_caller.
+         **/
         mbtnLoggin = findViewById(R.id.btn_login);
         mbtnLoggin.setOnClickListener(new View.OnClickListener() {
+            /*
+             * !!!PLEASE NOTE!!!
+             *The reason why this onClick function has all the code in it and not delegated
+             *to a service f.x is that most of the functionality f.x like Showing Toast, storing user info in sharedpreferances
+             *and starting new activity happens in a Activity the only thing that can be delegated to the service is
+             *the api call then it would return something and you have to implement somekind of control flow based of the data received
+             **/
             @Override
             public void onClick(View v) {
                 // if the user has not filled the form then we dont make the HTTP Request since it will result in an error
@@ -114,8 +124,10 @@ public class LoginActivity extends AppCompatActivity {
                 params.put("password", mLogginPassword.getText().toString());
                 params.put("userName", mLogginUserName.getText().toString());
 
-                /* Send the HTTP request for login through the api_caller and then map the object
-                *  correctly based of the status code */
+                /*
+                 *Send the HTTP request for login through the api_caller and then map the object
+                 *correctly based of the status code
+                 **/
                 try {
                     // Make the HTTP Request
                     Map<String, String> result = api_caller.HttpRequest("login","POST","",params);
@@ -126,9 +138,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     // HTTP Request was a success
                     if(status >= 200 && status < 300 ){
-                        /* Since its a successful request we know we should receive user information
-                        *  so we store this information in the shared preferences so that next time
-                        *  the use opens the app he will already be logged in */
+                        /*
+                         *Since its a successful request we know we should receive user information
+                         *so we store this information in the shared preferences so that next time
+                         *the use opens the app he will already be logged in
+                         **/
                         SharedPreferences.Editor editor = UserInfo.edit();
                         editor.putString("username",resp_body.getJSONObject(0).get("username").toString());
                         editor.putString("displayname",resp_body.getJSONObject(0).get("displayname").toString());
@@ -141,10 +155,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     // HTTP Request was a failure
                     if(status >= 400 && status < 500){
-                        /* Since its an error we know we receive a array of errors which we have to
-                        *  map into POJOS and then display them.
-                        *  (NOTE : You do not have to map them to POJOS in my opinion it just adds more work
-                        *          and drains phone resources u can solve everything with JSONArray and JSONObject classes) */
+                        /*
+                         *Since its an error we know we receive a array of errors which we have to
+                         *map into POJOS and then display them.
+                         *(NOTE : You do not have to map them to POJOS in my opinion it just adds more work
+                         *        and drains phone resources u can solve everything with JSONArray and JSONObject classes)
+                         **/
                         // Create a List of errors
                         List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
                         // Display a pop-up error message to the user with the errors received from the API
