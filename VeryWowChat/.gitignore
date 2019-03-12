@@ -12,6 +12,7 @@
 /captures
 .externalNativeBuild
 
+<<<<<<< HEAD
 
 
 
@@ -245,5 +246,12 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/androidstudio
 
+=======
+#
+# https://stackoverflow.com/questions/28101020/git-status-is-showing-changes-not-staged-for-commit-for-files-listed-in-gitig
+#
+# git rm --cached mllib/pom.xml
+.idea
+>>>>>>> 2a492300932b57f1412daaca61da0ad0d10845c8
 
 
