@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
            MODE_WORLD_WRITEABLE : File creation mode: allow all other applications to have write access to the created file. */
         final SharedPreferences UserInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
 
-        // Check if the token exists in the storage if it does then we redirect the user to the HomeActivity
+        // Check if the token exists in the storage if it does then we redirect the user to the HomePageActivity
         if(UserInfo.contains("token")) {
             Intent inten = new Intent(getApplicationContext(),HomePageActivity.class);
             inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -18,6 +18,9 @@ import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
+/**
+ * This fragment is an independent component for viewing a chatroom
+ */
 public class ViewChatroomFragment extends Fragment {
 
     private TextView edit_chatroom_displayname;
@@ -50,18 +53,22 @@ public class ViewChatroomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_view_chatroom, container, false);
 
+        // fetch the widgets
         edit_chatroom_displayname = rootView.findViewById(R.id.edit_chatroom_displayname);
         edit_chatroom_description = rootView.findViewById(R.id.edit_chatroom_description);
         switch_listed = rootView.findViewById(R.id.switch_listed);
         switch_invited_only = rootView.findViewById(R.id.switch_invited_only);
         edit_chatroom_tags = rootView.findViewById(R.id.edit_chatroom_tags);
 
+        // fetch the user token
         final Context context = rootView.getContext();
         SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
         final String token = userInfo.getString("token","n/a");
 
+        // fetch the chatroom name
         mChatroomName = getArguments().getString(CHATROOM_NAME);
 
+        // fetch data and fill widgets
         Chatroom chatroom;
         try{
             chatroom = chatroomService.getChatroom(token, mChatroomName);

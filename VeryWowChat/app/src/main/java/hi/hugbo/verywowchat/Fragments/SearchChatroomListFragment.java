@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +23,24 @@ import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
+/**
+ * This component is responsible for chatroom searches
+ * Search for chatrooms the logged in user is not a member of
+ * refer to SearchChatroomItemAdapter to see how individual chatrooms are handled
+ */
 public class SearchChatroomListFragment extends Fragment {
 
     private final List<Chatroom> mChatrooms;
+    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private SearchChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     public SearchChatroomListFragment(){
         mChatrooms = new ArrayList<>();
     }
 
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
-    private SearchChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
+    // widgets
+    TextView editSearch;
+    ImageButton btn_chatroom_search;
 
     public static SearchChatroomListFragment newInstance(){
         SearchChatroomListFragment fragment = new SearchChatroomListFragment();
@@ -40,17 +49,24 @@ public class SearchChatroomListFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        // TODO: refresh list
+        Log.d("onresume", "onResume called");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chatroom_search, container, false);
+        // fetch context to access toasts and user preferenes
         final Context context = rootView.getContext();
-
-        final TextView editSearch = rootView.findViewById(R.id.edit_chatroom_search);
-
+        // fetch the search bar widget
+        editSearch = rootView.findViewById(R.id.edit_chatroom_search);
+        btn_chatroom_search = rootView.findViewById(R.id.btn_chatroom_search);
+        // user token stored in shared preferences
         SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
+        // JWT token for API authentication
         final String token = userInfo.getString("token","n/a");
-
-        ImageButton btn_chatroom_search = rootView.findViewById(R.id.btn_chatroom_search);
-
 
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT START ---------------------------------
@@ -71,7 +87,7 @@ public class SearchChatroomListFragment extends Fragment {
          * --------------------------------- RecycleView INIT END ----------------------------------
          * -----------------------------------------------------------------------------------------*/
 
-
+        // make button do search
         btn_chatroom_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +100,7 @@ public class SearchChatroomListFragment extends Fragment {
                 mChatrooms.removeAll(mChatrooms);
                 // fill with the new collection of chatrooms
                 mChatrooms.addAll(newChatrooms);
-
+                // make adapter refresh list
                 mChatroomAdapter.notifyDataSetChanged();
                 Toast.makeText(context.getApplicationContext(),"Chatrooms successfully fetched",Toast.LENGTH_LONG).show();
             } catch(Exception e) {

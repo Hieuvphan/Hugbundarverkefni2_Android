@@ -113,8 +113,6 @@ public class MyChatroomItemAdapter extends RecyclerView.Adapter {
 
                     String r = chatroom.getUserRelation();
 
-                    Log.d("relation", "relation: "+r);
-
                     switch(r){
                         case "OWNER":
                             Log.d("relation", "case: "+"OWNER");
