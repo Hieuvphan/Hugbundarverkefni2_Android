@@ -20,6 +20,9 @@ import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
+/**
+ * This fragment is an independent component for updating a chatroom
+ */
 public class UpdateChatroomFragment extends Fragment {
 
     private TextView edit_chatroom_displayname;
@@ -38,6 +41,11 @@ public class UpdateChatroomFragment extends Fragment {
     private static final String CHATROOM_NAME = "join_chatroom_name";
     private String mChatroomName;
 
+    /**
+     * Create an instance of UpdateChatroomFragment
+     * @param chatroomName the chatroom that user will attempt to update
+     * @return a new instance of UpdateChatroomFragment
+     */
     public static UpdateChatroomFragment newInstance(String chatroomName){
         UpdateChatroomFragment fragment = new UpdateChatroomFragment();
 
@@ -53,6 +61,7 @@ public class UpdateChatroomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_update_chatroom, container, false);
 
+        // fetch the widgets
         edit_chatroom_displayname = rootView.findViewById(R.id.edit_chatroom_displayname);
         edit_chatroom_description = rootView.findViewById(R.id.edit_chatroom_description);
         switch_listed = rootView.findViewById(R.id.switch_listed);
@@ -60,12 +69,15 @@ public class UpdateChatroomFragment extends Fragment {
         edit_chatroom_tags = rootView.findViewById(R.id.edit_chatroom_tags);
         btn_update_chatroom = rootView.findViewById(R.id.btn_update_chatroom );
 
+        // fetch the user token
         final Context context = rootView.getContext();
         SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
         final String token = userInfo.getString("token","n/a");
 
+        // fetch the chatroom name
         mChatroomName = getArguments().getString(CHATROOM_NAME);
 
+        // fetch data and fill widgets
         Chatroom chatroom;
         try{
             chatroom = chatroomService.getChatroom(token, mChatroomName);
@@ -81,6 +93,7 @@ public class UpdateChatroomFragment extends Fragment {
             e.printStackTrace();
         }
 
+        // when button is pressed, attempt to update the chatroom
         btn_update_chatroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

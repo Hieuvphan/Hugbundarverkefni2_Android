@@ -41,11 +41,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         // if the position is 1 then we display User Chat Fragment
         else if(position == 1) {
+            // list of chatrooms I am member/admin/owner of
             return MyChatroomListFragment.newInstance();
         }
         // else its we display the public chat fragment
         else {
-            //return PlaceholderFragment.newInstance(position + 1);
+            // search for chatrooms you are not a member of
             return SearchChatroomListFragment.newInstance();
         }
     }

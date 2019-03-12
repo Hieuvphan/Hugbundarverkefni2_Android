@@ -18,6 +18,9 @@ import java.util.List;
 
 import hi.hugbo.verywowchat.entities.Chatroom;
 
+/**
+ * this activity is responsible for creating new chatrooms
+ */
 public class CreateChatroomActivity extends AppCompatActivity {
 
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
@@ -35,6 +38,7 @@ public class CreateChatroomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chatroom);
 
+        // fetch the widgets
         edit_chatroom_name = findViewById(R.id.edit_chatroom_name);
         edit_chatroom_displayname = findViewById(R.id.edit_chatroom_displayname);
         edit_chatroom_description = findViewById(R.id.edit_chatroom_description);
@@ -43,13 +47,15 @@ public class CreateChatroomActivity extends AppCompatActivity {
         btn_create_chatroom = findViewById(R.id.btn_create_chatroom);
         edit_chatroom_tags = findViewById(R.id.edit_chatroom_tags);
 
-
+        // fetch the user token
         SharedPreferences userInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
         final String token = userInfo.getString("token","n/a");
 
+        // when the button is pressed, attempt to create a chatroom
         btn_create_chatroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // fetch values from widgets
                 String chatroomName = edit_chatroom_name.getText()+"";
                 String displayName = edit_chatroom_displayname.getText().toString();
                 String description= edit_chatroom_description.getText().toString();
