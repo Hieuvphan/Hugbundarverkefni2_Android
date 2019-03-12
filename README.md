@@ -15,5 +15,5 @@ and android emulator running apk lvl 28 or less is required.<br>
 
 follow these steps below to deploy a local version of the web app. <br>
 1. Set upp your android emulator running apk lvl 28 or less
-2. Clone this project on to your machone
+2. Clone this project on to your machine
 3. Open the project and run it on your emulator
