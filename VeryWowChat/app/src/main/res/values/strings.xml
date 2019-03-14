@@ -44,4 +44,14 @@
     <string name="leave_chatroom">Leave Chatroom</string>
     <string name="invite_member">Invite Member</string>
 
+    <string name="account_setting_header">Account Settings</string>
+    <string name="account_setting_display_label">Display Name</string>
+    <string name="account_setting_display_header">Change Display Name</string>
+    <string name="account_setting_password_header">Change Password</string>
+    <string name="account_setting_password_label">Password</string>
+    <string name="account_setting_password_repeat_label">Repeat Password</string>
+    <string name="account_setting_email_header">Change Email</string>
+    <string name="account_setting_email_labl">Email</string>
+    <string name="account_setting_save_buttun_label">Save Changes</string>
+    <string name="account_setting_delete_buttun_label">Delete My Account</string>
 </resources>

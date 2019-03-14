@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AccountSettingsActivity"
+            android:noHistory="true"></activity>
         <activity
             android:name=".HomePageActivity"
             android:theme="@style/AppTheme.NoActionBar" />

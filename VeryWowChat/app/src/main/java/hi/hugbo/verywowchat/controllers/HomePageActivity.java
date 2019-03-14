@@ -135,7 +135,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         // based on what Item the user choose we start the appropriate activity
         if (id == R.id.account_settings) {
-
+            startActivity(AccountSettingsActivity.newIntent(this));
         } else if (id == R.id.create_new_chat_room) {
             Intent intent = new Intent(this,CreateChatroomActivity.class);
             startActivity(intent);
