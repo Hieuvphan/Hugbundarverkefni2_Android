@@ -42,6 +42,8 @@ public class SearchChatroomListFragment extends Fragment {
     TextView editSearch;
     ImageButton btn_chatroom_search;
 
+    Context context;
+
     public static SearchChatroomListFragment newInstance(){
         SearchChatroomListFragment fragment = new SearchChatroomListFragment();
 
@@ -51,22 +53,19 @@ public class SearchChatroomListFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        // TODO: refresh list
-        Log.d("onresume", "onResume called");
+        if(editSearch.getText().toString().length() < 1){
+            fetchChatrooms();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chatroom_search, container, false);
         // fetch context to access toasts and user preferenes
-        final Context context = rootView.getContext();
+        context = rootView.getContext();
         // fetch the search bar widget
         editSearch = rootView.findViewById(R.id.edit_chatroom_search);
         btn_chatroom_search = rootView.findViewById(R.id.btn_chatroom_search);
-        // user token stored in shared preferences
-        SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
-        // JWT token for API authentication
-        final String token = userInfo.getString("token","n/a");
 
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT START ---------------------------------
@@ -91,26 +90,35 @@ public class SearchChatroomListFragment extends Fragment {
         btn_chatroom_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String searchTerm = editSearch.getText().toString();
-
-            try {
-                List<Chatroom> newChatrooms = chatroomService.chatroomSearch(token, searchTerm);
-
-                // empty the list
-                mChatrooms.removeAll(mChatrooms);
-                // fill with the new collection of chatrooms
-                mChatrooms.addAll(newChatrooms);
-                // make adapter refresh list
-                mChatroomAdapter.notifyDataSetChanged();
-                Toast.makeText(context.getApplicationContext(),"Chatrooms successfully fetched",Toast.LENGTH_LONG).show();
-            } catch(Exception e) {
-                Toast.makeText(context.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
+                fetchChatrooms();
             }
         });
 
         return rootView;
+    }
+
+    private void fetchChatrooms(){
+        // fetch the search string
+        String searchTerm = editSearch.getText().toString();
+        // user token stored in shared preferences
+        SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
+        // JWT token for API authentication
+        String token = userInfo.getString("token","n/a");
+
+        try {
+            List<Chatroom> newChatrooms = chatroomService.chatroomSearch(token, searchTerm);
+
+            // empty the list
+            mChatrooms.removeAll(mChatrooms);
+            // fill with the new collection of chatrooms
+            mChatrooms.addAll(newChatrooms);
+            // make adapter refresh list
+            mChatroomAdapter.notifyDataSetChanged();
+            Toast.makeText(context.getApplicationContext(),"Chatrooms successfully fetched",Toast.LENGTH_LONG).show();
+        } catch(Exception e) {
+            Toast.makeText(context.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
 }
