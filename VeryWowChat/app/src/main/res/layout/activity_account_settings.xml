@@ -55,7 +55,7 @@
             app:layout_constraintTop_toBottomOf="@+id/acc_settings_display_header">
 
             <EditText
-                android:id="@+id/edit_settings_username"
+                android:id="@+id/edit_settings_displayname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
@@ -167,7 +167,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/acc_settings_btn_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
@@ -181,7 +181,7 @@
             app:layout_constraintTop_toBottomOf="@+id/acc_settings_email" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/acc_settings_btn_delete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -196,7 +196,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_btn_save" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
