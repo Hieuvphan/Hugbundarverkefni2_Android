@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountSettingsActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/acc_setings_header"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/account_setting_header"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/acc_settings_display_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/account_setting_display_header"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_setings_header" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/acc_settings_Username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp"
+            android:hint="@string/account_setting_display_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_display_header">
+
+            <EditText
+                android:id="@+id/edit_settings_username"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="190dp"
+                tools:layout_editor_absoluteY="185dp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/acc_settings_password_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/account_setting_password_header"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_Username" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/acc_settings_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp"
+            android:hint="@string/account_setting_password_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_password_header">
+
+            <EditText
+                android:id="@+id/edit_settings_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="190dp"
+                tools:layout_editor_absoluteY="185dp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/acc_settings_password_repeat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp"
+            android:hint="@string/account_setting_password_repeat_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_password">
+
+            <EditText
+                android:id="@+id/edit_settings_password_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="190dp"
+                tools:layout_editor_absoluteY="185dp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/account_setting_email_header"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_password_repeat" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/acc_settings_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp"
+            android:hint="@string/account_setting_email_labl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+            <EditText
+                android:id="@+id/edit_settings_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="textWebEmailAddress"
+                tools:layout_editor_absoluteX="190dp"
+                tools:layout_editor_absoluteY="185dp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginRight="64dp"
+            android:text="@string/account_setting_save_buttun_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acc_settings_email" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
