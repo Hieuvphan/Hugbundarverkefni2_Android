@@ -6,10 +6,14 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import hi.hugbo.verywowchat.Models.UserService;
 
@@ -53,6 +57,56 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         //Obtain a reference to the save changes button and assign it a listener
         mBtnSaveChanges = findViewById(R.id.acc_settings_btn_save);
+        mBtnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            /*
+             * when the SaveChanges button is clicked we need
+             * construct a request body that will be passed to the user service
+             * to make the request of updating the user.
+             * */
+            @Override
+            public void onClick(View v) {
+               // if no fields have been filled out we respond with an error message
+               if(mDisplayName.getText().toString().isEmpty() && mEmail.getText().toString().isEmpty() &&
+                  mPassword.getText().toString().isEmpty() && mPasswordRepeat.getText().toString().isEmpty()){
+                   Toast.makeText(getApplicationContext(),"Please fill inn fields you wish to update",Toast.LENGTH_LONG).show();
+                   return;
+               }
+
+                // Create a Map from the data provided by the user
+                Map<String, String> params = new HashMap<String, String>();
+
+               // if the user wants to update his password we need to check if both passwords match
+               if(!mPassword.getText().toString().isEmpty() || !mPasswordRepeat.getText().toString().isEmpty()){
+                  if(!mPassword.getText().toString().equals(mPasswordRepeat.getText().toString())){
+                      Toast.makeText(getApplicationContext(),"Both passwords have to match",Toast.LENGTH_LONG).show();
+                      return;
+                  }
+
+                  params.put("password",mPassword.getText().toString());
+               }
+
+                // if the user filled out his display name
+                if(!mDisplayName.getText().toString().isEmpty()) {
+                   params.put("displayName",mDisplayName.getText().toString());
+                }
+
+                // if the user filled out his email
+                if(!mEmail.getText().toString().isEmpty()){
+                    params.put("email",mEmail.getText().toString());
+                }
+
+                try {
+                    mUserService.UpdateUser(params,UserInfo.getString("token","N/A"));
+                    SharedPreferences.Editor userEdit = UserInfo.edit();
+                    userEdit.remove("displayname");
+                    userEdit.putString("displayname",mDisplayName.getText().toString());
+                    userEdit.commit();
+                    Toast.makeText(getApplicationContext(),"Update successful ",Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         //Obtain a reference to the Delete button and assign it a listener
         mBtnDeleteAccount = findViewById(R.id.acc_settings_btn_delete);
