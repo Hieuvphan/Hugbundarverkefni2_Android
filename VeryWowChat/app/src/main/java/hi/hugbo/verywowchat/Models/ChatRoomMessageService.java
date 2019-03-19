@@ -3,6 +3,7 @@ package hi.hugbo.verywowchat.Models;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -155,17 +156,17 @@ public class ChatRoomMessageService {
                 if(resultJson.length() == 0) {
                     return newChatMessages;
                 }
-
                 for(int i = 0; i < resultJson.length(); i++){
                     ChatMessage newMsg;
                     JSONObject currMsg = resultJson.getJSONObject(i);
                     int timestamp = currMsg.getInt("timestamp");
+
                     // check if we already have this message displayed in the chat if so we skip mapping
                     if(lastTimeStamp != -1  && timestamp <= lastTimeStamp) {
                         continue;
                     }
                     // check if the message contins resources such as pictures or files
-                    else if(!currMsg.isNull("resources")){
+                    else if(currMsg.getJSONArray("resources").length() > 0){
                        JSONArray resources = currMsg.getJSONArray("resources"); // fetch the resources
                        for (int j = 0; j < resources.length(); j++){
                            String currRes = resources.getString(i);
@@ -225,7 +226,7 @@ public class ChatRoomMessageService {
      * @return the (chatId) data in the form of Chatroom object
      */
     public Chatroom UpdateChat(String chatId, String token) {
-        Chatroom requestedChatroom
+        Chatroom requestedChatroom;
         try {
             // Make the HTTP Request
             Map<String,String> chatRoom = api_caller.HttpRequest("auth/chatroom/"+chatId+"/membership","GET",token,null);
@@ -233,9 +234,15 @@ public class ChatRoomMessageService {
             int status = Integer.parseInt(chatRoom.get("status"));
             // if the status code is anything but 200 we return null
             if(status != 200) { return null; }
-
             // add the Data to the chat
             JSONObject chatroomjson = new JSONObject(chatRoom.get("response"));
+
+            List<String> tags = new ArrayList<String>();
+            JSONArray tagjson = chatroomjson.getJSONArray("tags");
+            for(int i = 0; i < tagjson.length(); i++){
+                tags.add(tagjson.getString(i));
+            }
+
             requestedChatroom  = new Chatroom(
                chatroomjson.getString("chatroomName"),
                chatroomjson.getString("displayName"),
@@ -244,9 +251,9 @@ public class ChatRoomMessageService {
                chatroomjson.getBoolean("invited_only"),
                chatroomjson.getString("ownerUsername"),
                chatroomjson.getLong("created"),
-               chatroomjson.getLong("lastRead"),
                chatroomjson.getLong("lastMessageReceived"),
-               null,
+               chatroomjson.getLong("lastRead"),
+               tags,
                chatroomjson.getString("userRelation")
             );
         } catch (IOException e) {
@@ -255,5 +262,10 @@ public class ChatRoomMessageService {
             return null;
         }
         return requestedChatroom;
+    }
+
+
+    public void NotifyRead(String chatID,String token) throws IOException, JSONException {
+       api_caller.HttpRequest("auth/chatroom/"+chatID+"/markread","POST",token,null);
     }
 }

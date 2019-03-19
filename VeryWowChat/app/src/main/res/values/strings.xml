@@ -54,4 +54,6 @@
     <string name="account_setting_email_labl">Email</string>
     <string name="account_setting_save_buttun_label">Save Changes</string>
     <string name="account_setting_delete_buttun_label">Delete My Account</string>
+    <string name="channel_name">New Chat Notification</string>
+    <string name="channel_description">Displays the new chat notifications in the very wow chat app</string>
 </resources>

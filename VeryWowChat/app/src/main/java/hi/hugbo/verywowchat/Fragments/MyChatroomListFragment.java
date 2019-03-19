@@ -1,13 +1,17 @@
 package hi.hugbo.verywowchat.Fragments;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,12 +34,15 @@ import hi.hugbo.verywowchat.entities.ChatMessage;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 /**
  * This component is responsible for displaying chatrooms the user is a member/admin/owner of
  * refer to MyChatroomItemAdapter to see how individual chatrooms are handled
  */
 public class MyChatroomListFragment extends Fragment {
+
+    private final String CHANNEL_ID = "USER_CHAT";
 
     private List<Chatroom> mChatrooms;
     private Handler mHandler;
@@ -66,6 +73,7 @@ public class MyChatroomListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chatroom_list, container, false);
+        createNotificationChannel();
         // fetch context to access toasts and user preferenes
         context = rootView.getContext();
 
@@ -144,32 +152,58 @@ public class MyChatroomListFragment extends Fragment {
                 // else we check if the chatroom has recivied new message
                 else {
                     // check if the chatroom recived new message
-                    if(true){
-                      // display the pop upp
-                      MakePopUpMessage(mChatrooms.get(i).getChatroomName());
+                    if(mChatrooms.get(i).getLastRead() < updatedChat.getLastMessageReceived()){
+                      // update the chat
+                      Log.d("wtf",mChatrooms.get(i).getLastRead()+" before update");
+                      mChatrooms.get(i).Update(updatedChat);
+                        Log.d("wtf",mChatrooms.get(i).getLastRead()+" after update");
+                      // display the  notification
+                      MakePopUpMessage(mChatrooms.get(i).getChatroomName(),mChatrooms.get(i).getDisplayName());
                     }
                 }
-
             }
             mHandler.postDelayed(this, 7000); // i want to poll every 5 seconds
         }
     };
 
-    public void MakePopUpMessage(String chatID) {
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, AlertDetails.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+    public void MakePopUpMessage(String chatID,String chatName) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, ChatRoomMessageActivity.newIntent(getContext(),chatID), 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.people_icon)
+                .setContentTitle("New chat notification")
+                .setContentText(chatName+" has a new chat messages waiting for you")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        //  notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
     }
+
+    /**
+     *  Android 8.0 and higher, must register the app's notification channel
+     *  No worries if this is called many times because
+     *  It's safe to call this repeatedly because creating an existing notification channel performs no operation.
+     *  */
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager =(NotificationManager)getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     /**
      * All the necessary things that have to be done inorder to logout the user from the app
      * */
