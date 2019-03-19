@@ -1,5 +1,7 @@
 package hi.hugbo.verywowchat.entities;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -51,6 +53,7 @@ public class Chatroom {
             List<String> tags,
             String userRelation
     ) {
+        Log.d("dh", "Chatroom()");
         this.chatroomName = chatroomName;
         this.displayName = displayName;
         this.description = description;

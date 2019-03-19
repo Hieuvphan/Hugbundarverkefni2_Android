@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +56,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("dh", "HomePageActivity.onCreate()");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home_page); // inflate the BIG ASS LAYOUT
 
@@ -88,12 +92,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        /** ----------------------------------------------------------------------------------------
+        /* ----------------------------------------------------------------------------------------
          *  --------------------------------- other stuff ------------------------------------------
          *  ----------------------------------------------------------------------------------------*/
     }
 
     public static Intent newIntent(Context packageContext) {
+        Log.d("dh", "HomePageActivity.newIntent()");
         Intent i = new Intent(packageContext, HomePageActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return i;
@@ -109,6 +114,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
      * @param spreferencesEditor SharedPreferences.Editor
      */
     public void LogOutUser(SharedPreferences.Editor spreferencesEditor) {
+        Log.d("dh", "HomePageActivity.LogOutUser()");
         spreferencesEditor.clear();
         spreferencesEditor.commit();
         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
@@ -118,6 +124,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public void onBackPressed() {
+        Log.d("dh", "HomePageActivity.onBackPressed()");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -127,11 +134,15 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
     }
 
 
-    @SuppressWarnings("StatementWithEmptyBody")
+
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.d("dh", "HomePageActivity.onNavigationItemSelected()");
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
+
+
 
         // based on what Item the user choose we start the appropriate activity
         if (id == R.id.account_settings) {
@@ -140,7 +151,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
             Intent intent = new Intent(this,CreateChatroomActivity.class);
             startActivity(intent);
         } else if (id == R.id.pending_requests) {
-
+            // TODO: implement?
+        } else if (id == R.id.dah38_debug) {
+            startActivity(new Intent(this, Dah38DebugActivity.class));
+        } else {
+            Log.d("dh", "Missing handling for: " + item.getTitle() + " (" + id + ")");
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -161,9 +176,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
         @Override
         public void onDrawerOpened(@NonNull View view) {
+            Log.d("dh", "HomePageActivity.RightMenuListener.onDrawerOpened()");
             final SharedPreferences UserInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
             // when the drawer is open we display a greeting messed with the user's displayname
             mGreeting = view.findViewById(R.id.userGreeting);
+
             mGreeting.setText("Welcome "+UserInfo.getString("displayname","ups Error"));
 
             /*
@@ -177,6 +194,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 mbgnLogOut.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d("dh", "HomePageActivity.RightMenuListener.onDrawerOpened.?.onClick()");
                         LogOutUser(UserInfo.edit());
                     }
                 });
@@ -186,15 +204,15 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         // --------------- dont see a use for these guys just yet--------------------------------
         @Override
         public void onDrawerSlide(@NonNull View view, float v) {
-
+            Log.d("dh", "HomePageActivity.RightMenuListener.onDrawerSlide()");
         }
         @Override
         public void onDrawerClosed(@NonNull View view) {
-
+            Log.d("dh", "HomePageActivity.RightMenuListener.onDrawerClosed()");
         }
         @Override
         public void onDrawerStateChanged(int i) {
-
+            Log.d("dh", "HomePageActivity.RightMenuListener.onDrawerStateChanged()");
         }
     }
 }

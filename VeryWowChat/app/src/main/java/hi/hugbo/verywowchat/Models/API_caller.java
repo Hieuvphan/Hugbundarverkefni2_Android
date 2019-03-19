@@ -2,6 +2,8 @@ package hi.hugbo.verywowchat.Models;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 
@@ -40,9 +42,9 @@ public class API_caller {
 
     /**
      * We use the okHttp library to make all of our HTTP Requests
-     * */
-    private final OkHttpClient client = new OkHttpClient();
-    private final MediaType JSON  = MediaType.parse("application/json; charset=utf-8");
+     */
+    private final OkHttpClient client;
+    private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     /**
      * We depend our receiving BASE_URL from someone else
@@ -53,10 +55,14 @@ public class API_caller {
      * This is used to create a singleton instance of this class, the empty class instantiator is needed.
      */
     public static API_caller getInstance() {
+
+        Log.d("dh", "API_caller.getInstance()");
+
         return ourInstance;
     }
 
     private API_caller() {
+        Log.d("dh", "API_caller()");
         // client = new OkHttpClient();
         // NOTE: added timeout
         client = new OkHttpClient.Builder()
@@ -77,7 +83,7 @@ public class API_caller {
      *     Post : Performs a synchronous HTTP (method) request one BASEURL/urlEndPoint and passes along the optional
      *            token in the header under "Authorization" and the body in the RequestBody as "application/JSON UTF 8
      * </pre>
-     *
+     * <p>
      * NOTE: this method might ALWAYS return a BadResponse message.  Always assume that connection
      * to the VeryWowChat server is down.
      *
@@ -85,14 +91,33 @@ public class API_caller {
      * @param method      HTTP method
      * @param token       Aut token ( CAN BE NULL)
      * @param body        Body ( Can Be NULL)
-     * @return Map<String       ,               String>  with 2 keys 1: status = status code  2: response = response body
+     * @return Map<String                               ,                                                               String>  with 2 keys 1: status = status code  2: response = response body
      * @throws IOException
      * @throws JSONException
      */
-    public Map<String, String> HttpRequest(String urlEndPoint, String method, String token, Map body) throws IOException, JSONException {
+    public Map<String, String> HttpRequest(
+            @NonNull String urlEndPoint,
+            @NonNull String method,
+            @Nullable String token,
+            @Nullable Map body
+    ) throws IOException, JSONException {
+
+        Log.d("dh", "API_caller.HttpRequest()");
+
+        // We should use Kotlin as it supports non-nullable types!
+
+        if (urlEndPoint == null) {
+            throw new RuntimeException("urlEndPoint can not be null");
+        }
+
+        if (method == null) {
+            throw new RuntimeException("method can not be null");
+        }
 
 
-        Log.d("dh", "HttpRequest");
+        Log.d("dh", "HttpRequest: " + urlEndPoint + ": " + method + ": " + body.toString());
+
+
 
         /*
          *If the body was passed then we create a request body
@@ -105,7 +130,7 @@ public class API_caller {
         }
 
         // if the token is null then we set it into a empty string
-        if(token == null) {
+        if (token == null) {
             token = "";
         }
 
@@ -123,22 +148,29 @@ public class API_caller {
 
         // Create a Call object and dispatch the network request synchronously
 
+
         // TODO: requires IOException
         Response response = null;
 
         try {
+            // Execute request by sending to server.  The server might be down so there might be
+            // a timeout error!
             response = client.newCall(request).execute();
-            // TODO:
         } catch (IOException e) {
-            Log.e("RequestError","Request error: " + e);
+            Log.e("RequestError", "Request error: " + e);
             e.printStackTrace();
 
+            // Handles timeout error!
+
+            // Construct a BadResponse response!
 
             Map<String, String> resp = new HashMap<String, String>();
             resp.put("status", "408"); // Request timeout
             resp.put("content-type", "application/json");  // NOTE: this maybe doesn't make any sense.
             JSONObject WrappedData = new JSONObject("{\"BadResp\":[{\"errors\":[{\"field\":null,\"message\":\"Unable to connect to server\"}]}] }");
             resp.put("response", WrappedData.get("BadResp").toString());
+
+            Log.d("dh", "HttpResponse: " + resp.get("status"));
 
             return resp;
         }
@@ -151,17 +183,18 @@ public class API_caller {
          *  - 2: the response body in json string form
          *  - 3: the type of object we are receiving
          **/
-        Map<String, String>  resp = new HashMap<String, String>();
+        Map<String, String> resp = new HashMap<String, String>();
 
         // add the status code to the response
         resp.put("status", String.valueOf(response.code()));
 
         // we need to know content-type for resource process such as images and files
-        resp.put("content-type",response.header("Content-Type"));
+        resp.put("content-type", response.header("Content-Type"));
 
         // if the status code is 204 then we know there is no content
         if (response.code() == 204) {
             resp.put("response", null);
+            Log.d("dh", "HttpResponse: " + resp.get("status"));
             return resp;
         }
 
@@ -173,9 +206,10 @@ public class API_caller {
          * We log it's content out in LogCat but we send null to the services/controllers
          * so they can proccess this information better
          * */
-        if(WrappedData.has("message")){
-            Log.e("Api_Caller","Unexpected response from the server \n"+WrappedData.toString());
-            resp.put("response",null);
+        if (WrappedData.has("message")) {
+            Log.e("Api_Caller", "Unexpected response from the server \n" + WrappedData.toString());
+            resp.put("response", null);
+            Log.d("dh", "HttpResponse: " + resp.get("status"));
             return resp;
         }
 
@@ -186,15 +220,16 @@ public class API_caller {
          **/
 
         // if the status code is 200-2xx then its a success meaning wrapper is GoodResp
-        if(response.code() >= 200 && response.code() < 300 ) {
-            resp.put("response",WrappedData.get("GoodResp").toString());
+        if (response.code() >= 200 && response.code() < 300) {
+            resp.put("response", WrappedData.get("GoodResp").toString());
         }
 
         // if the status code is 300-3xx then its a error meaning wrapper is BadResp
-        if(response.code() >= 400 && response.code() < 500 ) {
-            resp.put("response",WrappedData.get("BadResp").toString());
+        if (response.code() >= 400 && response.code() < 500) {
+            resp.put("response", WrappedData.get("BadResp").toString());
         }
 
+        Log.d("dh", "HttpResponse: " + resp.get("status"));
         return resp;
     }
 
@@ -213,6 +248,8 @@ public class API_caller {
      */
     public ResourceContent HttpRequestGetResource(String urlEndPoint, String token) throws IOException {
 
+        Log.d("dh", "API_caller.HttpRequestGetResource()");
+
         // Create a HTTP REQUEST
         Request request = new Request.Builder()
                 .url(g_envs.getAPI_BASEURL() + urlEndPoint)
@@ -225,6 +262,6 @@ public class API_caller {
         Response response = client.newCall(request).execute();
 
         // create a new instance of ResourceContent and return it to service/controller
-        return  new ResourceContent(response.body().byteStream(),response.header("Content-Type"));
+        return new ResourceContent(response.body().byteStream(), response.header("Content-Type"));
     }
 }

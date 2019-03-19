@@ -41,6 +41,7 @@ public class MyChatroomItemAdapter extends RecyclerView.Adapter {
     /** Just reminder for myself : You can pass the Context from the Activity to this constructor
      *  then u can implement listeners and other things on the inflated view widgets.*/
     public MyChatroomItemAdapter(List<Chatroom> chatrooms) {
+        Log.d("dh", "MyChatroomItemAdapter()");
         mChatrooms = chatrooms;
     }
 
@@ -52,6 +53,7 @@ public class MyChatroomItemAdapter extends RecyclerView.Adapter {
      */
     @Override
     public ChatroomItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("dh", "MyChatroomItemAdapter.onCreateViewHolder()");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_chatroom_list_item, parent, false);
         return new ChatroomItemHolder(view);
     }
@@ -63,12 +65,14 @@ public class MyChatroomItemAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        Log.d("dh", "MyChatroomItemAdapter.onBindViewHolder()");
         Chatroom chatroom = mChatrooms.get(i);
         ((ChatroomItemHolder) viewHolder).bind(chatroom);
     }
 
     @Override
     public int getItemCount() {
+        Log.d("dh", "MyChatroomItemAdapter.getItemCount()");
         return mChatrooms.size();
     }
 
@@ -87,11 +91,13 @@ public class MyChatroomItemAdapter extends RecyclerView.Adapter {
 
         public ChatroomItemHolder(View itemView) {
             super(itemView);
+            Log.d("dh", "MyChatroomItemAdapter.ChatroomItemHolder()");
             btn_open_chatroom = itemView.findViewById(R.id.btn_open_chatroom);
             btn_manage_chatroom = itemView.findViewById(R.id.btn_manage_chatroom);
         }
 
         public void bind(final Chatroom chatroom) {
+            Log.d("dh", "MyChatroomItemAdapter.ChatroomItemHolder.bind()");
             // set the text
             btn_open_chatroom.setText(chatroom.getUserRelation()+": "+chatroom.getDisplayName()+"("+chatroom.getChatroomName()+")");
 

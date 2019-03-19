@@ -39,6 +39,7 @@ public class MyChatroomListFragment extends Fragment {
     }
 
     public static MyChatroomListFragment newInstance(){
+        Log.d("dh", "MyChatroomListFragment.newInstance()");
         MyChatroomListFragment fragment = new MyChatroomListFragment();
 
         return fragment;
@@ -47,11 +48,13 @@ public class MyChatroomListFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Log.d("dh", "MyChatroomListFragment.onResume()");
         fetchChatrooms();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("dh", "MyChatroomListFragment.onCreateView()");
         View rootView = inflater.inflate(R.layout.chatroom_list, container, false);
         // fetch context to access toasts and user preferenes
         context = rootView.getContext();
@@ -82,6 +85,7 @@ public class MyChatroomListFragment extends Fragment {
     }
 
     private void fetchChatrooms(){
+        Log.d("dh", "MyChatroomListFragment.fetchChatrooms()");
         // user token stored in shared preferences
         SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
         // JWT token for API authentication
@@ -89,6 +93,8 @@ public class MyChatroomListFragment extends Fragment {
 
         try {
             List<Chatroom> newChatrooms = chatroomService.getMyChatrooms(token);
+
+            Log.d("dh", "MyChatroomListFragment.fetchChatrooms(): nr. of chat rooms: " + newChatrooms.size());
 
             // empty the list
             mChatrooms.removeAll(mChatrooms);

@@ -1,6 +1,7 @@
 package hi.hugbo.verywowchat.entities;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 /**
  * @Author Róman
@@ -21,6 +22,7 @@ public class ChatMessage {
     private Boolean MyMessage;
 
     public ChatMessage(String username, String displayName, String message, int timeStamp, String OwnerOfThisAcc) {
+        Log.d("dh", "ChatMessage()");
         Username = username;
         DisplayName = displayName;
         Message = message;
@@ -34,6 +36,7 @@ public class ChatMessage {
     }
 
     public ChatMessage(String username, String displayName, String message, Bitmap img, int timeStamp, String OwnerOfThisAcc) {
+        Log.d("dh", "ChatMessage()");
         Username = username;
         DisplayName = displayName;
         Message = message;

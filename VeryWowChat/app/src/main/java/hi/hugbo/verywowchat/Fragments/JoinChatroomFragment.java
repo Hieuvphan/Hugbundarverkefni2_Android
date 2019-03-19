@@ -48,6 +48,7 @@ public class JoinChatroomFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("dh", "JoinChatroomFragment.onCreateView()");
         View rootView = inflater.inflate(R.layout.fragment_join_chatroom, container, false);
 
         // fetch the widgets

@@ -54,10 +54,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("dh", "LoginActivity: onCreate()");
+        Log.d("dh", "LoginActivity.onCreate()");
         super.onCreate(savedInstanceState);
 
         // TODO: ask teacher if this is a good solution.
+        // TODO: what is this for?
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         // -----------------------------------------------------------------------------------------
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = mLogginPassword.getText().toString();
 
                 // Create a Map from the data provided by the user
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("password", password);
                 params.put("userName", username);
 
@@ -138,13 +139,27 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String, String> result = api_caller.HttpRequest("login","POST","",params);
 
 
-
-
                     // Parse the HTTP status code
                     int status = Integer.parseInt(result.get("status"));
 
                     // Parse the Json String into a JSON array
                     JSONArray resp_body = new JSONArray(result.get("response"));
+
+                    if(status >= 200 && status < 300 ){
+                        /*
+                         *Since its a successful request we know we should receive user information
+                         *so we store this information in the shared preferences so that next time
+                         *the use opens the app he will already be logged in
+                         */
+                        SharedPreferences.Editor editor = UserInfo.edit();
+                        editor.putString("username",resp_body.getJSONObject(0).get("username").toString());
+                        editor.putString("displayname",resp_body.getJSONObject(0).get("displayname").toString());
+                        editor.putString("token",resp_body.getJSONObject(0).get("token").toString());
+                        editor.commit(); // ALWAYS REMEMBER TO COMMIT ELSE IT WONT SAVE !
+                        // Start the Homepage Activity for the user
+                        startActivity(HomePageActivity.newIntent(LoginActivity.this));
+                        return;
+                    }
 
                     if (status >= 400 && status < 500) {
                         // HTTP Request was a failure
@@ -162,38 +177,6 @@ public class LoginActivity extends AppCompatActivity {
                         // Display a pop-up error message to the user with the errors received from the API
                         Toast.makeText(getApplicationContext(), errorLogger.ErrorsToString(errors), Toast.LENGTH_LONG).show();
                         return;
-                    }
-
-
-
-                    if(status >= 200 && status < 300 ){
-                        /*
-                         *Since its a successful request we know we should receive user information
-                         *so we store this information in the shared preferences so that next time
-                         *the use opens the app he will already be logged in
-                         **/
-                        SharedPreferences.Editor editor = UserInfo.edit();
-                        editor.putString("username",resp_body.getJSONObject(0).get("username").toString());
-                        editor.putString("displayname",resp_body.getJSONObject(0).get("displayname").toString());
-                        editor.putString("token",resp_body.getJSONObject(0).get("token").toString());
-                        editor.commit(); // ALWAYS REMEMBER TO COMMIT ELSE IT WONT SAVE !
-                        // Start the Homepage Activity for the user
-                        startActivity(HomePageActivity.newIntent(LoginActivity.this));
-                        return;
-                    }
-
-                    // HTTP Request was a failure
-                    if(status >= 400 && status < 500){
-                        /*
-                         *Since its an error we know we receive a array of errors which we have to
-                         *map into POJOS and then display them.
-                         *(NOTE : You do not have to map them to POJOS in my opinion it just adds more work
-                         *        and drains phone resources u can solve everything with JSONArray and JSONObject classes)
-                         **/
-                        // Create a List of errors
-                        List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
-                        // Display a pop-up error message to the user with the errors received from the API
-                        Toast.makeText(getApplicationContext(),errorLogger.ErrorsToString(errors),Toast.LENGTH_LONG).show();
                     }
                 } catch (IOException e) {
                     Log.e("LoginError","IOException in Login \n message :"+e);

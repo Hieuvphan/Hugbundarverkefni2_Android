@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class UpdateChatroomFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("dh", "UpdateChatroomFragment.onCreateView()");
         View rootView = inflater.inflate(R.layout.fragment_update_chatroom, container, false);
 
         // fetch the widgets

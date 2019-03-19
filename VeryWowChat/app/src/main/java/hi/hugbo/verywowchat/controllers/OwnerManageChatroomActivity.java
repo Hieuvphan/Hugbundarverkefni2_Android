@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.TextView;
 
 import hi.hugbo.verywowchat.Fragments.ChatroomAdminInviteFragment;
@@ -32,6 +33,7 @@ public class OwnerManageChatroomActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("dh", "OwnerManageChatroomActivity.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.owner_manage_chatroom);
 

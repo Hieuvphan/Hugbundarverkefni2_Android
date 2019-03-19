@@ -41,6 +41,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("dh", "AccountSettingsActivity.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
 

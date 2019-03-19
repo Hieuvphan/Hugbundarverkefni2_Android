@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class ChatroomAdminInviteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("dh", "ChatroomAdminInviteFragment.onCreateView()");
         View rootView = inflater.inflate(R.layout.fragment_admin_invite_member, container, false);
 
         // fetch the widgets

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import hi.hugbo.verywowchat.Fragments.MyChatroomListFragment;
 import hi.hugbo.verywowchat.Fragments.SearchChatroomListFragment;
+import hi.hugbo.verywowchat.Models.RandomUtils;
 import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
 import hi.hugbo.verywowchat.controllers.R;
 
@@ -24,10 +26,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
+        Log.d("dh", "SectionsPagerAdapter()");
     }
 
     @Override
     public Fragment getItem(int position) {
+        Log.d("dh", "SectionsPagerAdapter.getItem()");
         /*getItem is called to instantiate the fragment for the given page.
           Return a PlaceholderFragment (defined as a static inner class below).
           (NOTE ! that the Fragment next to the current fragment (i.e fragment at pos+1)
@@ -50,8 +54,17 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    /**
+     * This method called again and again.  Who's calling this method?
+     *
+     * @return
+     */
     @Override
     public int getCount() {
+        Log.d("dh", "SectionsPagerAdapter.getCount()");
+
+        // Log.d("dh", RandomUtils.getStackTrace());
+
         // we have a total of 3 pages so we return 3
         return 3;
     }
@@ -66,12 +79,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
+            Log.d("dh", "SectionsPagerAdapter.PlaceholderFragment()");
         }
 
         /**
          * Returns a new instance of this fragment for the given section  number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
+            Log.d("dh", "SectionsPagerAdapter.PlaceholderFragment.newInstance()");
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -81,6 +96,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            Log.d("dh", "SectionsPagerAdapter.PlaceholderFragment.onCreateView()");
             View rootView = inflater.inflate(R.layout.fragment_home_page, container, false);
             TextView textView = rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -88,6 +104,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             openChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // TODO: fix hardcoded chatID
                     startActivity(ChatRoomMessageActivity.newIntent(getActivity(),"rruchat"));
                 }
             });

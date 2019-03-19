@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.Models;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
@@ -249,11 +250,12 @@ public class ChatroomServiceImplementation implements ChatroomService {
 
         }catch (Exception e) {
             e.printStackTrace();
+            // TODO: why don't you just throw the exception `e`?
             throw new Exception(e.getMessage());
         }
     }
 
-    public List<Chatroom> chatroomSearch(String token, String searchTerm) throws Exception{
+    public List<Chatroom> chatroomSearch(String token, @NonNull String searchTerm) throws Exception{
         String path = "auth/chatroom/search/listed/"+searchTerm;
         String method = "GET";
 

@@ -60,6 +60,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("dh", "ChatRoomMessageActivity.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room_message);
 

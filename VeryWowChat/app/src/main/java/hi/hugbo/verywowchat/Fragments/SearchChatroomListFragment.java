@@ -35,6 +35,7 @@ public class SearchChatroomListFragment extends Fragment {
     private SearchChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     public SearchChatroomListFragment(){
+        Log.d("dh", "SearchChatroomListFragment()");
         mChatrooms = new ArrayList<>();
     }
 
@@ -45,6 +46,7 @@ public class SearchChatroomListFragment extends Fragment {
     Context context;
 
     public static SearchChatroomListFragment newInstance(){
+        Log.d("dh", "SearchChatroomListFragment.newInstance()");
         SearchChatroomListFragment fragment = new SearchChatroomListFragment();
 
         return fragment;
@@ -53,6 +55,7 @@ public class SearchChatroomListFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Log.d("dh", "SearchChatroomListFragment.onResume()");
         if(editSearch.getText().toString().length() < 1){
             fetchChatrooms();
         }
@@ -60,6 +63,7 @@ public class SearchChatroomListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("dh", "SearchChatroomListFragment.onCreateView()");
         View rootView = inflater.inflate(R.layout.chatroom_search, container, false);
         // fetch context to access toasts and user preferenes
         context = rootView.getContext();
@@ -98,6 +102,7 @@ public class SearchChatroomListFragment extends Fragment {
     }
 
     private void fetchChatrooms(){
+        Log.d("dh", "SearchChatroomListFragment.fetchChatrooms()");
         // fetch the search string
         String searchTerm = editSearch.getText().toString();
         // user token stored in shared preferences

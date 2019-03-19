@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class NotMemberManageChatroomActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("dh", "NotMemberManageChatroomActivity.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.not_member_manage_chatroom);
 

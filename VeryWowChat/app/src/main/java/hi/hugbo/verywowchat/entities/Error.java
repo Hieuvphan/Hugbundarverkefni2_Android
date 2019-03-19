@@ -1,5 +1,7 @@
 package hi.hugbo.verywowchat.entities;
 
+import android.util.Log;
+
 /**
  * @Author Róman
  * This is a POJO that error messages from the API will be mapped to */
@@ -9,6 +11,7 @@ public class Error {
     private String message;
 
     public Error (String field, String message) {
+        Log.d("dh", "Error()");
         this.field = field;
         this.message = message;
     }

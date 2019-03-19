@@ -17,6 +17,10 @@
             android:id="@+id/pending_requests"
             android:icon="@drawable/people_icon"
             android:title="View Pending Requests" />
+        <item
+            android:id="@+id/dah38_debug"
+            android:icon="@android:drawable/star_big_on"
+            android:title="dah38 debug" />
     </group>
 
 </menu>

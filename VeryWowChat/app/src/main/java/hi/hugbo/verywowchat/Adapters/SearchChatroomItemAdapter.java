@@ -2,6 +2,7 @@ package hi.hugbo.verywowchat.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class SearchChatroomItemAdapter extends RecyclerView.Adapter {
     /** Just reminder for myself : You can pass the Context from the Activity to this constructor
      *  then u can implement listeners and other things on the inflated view widgets.*/
     public SearchChatroomItemAdapter(List<Chatroom> chatrooms) {
+        Log.d("dh", "SearchChatroomItemAdapter()");
         mChatrooms = chatrooms;
     }
 
@@ -46,6 +48,7 @@ public class SearchChatroomItemAdapter extends RecyclerView.Adapter {
      */
     @Override
     public ChatroomItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("dh", "SearchChatroomItemAdapter.onCreateViewHolder()");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_chatroom_list_item, parent, false);
         return new ChatroomItemHolder(view);
     }
@@ -57,12 +60,14 @@ public class SearchChatroomItemAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        Log.d("dh", "SearchChatroomItemAdapter.onBindViewHolder()");
         Chatroom chatroom = mChatrooms.get(i);
         ((ChatroomItemHolder) viewHolder).bind(chatroom);
     }
 
     @Override
     public int getItemCount() {
+        Log.d("dh", "SearchChatroomItemAdapter.getItemCount()");
         return mChatrooms.size();
     }
 
@@ -80,10 +85,12 @@ public class SearchChatroomItemAdapter extends RecyclerView.Adapter {
 
         public ChatroomItemHolder(View itemView) {
             super(itemView);
+            Log.d("dh", "SearchChatroomItemAdapter.ChatroomItemHolder()");
             BtnManageChatroom = itemView.findViewById(R.id.btn_manage_chatroom);
         }
 
         public void bind(final Chatroom chatroom) {
+            Log.d("dh", "SearchChatroomItemAdapter.ChatroomItemHolder.bind()");
             // set the text
             BtnManageChatroom.setText(chatroom.getDisplayName()+"("+chatroom.getChatroomName()+")");
 

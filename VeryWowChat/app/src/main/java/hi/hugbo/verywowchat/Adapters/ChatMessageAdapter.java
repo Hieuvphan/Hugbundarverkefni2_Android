@@ -47,6 +47,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
     /** Just reminder for myself : You can pass the Context from the Activity to this constructor
      *  then u can implement listeners and other things on the inflated view widgets.*/
     public ChatMessageAdapter(List<ChatMessage> messages) {
+        Log.d("dh", "ChatMessageAdapter()");
         mMessages = messages;
     }
 
@@ -55,6 +56,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
      * own flags to help us distinguish the content we receive */
     @Override
     public int getItemViewType(int position) {
+        Log.d("dh", "ChatMessageAdapter.getItemViewType()");
         // get the message that will be displayed next on the screen
         ChatMessage message =  mMessages.get(position);
 
@@ -85,6 +87,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
      *  3: inflate the appropriate viewHolder so we could bind the data correctly to it */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("dh", "ChatMessageAdapter.onCreateViewHolder()");
         View view;
         // Based on the type of ViewType we receive we inflate the correct View
         if(viewType == SENT_BY_US){
@@ -114,6 +117,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
      *  */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+        Log.d("dh", "ChatMessageAdapter.onBindViewHolder()");
         ChatMessage message = mMessages.get(i);
 
         // get the ViewType and bind the data
@@ -136,6 +140,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        Log.d("dh", "ChatMessageAdapter.getItemCount()");
         return mMessages.size();
     }
 
@@ -153,10 +158,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         public SentMessageHolder(View itemView) {
             super(itemView);
+            Log.d("dh", "ChatMessageAdapter.SentMessageHolder()");
             textMessage = itemView.findViewById(R.id.text_message_body);
         }
 
         public void bind(ChatMessage message) {
+            Log.d("dh", "ChatMessageAdapter.SentMessageHolder.bind()");
             textMessage.setText(message.getMessage());
         }
     }
@@ -166,9 +173,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         public ReceivedMessageHolder(View itemView) {
             super(itemView);
+            Log.d("dh", "ChatMessageAdapter.ReceivedMessageHolder()");
             textMessage = itemView.findViewById(R.id.text_message_body);
         }
         public void bind(ChatMessage message) {
+            Log.d("dh", "ChatMessageAdapter.ReceivedMessageHolder.bind()");
             textMessage.setText(message.getMessage());
         }
     }
@@ -180,11 +189,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         public SentImageHolder(View itemView) {
             super(itemView);
+            Log.d("dh", "ChatMessageAdapter.SentImageHolder()");
             textMessage = itemView.findViewById(R.id.text_message_body);
             ImgView = itemView.findViewById(R.id.img_view);
         }
 
         public void bind(ChatMessage message) {
+            Log.d("dh", "ChatMessageAdapter.SentImageHolder.bind()");
             ImgView.setImageBitmap(message.getBitmap());
             textMessage.setText(message.getMessage());
         }
@@ -196,11 +207,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         public ReceiveImageHolder(View itemView) {
             super(itemView);
+            Log.d("dh", "ChatMessageAdapter.ReceiveImageHolder()");
             textMessage = itemView.findViewById(R.id.text_message_body);
             ImgView = itemView.findViewById(R.id.img_view);
         }
 
         public void bind(ChatMessage message) {
+            Log.d("dh", "ChatMessageAdapter.ReceiveImageHolder.bind()");
             ImgView.setImageBitmap(message.getBitmap());
             textMessage.setText(message.getMessage());
         }

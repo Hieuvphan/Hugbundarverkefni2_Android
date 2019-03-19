@@ -2,6 +2,7 @@ package hi.hugbo.verywowchat.entities;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.InputStream;
 
@@ -19,6 +20,7 @@ public class ResourceContent {
     private String file_type;
 
     public ResourceContent(InputStream file, String type) {
+        Log.d("dh", "ResourceContent()");
         filestream = file;
         file_type = type;
     }
