@@ -41,9 +41,17 @@ import hi.hugbo.verywowchat.Adapters.SectionsPagerAdapter;
  * */
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
+    /**
+     * This activity has only 1 widget ViewPager that displays different fragments
+     * based on the current tab selected
+     * */
+    private ViewPager mViewPager;
 
+    /**
+     * This adapter is responsible for calling the correct
+     * fragment based on what tab is selected
+     * */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager; // will display our fragments
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,21 +91,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         /** ----------------------------------------------------------------------------------------
          *  --------------------------------- other stuff ------------------------------------------
          *  ----------------------------------------------------------------------------------------*/
-/*
-        // get the stored data about the user
-        final SharedPreferences UserInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
-        // get a reference to the text view that will hold the greeting and set the user's name into the greeting
-        TextView userGreeting = findViewById(R.id.userGreeting);
-        userGreeting.setText("Welcome "+UserInfo.getString("displayname","Ups ERROR!"));
-
-        // get a reference to the logout button and give it the functionality needed to log the user out when its clicked
-        Button LogoutBtn = findViewById(R.id.btnLogoutUser);
-        LogoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogOutUser(UserInfo.edit());
-            }
-        });*/
     }
 
     public static Intent newIntent(Context packageContext) {
@@ -142,7 +135,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         // based on what Item the user choose we start the appropriate activity
         if (id == R.id.account_settings) {
-
+            startActivity(AccountSettingsActivity.newIntent(this));
         } else if (id == R.id.create_new_chat_room) {
             Intent intent = new Intent(this,CreateChatroomActivity.class);
             startActivity(intent);

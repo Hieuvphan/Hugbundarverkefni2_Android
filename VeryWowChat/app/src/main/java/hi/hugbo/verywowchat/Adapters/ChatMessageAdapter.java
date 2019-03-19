@@ -160,7 +160,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
             textMessage.setText(message.getMessage());
         }
     }
-
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder{
 
         private TextView textMessage;

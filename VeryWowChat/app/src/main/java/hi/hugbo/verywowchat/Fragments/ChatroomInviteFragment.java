@@ -17,6 +17,9 @@ import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.controllers.R;
 
+/**
+ * This fragment is an independent component for inviting a member to a chatroom
+ */
 public class ChatroomInviteFragment extends Fragment {
 
     public ChatroomInviteFragment() {
@@ -30,6 +33,11 @@ public class ChatroomInviteFragment extends Fragment {
     EditText edit_chatroom_invitee;
     Button btn_chatroom_invite;
 
+    /**
+     * Create an instance of ChatroomInviteFragment
+     * @param chatroomName the chatroom that users will be invited to
+     * @return a new instance of ChatroomInviteFragment
+     */
     public static ChatroomInviteFragment newInstance(String chatroomName){
         ChatroomInviteFragment fragment = new ChatroomInviteFragment();
 
@@ -45,14 +53,18 @@ public class ChatroomInviteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_invite_member, container, false);
 
+        // fetch the widgets
         edit_chatroom_invitee = rootView.findViewById(R.id.edit_chatroom_invitee);
         btn_chatroom_invite = rootView.findViewById(R.id.btn_chatroom_invite);
 
+        // fetch the user token
         final Context context = rootView.getContext();
         SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
         final String token = userInfo.getString("token","n/a");
 
+        // fetch the chatroom name
         mChatroomName = getArguments().getString(CHATROOM_NAME);
+        // when button is pressed, attempt to send an invite to the given user
         btn_chatroom_invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     /**
      * The Registration form consists of 6 widgets,
-     * and we need to have referances to them so we could work with them.
+     * and we need to have references to them so we could work with them.
      * the letter 'm' in front of the variable indicates that this is a member of this classes activity
      * */
     private TextView mRegisterUsername;
@@ -65,12 +65,21 @@ public class RegisterActivity extends AppCompatActivity {
         mRegisterPasswordRepeat = findViewById(R.id.edit_register_password_repeat);
         mRegisterEmail = findViewById(R.id.edit_register_email);
 
-        /* Good practice to reference a object and then assign a listener to it.
-        *  when the user clicks on the register button we will first check if the
-        *  form is not empty then the form data will be mapped and passed to the api_controller
-        *  to make the HTTP request */
+        /*
+         *Good practice to reference a object and then assign a listener to it.
+         *when the user clicks on the register button we will first check if the
+         *form is not empty then the form data will be mapped and passed to the api_controller
+         *to make the HTTP request
+         **/
         mBtnRegister = findViewById(R.id.btn_register_submit);
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
+            /*
+             * !!!PLEASE NOTE!!!
+             *The reason why this onClick function has all the code in it and not delegated
+             *to a service f.x is that most of the functionality f.x like Showing Toast, storing user info in sharedpreferances
+             *and starting new activity happens in a Activity the only thing that can be delegated to the service is
+             *the api call then it would return something and you have to implement somekind of control flow based of the data received
+             **/
             @Override
             public void onClick(View v) {
                 // if the user left field or fields empty we dont make the HTTP Request
@@ -96,16 +105,20 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("passwordReap",mRegisterPasswordRepeat.getText().toString());
                 params.put("userName",mRegisterUsername.getText().toString());
 
-                /* Send the HTTP request for Registration through the api_caller and then map the object
-                 *  correctly based of the status code */
+                /*
+                 *Send the HTTP request for Registration through the api_caller and then map the object
+                 *correctly based of the status code
+                 **/
                 try {
                     // Make the Http Request
                     Map<String, String> result = api_caller.HttpRequest("register","POST","",params);
                     // Parse HTTP Status code
                     int status = Integer.parseInt(result.get("status"));
 
-                    /* If status code is 204 from the API thats means the request was successful and
-                     * no content was returned */
+                    /*
+                     *If status code is 204 from the API thats means the request was successful and
+                     *no content was returned
+                     **/
                     if(status == 204) {
                         // display a message
                         Toast.makeText(getApplicationContext(),"New User has been Created ! \nplease visit your email address for validation",Toast.LENGTH_LONG).show();
@@ -131,8 +144,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     public static Intent newIntent(Context packageContext) {

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +40,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         // if the position is 1 then we display User Chat Fragment
         else if(position == 1) {
+            // list of chatrooms I am member/admin/owner of
             return MyChatroomListFragment.newInstance();
         }
         // else its we display the public chat fragment
         else {
-            //return PlaceholderFragment.newInstance(position + 1);
+            // search for chatrooms you are not a member of
             return SearchChatroomListFragment.newInstance();
         }
     }
@@ -69,8 +69,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
 
         /**
-         * Returns a new instance of this fragment for the given section
-         * number.
+         * Returns a new instance of this fragment for the given section  number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();

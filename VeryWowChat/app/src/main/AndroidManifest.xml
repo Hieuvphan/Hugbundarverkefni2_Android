@@ -15,9 +15,10 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AccountSettingsActivity"
+            android:noHistory="true"></activity>
         <activity
             android:name=".HomePageActivity"
-            android:label="@string/title_activity_home_page"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ChatRoomMessageActivity"
@@ -35,7 +36,6 @@
             android:noHistory="true" />
         <activity android:name=".CreateChatroomActivity" />
         <activity android:name=".ChatroomInviteActivity" />
-        <activity android:name=".MyChatroomsActivity" />
         <activity android:name=".NotMemberManageChatroomActivity" />
         <activity android:name=".OwnerManageChatroomActivity" />
         <activity android:name=".AdminManageChatroomActivity" />
