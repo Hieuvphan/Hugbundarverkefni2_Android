@@ -71,6 +71,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
                         resp_body.getString("ownerUsername"),
                         resp_body.getLong("created"),
                         resp_body.getLong("lastMessageReceived"),
+                        resp_body.getLong("lastRead"),
                         tagList,
                         resp_body.getString("userRelation")
                 );
@@ -133,6 +134,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
                         resp_body.getString("ownerUsername"),
                         resp_body.getLong("created"),
                         resp_body.getLong("lastMessageReceived"),
+                        resp_body.getLong("lastRead"),
                         tagList,
                         resp_body.getString("userRelation")
                 );
@@ -185,6 +187,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
                         resp_body.getString("ownerUsername"),
                         resp_body.getLong("created"),
                         resp_body.getLong("lastMessageReceived"),
+                        resp_body.getLong("lastRead"),
                         tagList,
                         resp_body.getString("userRelation")
                 );
@@ -234,6 +237,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
                             c.getString("ownerUsername"),
                             c.getLong("created"),
                             c.getLong("lastMessageReceived"),
+                            c.getLong("lastRead"),
                             tagList,
                             c.getString("userRelation")
                     ));
@@ -289,6 +293,7 @@ public class ChatroomServiceImplementation implements ChatroomService {
                             c.getString("ownerUsername"),
                             c.getLong("created"),
                             c.getLong("lastMessageReceived"),
+                            c.getLong("lastRead"),
                             tagList,
                             c.getString("userRelation")
                     ));
