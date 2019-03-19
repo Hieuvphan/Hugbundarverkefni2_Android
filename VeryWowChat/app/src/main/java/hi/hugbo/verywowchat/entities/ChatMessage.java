@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * @Author Róman
  * When we receive a message from API we map that JSON object into this POJO
- * */
+ */
 public class ChatMessage {
     // Username of the sender
     private String Username;
@@ -20,30 +20,28 @@ public class ChatMessage {
     // indicates if this message was send by this user ( TO display his messages on right side)
     private Boolean MyMessage;
 
-    public ChatMessage(String username,String displayName,String message,int timeStamp, String OwnerOfThisAcc) {
+    public ChatMessage(String username, String displayName, String message, int timeStamp, String OwnerOfThisAcc) {
         Username = username;
         DisplayName = displayName;
-        Message=message;
+        Message = message;
         TimeStamp = timeStamp;
         Bitmap = null;
-        if(username.equals(OwnerOfThisAcc)){
+        if (username.equals(OwnerOfThisAcc)) {
             MyMessage = true;
-        }
-        else {
+        } else {
             MyMessage = false;
         }
     }
 
-    public ChatMessage(String username,String displayName,String message,Bitmap img,int timeStamp, String OwnerOfThisAcc) {
+    public ChatMessage(String username, String displayName, String message, Bitmap img, int timeStamp, String OwnerOfThisAcc) {
         Username = username;
         DisplayName = displayName;
-        Message=message;
+        Message = message;
         TimeStamp = timeStamp;
         Bitmap = img;
-        if(username.equals(OwnerOfThisAcc)){
+        if (username.equals(OwnerOfThisAcc)) {
             MyMessage = true;
-        }
-        else {
+        } else {
             MyMessage = false;
         }
     }
@@ -51,6 +49,7 @@ public class ChatMessage {
     public void setBitmap(Bitmap img) {
         Bitmap = img;
     }
+
     public String getMessage() {
         return Message;
     }
