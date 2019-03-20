@@ -42,13 +42,12 @@ import static android.support.v4.content.ContextCompat.getSystemService;
  */
 public class MyChatroomListFragment extends Fragment {
 
-    private final String CHANNEL_ID = "USER_CHAT";
+    private final String CHANNEL_ID = "USER_CHAT"; // channel name that the notifications are sent to
+    private Handler mHandler; // Task handler that will be used to poll chat updates
+    private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance(); // chat service to make http reuqests
+    private SharedPreferences mUserInfo; //  stored user info
 
     private List<Chatroom> mChatrooms;
-    private Handler mHandler;
-    private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance();
-    private SharedPreferences mUserInfo; // user info
-
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
     private MyChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
@@ -133,6 +132,12 @@ public class MyChatroomListFragment extends Fragment {
      * -------------------------------Roman's Stuff here ------------------------------------------
      * --------------------------------------------------------------------------------------------*/
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(PollNotifications);
+    }
+
     /**
      * @Author Róman
      * This is the polling for notifications if a chatroom that a user
@@ -154,11 +159,9 @@ public class MyChatroomListFragment extends Fragment {
                     // check if the chatroom recived new message
                     if(mChatrooms.get(i).getLastRead() < updatedChat.getLastMessageReceived()){
                       // update the chat
-                      Log.d("wtf",mChatrooms.get(i).getLastRead()+" before update");
                       mChatrooms.get(i).Update(updatedChat);
-                        Log.d("wtf",mChatrooms.get(i).getLastRead()+" after update");
                       // display the  notification
-                      MakePopUpMessage(mChatrooms.get(i).getChatroomName(),mChatrooms.get(i).getDisplayName());
+                      MakePopUpMessage(i,mChatrooms.get(i).getChatroomName(),mChatrooms.get(i).getDisplayName());
                     }
                 }
             }
@@ -166,7 +169,19 @@ public class MyChatroomListFragment extends Fragment {
         }
     };
 
-    public void MakePopUpMessage(String chatID,String chatName) {
+    /**
+     * <pre>
+     *     Usage : MakePopUpMessage(id,chatID,chatName)
+     *       For : id is a Int
+     *             chatID is a string
+     *             chatName is a string
+     *     After : creates a new notification on the phone under channel CHANNEL_ID
+     * </pre>
+     * @param id chatID client side
+     * @param chatID chatID server side
+     * @param chatName chatroom name
+     */
+    public void MakePopUpMessage(int id,String chatID,String chatName) {
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, ChatRoomMessageActivity.newIntent(getContext(),chatID), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
@@ -180,7 +195,7 @@ public class MyChatroomListFragment extends Fragment {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
         //  notificationId is a unique int for each notification that you must define
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(id, builder.build());
     }
 
     /**

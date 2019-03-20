@@ -1,6 +1,7 @@
 package hi.hugbo.verywowchat.Models;
 
 import android.graphics.Bitmap;
+import android.util.ArrayMap;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -266,6 +268,11 @@ public class ChatRoomMessageService {
 
 
     public void NotifyRead(String chatID,String token) throws IOException, JSONException {
-       api_caller.HttpRequest("auth/chatroom/"+chatID+"/markread","POST",token,null);
+        /**
+         * OKHTTP wants a body when a post request is made so we send something
+         * */
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("message", "Dummy");
+       api_caller.HttpRequest("auth/chatroom/"+chatID+"/markread","POST",token,params);
     }
 }
