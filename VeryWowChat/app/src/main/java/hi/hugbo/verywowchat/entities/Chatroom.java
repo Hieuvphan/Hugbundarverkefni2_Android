@@ -67,6 +67,18 @@ public class Chatroom {
         this.userRelation = userRelation;
     }
 
+    public void Update(Chatroom updatedChat) {
+       //setChatroomName(updatedChat.getChatroomName());
+       //setDisplayName(updatedChat.getDisplayName());
+       //setListed(updatedChat.getListed());
+       //setInvited_only(updatedChat.getInvited_only());
+       //setOwnerUsername(updatedChat.getOwnerUsername());
+       //setCreated(updatedChat.getCreated());
+       setLastMessageReceived(updatedChat.getLastMessageReceived());
+       setLastRead(updatedChat.getLastRead());
+       //setTags(updatedChat.getTags());
+       //setUserRelation(updatedChat.getUserRelation());
+    }
     @Override
     public String toString(){
 
@@ -131,6 +143,54 @@ public class Chatroom {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public Long getLastRead() {
+        return lastRead;
+    }
+
+    public void setChatroomName(String chatroomName) {
+        this.chatroomName = chatroomName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setListed(Boolean listed) {
+        this.listed = listed;
+    }
+
+    public void setInvited_only(Boolean invited_only) {
+        this.invited_only = invited_only;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
+
+    public void setCreated(Long created) {
+        this.created = created;
+    }
+
+    public void setLastMessageReceived(Long lastMessageReceived) {
+        this.lastMessageReceived = lastMessageReceived;
+    }
+
+    public void setLastRead(Long lastRead) {
+        this.lastRead = lastRead;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public void setUserRelation(String userRelation) {
+        this.userRelation = userRelation;
     }
 
     public String getTagString(){

@@ -12,6 +12,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.os.Handler;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +111,17 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         // Assign references to widgets that we use
         mUserTextMSG = findViewById(R.id.edit_chatroom_sendmsg);
+        mUserTextMSG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    mChatCaller.NotifyRead(mChatRoomID,mUserInfo.getString("token","n/a"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogOutUser();
+                }
+            }
+        });
 
 
         /* mBtnSendTxtMSG will listen to be clicked on, when it will be clicked it will
