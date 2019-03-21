@@ -292,13 +292,36 @@ public class ChatRoomMessageService {
      *     Usage : GetFriends(userName,token)
      *       For : username is a string
      *             token is a string
-     *     After : Performs a HTTP GET Request on
+     *     After : Performs a HTTP GET Request on /auth/user/userName/friends and
+     *             parses the resposnse to List<Friends> and returns it.
      * </pre>
-     * @param userName
-     * @param token
-     * @return
+     * @param userName users username
+     * @param token users json webtoken
+     * @return returns a list of users friends
      */
     public List<Friend> GetFriends(String userName,String token){
-       return  null;
+        List<Friend> friends = new ArrayList<>();
+        try {
+            Map<String,String> friends_respsonse = api_caller.HttpRequest("auth/user/"+userName+"/friends","GET",token,null);
+            // Parse the HTTP status code
+            int status = Integer.parseInt(friends_respsonse.get("status"));
+            // if the status code is anything but 200 we return null
+            if(status != 200) { return null; }
+            JSONArray friends_json = new JSONArray(friends_respsonse.get("response"));
+
+            for(int i = 0; i < friends_json.length(); i++) {
+                friends.add(new Friend(
+                   friends_json.getJSONObject(i).getString("username"),
+                   friends_json.getJSONObject(i).getString("displayName")
+                ));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return friends;
     }
 }

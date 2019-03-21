@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.Adapters;
 
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,8 +46,8 @@ public class FriendsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        Friend firend = mFriends.get(i);
-        ((FriendItemHolder) viewHolder).bind(firend);
+        Friend friend = mFriends.get(i);
+        ((FriendItemHolder) viewHolder).bind(friend);
     }
 
     @Override

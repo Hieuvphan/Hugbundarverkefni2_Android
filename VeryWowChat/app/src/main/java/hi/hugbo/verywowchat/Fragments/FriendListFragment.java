@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class FriendListFragment extends Fragment {
             - StaggeredGridLayoutManager shows items in a staggered grid.
          */
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        layoutManager.setStackFromEnd(true);
+        layoutManager.setStackFromEnd(false);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.friendsList);
         recyclerView.setLayoutManager(layoutManager);
@@ -66,7 +67,7 @@ public class FriendListFragment extends Fragment {
         /*-----------------------------------------------------------------------------------------
          * ---------------------------Recycle view END---------------------------------------------
          * ----------------------------------------------------------------------------------------*/
-
+        GetFriends();
         return rootView;
     }
 
@@ -79,7 +80,13 @@ public class FriendListFragment extends Fragment {
      * </pre>
      */
     public void GetFriends() {
-
+       List<Friend> newFrieds = mChatCaller.GetFriends(mUserInfo.getString("username","N/A"),mUserInfo.getString("token","n/a"));
+       if(newFrieds == null) {
+           return;
+       }
+       int currSize = mFriends.size();
+       mFriends.addAll(newFrieds);
+       mFriendsAdapter.notifyItemRangeInserted(currSize,mFriends.size());
     }
 
     public static FriendListFragment newInstance() {
