@@ -26,7 +26,7 @@ public class Chatroom {
     Long lastRead;
     List<String> tags;
     String userRelation;
-
+    Boolean iAmRead;
 
     /**
      * @param chatroomName
@@ -65,6 +65,7 @@ public class Chatroom {
         this.lastRead = lastRead;
         this.tags = tags;
         this.userRelation = userRelation;
+        this.iAmRead = false;
     }
 
     public void Update(Chatroom updatedChat) {
@@ -78,7 +79,9 @@ public class Chatroom {
        setLastRead(updatedChat.getLastRead());
        //setTags(updatedChat.getTags());
        //setUserRelation(updatedChat.getUserRelation());
+       this.iAmRead = true;
     }
+
     @Override
     public String toString(){
 
@@ -191,6 +194,10 @@ public class Chatroom {
 
     public void setUserRelation(String userRelation) {
         this.userRelation = userRelation;
+    }
+
+    public Boolean getiAmRead() {
+        return iAmRead;
     }
 
     public String getTagString(){
