@@ -18,22 +18,7 @@ public class GlobalEnviroments {
     public static GlobalEnviroments getInstance() { return ourInstance; }
     private GlobalEnviroments() { }
 
-    /**
-     * Set the local network IP address of your computer here!
-     *
-     * TODO: remember to change this!
-     *
-     * On macOS, run:
-     *
-     *   ifconfig | grep "inet" -
-     */
-    private final String HOST = "10.0.2.2"; // "130.208.151.152"
-
-    // Port of server
-    private final int PORT = 9090;
-
-
-    private final String BASEURL = "http://" + HOST + ":" + PORT + "/";
+    private final String BASEURL = "http://10.0.2.2:9090/";
 
 
     public String getAPI_BASEURL() {

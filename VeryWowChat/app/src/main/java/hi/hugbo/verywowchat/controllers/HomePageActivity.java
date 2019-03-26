@@ -21,55 +21,60 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import hi.hugbo.verywowchat.Adapters.SectionsPagerAdapter;
+import hi.hugbo.verywowchat.Adapters.HomePagerAdapter;
 
 /**
- * @Author Róman
- * This activity displays the user's home screen here he can swipe or pick different tabs
- * to display the desired content on top of that he can open his a side menu that displays
- * his information and the option to change it along other settings.
+ * @Author Róman This activity displays the user's home screen here he can swipe
+ *         or pick different tabs to display the desired content on top of that
+ *         he can open his a side menu that displays his information and the
+ *         option to change it along other settings.
  *
- * This activities layout is quite big and complex its good to understand what is happening when its inflated.
- * 1. root activity (activity_user_home_page) is what allows us to use the side bar functionality
- *    and in it there are 2 references to other layouts (activity_home_page , nav_header_user_home_page)
- *    and 1 reference to a menu layout (activity_user_home_page_drawer) that will be inflated as well
- * 2. activity_home_page layout allows you to swipe left,right or choose a tab from the tab bar,
- *    the layout holds ViewPager widget which will display a fragment based on what tab the user has selected
- *    and that chosen fragment could have even more layouts
- * 3. nav_header_user_home_page layout is the side bar that will be displayed when the user chooses to open
- *    it by clicking the top left button, this layout does not hold the options that the user can choose that
- *    is in the activity_user_home_page_drawer
- * */
-public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+ *         This activities layout is quite big and complex its good to
+ *         understand what is happening when its inflated. 1. root activity
+ *         (activity_user_home_page) is what allows us to use the side bar
+ *         functionality and in it there are 2 references to other layouts
+ *         (activity_home_page , nav_header_user_home_page) and 1 reference to a
+ *         menu layout (activity_user_home_page_drawer) that will be inflated as
+ *         well 2. activity_home_page layout allows you to swipe left,right or
+ *         choose a tab from the tab bar, the layout holds ViewPager widget
+ *         which will display a fragment based on what tab the user has selected
+ *         and that chosen fragment could have even more layouts 3.
+ *         nav_header_user_home_page layout is the side bar that will be
+ *         displayed when the user chooses to open it by clicking the top left
+ *         button, this layout does not hold the options that the user can
+ *         choose that is in the activity_user_home_page_drawer
+ */
+public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     /**
      * This activity has only 1 widget ViewPager that displays different fragments
      * based on the current tab selected
-     * */
+     */
     private ViewPager mViewPager;
 
     /**
-     * This adapter is responsible for calling the correct
-     * fragment based on what tab is selected
-     * */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+     * This adapter is responsible for calling the correct fragment based on what
+     * tab is selected
+     */
+    private HomePagerAdapter mHomePagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("dh", "HomePageActivity.onCreate()");
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home_page); // inflate the BIG ASS LAYOUT
 
-        /**----------------------------------------------------------------------------------------
-         *  All the stuff needed to make the side nav bar and the tab's work
-         * ----------------------------------------------------------------------------------------*/
+        /**
+         * ----------------------------------------------------------------------------------------
+         * All the stuff needed to make the side nav bar and the tab's work
+         * ----------------------------------------------------------------------------------------
+         */
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         drawer.addDrawerListener(new RightMenuListener());
         toggle.syncState();
@@ -77,13 +82,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        // Create the adapter that will return a fragment for each of the three  primary sections of the activity
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Create the adapter that will return a fragment for each of the three primary
+        // sections of the activity
+        mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mHomePagerAdapter);
 
         // NOTE ! getting the 3 tabs we have made
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -92,15 +97,20 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        /* ----------------------------------------------------------------------------------------
-         *  --------------------------------- other stuff ------------------------------------------
-         *  ----------------------------------------------------------------------------------------*/
+        /*
+         * -----------------------------------------------------------------------------
+         * ----------- --------------------------------- other stuff
+         * ------------------------------------------
+         * -----------------------------------------------------------------------------
+         * -----------
+         */
     }
 
     public static Intent newIntent(Context packageContext) {
         Log.d("dh", "HomePageActivity.newIntent()");
         Intent i = new Intent(packageContext, HomePageActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // clear the history
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return i;
     }
 
@@ -111,14 +121,16 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
      *     After : clears all the keys,value pairs in the Editor passed,
      *             starts LoginActivity class and clears all activities on the stack including the current one
      * </pre>
+     * 
      * @param spreferencesEditor SharedPreferences.Editor
      */
     public void LogOutUser(SharedPreferences.Editor spreferencesEditor) {
         Log.d("dh", "HomePageActivity.LogOutUser()");
         spreferencesEditor.clear();
         spreferencesEditor.commit();
-        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -132,8 +144,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
             super.onBackPressed();
         }
     }
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -151,12 +161,12 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
             Intent intent = new Intent(this,CreateChatroomActivity.class);
             startActivity(intent);
         } else if (id == R.id.pending_requests) {
-            // TODO: implement?
-        } else if (id == R.id.dah38_debug) {
-            startActivity(new Intent(this, Dah38DebugActivity.class));
-        } else {
-            Log.d("dh", "Missing handling for: " + item.getTitle() + " (" + id + ")");
-        }
+            Intent intent = new Intent(this,ManageInvitesActivity.class);
+            startActivity(intent);
+        }  else if (id == R.id.dah38_debug) {
+        startActivity(new Intent(this, Dah38DebugActivity.class));
+    } else {
+        Log.d("dh", "Missing handling for: " + item.getTitle() + " (" + id + ")");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
