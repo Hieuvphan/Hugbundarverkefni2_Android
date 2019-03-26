@@ -19,6 +19,7 @@ import java.util.Map;
 
 import hi.hugbo.verywowchat.entities.ChatMessage;
 import hi.hugbo.verywowchat.entities.Chatroom;
+import hi.hugbo.verywowchat.entities.Friend;
 import hi.hugbo.verywowchat.entities.ResourceContent;
 
 /**
@@ -38,7 +39,6 @@ public class ChatRoomMessageService {
     }
     private ChatRoomMessageService() {
     }
-
 
     /**
      * <pre>
@@ -267,12 +267,23 @@ public class ChatRoomMessageService {
     }
 
 
+    /**
+     * <pre>
+     *     Usage : NotifyRead(chatID,token)
+     *       For : chatID is a string
+     *             token is a string
+     *     After : performs a HTTP POST Request to auth/chatroom/chatID/markread
+     *             to mark that the user has read the message in the chatroom.
+     * </pre>
+     * @param chatID chatroom id
+     * @param token users jwt
+     */
     public void NotifyRead(String chatID,String token) throws IOException, JSONException {
         /**
          * OKHTTP wants a body when a post request is made so we send something
          * */
         Map<String, String> params = new HashMap<String, String>();
         params.put("message", "Dummy");
-       api_caller.HttpRequest("auth/chatroom/"+chatID+"/markread","POST",token,params);
+        api_caller.HttpRequest("auth/chatroom/"+chatID+"/markread","POST",token,params);
     }
 }
