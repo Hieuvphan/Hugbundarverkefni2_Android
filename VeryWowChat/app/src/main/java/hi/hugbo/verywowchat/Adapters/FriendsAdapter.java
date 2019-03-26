@@ -1,7 +1,11 @@
 package hi.hugbo.verywowchat.Adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import hi.hugbo.verywowchat.Models.UserService;
+import hi.hugbo.verywowchat.controllers.LoginActivity;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.ChatMessage;
 import hi.hugbo.verywowchat.entities.Friend;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * @Author Róman
@@ -63,22 +72,53 @@ public class FriendsAdapter extends RecyclerView.Adapter {
 
         private TextView textFriendName;
         private ImageButton btnDeleteFriend;
+        // Service that handles our api calls
+        private UserService mUserService;
 
         public FriendItemHolder(View itemView) {
             super(itemView);
             textFriendName = itemView.findViewById(R.id.txtUserName);
             btnDeleteFriend = itemView.findViewById(R.id.bntRemoveFriend);
+            mUserService = UserService.getInstance();
         }
 
-        public void bind(Friend friend) {
+        public void bind(final Friend friend) {
             textFriendName.setText(friend.getDisplayName());
 
+            /**
+             * When the user clicks on the X button, we will display a snack back that
+             * asks the user if he is sure if he wants to remove his friend from his friends list
+             * */
             btnDeleteFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("wtf","hello");
+                    final SharedPreferences UserInfo = v.getContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
+                    ShowSnackBar(friend.getUsername(),friend.getDisplayName(),UserInfo.getString("token","N/A"));
                 }
             });
         }
+
+        public void ShowSnackBar(final String friendUserName, final String friendDisplayName, final String token){
+            /*
+             * A Snackbar is basically like a Toast its a pop up that is displayed for a short period of time
+             * it is even ment to replace the Toast in the future, the reason why we use Snackbar here over toast is
+             * the Snackbar has added features such as displaying buttons or even custom layouts in the pop-up
+             * which we want in this case.
+             *
+             * We want to display this Snack for a short time, since the user should be 100% sure that he wants to remove his friend.
+             * */
+            Snackbar snackbar = Snackbar.make(btnDeleteFriend,"Are you sure you want remove "+friendDisplayName+" from you're friends?",Snackbar.LENGTH_LONG);
+
+            // Add a button in the Snack and give it the functionality to call the API to remove his friend.
+            snackbar.setAction("YES Remove", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String removedFriend = mUserService.RemoveFriend(friendUserName,token);
+                    Toast.makeText(v.getContext(),removedFriend,Toast.LENGTH_LONG).show();
+                }
+            });
+            snackbar.show();
+        }
+
     }
 }

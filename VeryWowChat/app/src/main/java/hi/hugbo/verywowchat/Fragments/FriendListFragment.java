@@ -18,6 +18,7 @@ import java.util.List;
 
 import hi.hugbo.verywowchat.Adapters.FriendsAdapter;
 import hi.hugbo.verywowchat.Models.ChatRoomMessageService;
+import hi.hugbo.verywowchat.Models.UserService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Friend;
 
@@ -30,7 +31,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class FriendListFragment extends Fragment {
 
-    private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance();// want only a singleton of this instance
+    private UserService mUserService = UserService.getInstance();// want only a singleton of this instance
     private FriendsAdapter mFriendsAdapter;
     private List<Friend> mFriends;
     private Context mContext;
@@ -67,8 +68,13 @@ public class FriendListFragment extends Fragment {
         /*-----------------------------------------------------------------------------------------
          * ---------------------------Recycle view END---------------------------------------------
          * ----------------------------------------------------------------------------------------*/
-        GetFriends();
         return rootView;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        GetFriends();
     }
 
     /**
@@ -80,7 +86,7 @@ public class FriendListFragment extends Fragment {
      * </pre>
      */
     public void GetFriends() {
-       List<Friend> newFrieds = mChatCaller.GetFriends(mUserInfo.getString("username","N/A"),mUserInfo.getString("token","n/a"));
+       List<Friend> newFrieds = mUserService.GetFriends(mUserInfo.getString("username","N/A"),mUserInfo.getString("token","n/a"));
        if(newFrieds == null) {
            return;
        }

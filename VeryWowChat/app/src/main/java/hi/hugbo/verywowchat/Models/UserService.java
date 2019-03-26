@@ -4,11 +4,16 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import hi.hugbo.verywowchat.entities.Friend;
 
 /**
  * @Author Róman
@@ -71,5 +76,77 @@ public class UserService {
            JSONObject errorMsg = new JSONObject(result.get("response"));
            throw new Exception(errorMsg.get("error").toString());
         }
+    }
+
+    /**
+     * <pre>
+     *     Usage : GetFriends(userName,token)
+     *       For : username is a string
+     *             token is a string
+     *     After : Performs a HTTP GET Request on /auth/user/userName/friends and
+     *             parses the resposnse to List<Friends> and returns it.
+     * </pre>
+     * @param userName users username
+     * @param token users json webtoken
+     * @return returns a list of users friends
+     */
+    public List<Friend> GetFriends(String userName, String token){
+        List<Friend> friends = new ArrayList<>();
+        try {
+            Map<String,String> friends_respsonse = api_caller.HttpRequest("auth/user/"+userName+"/friends","GET",token,null);
+            // Parse the HTTP status code
+            int status = Integer.parseInt(friends_respsonse.get("status"));
+            // if the status code is anything but 200 we return null
+            if(status != 200) { return null; }
+            JSONArray friends_json = new JSONArray(friends_respsonse.get("response"));
+
+            for(int i = 0; i < friends_json.length(); i++) {
+                friends.add(new Friend(
+                        friends_json.getJSONObject(i).getString("username"),
+                        friends_json.getJSONObject(i).getString("displayName")
+                ));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return friends;
+    }
+
+    /**
+     * <pre>
+     *    Usage : RemoveFriend(friendUserName, token)
+     *     For  : friendUserName is a string
+     *            token is string
+     *    After : Performs a HTTP DELETE Request on /auth/user/friends/friendUserName
+     *            and returns null if the Request was sucessfull
+     * </pre>
+     * @param friendUserName username of the friend we want to delete.
+     * @param token users json web token.
+     */
+    public String RemoveFriend(String friendUserName,String token){
+        String removed = null;
+        try {
+            Map<String,String> removeFriend = api_caller.HttpRequest("auth/user/friends/"+friendUserName,"DELETE",token,null);
+            // Parse the HTTP status code
+            int status = Integer.parseInt(removeFriend.get("status"));
+            // if the status code is anything but 204 we return null
+            if(status == 204) { return "Your friend has been removed."; }
+            // if we made it here we received an error
+            JSONObject errorJson = new JSONObject(removeFriend.get("response"));
+            if(errorJson.has("error")){
+                removed = errorJson.getString("error");
+            }
+            else {
+                removed = "unknown error occured !";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return removed;
     }
 }
