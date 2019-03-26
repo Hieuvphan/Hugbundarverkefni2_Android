@@ -100,9 +100,6 @@ public class MyChatroomListFragment extends Fragment {
          * --------------------------------- RecycleView INIT END ----------------------------------
          * -----------------------------------------------------------------------------------------*/
 
-        // fetch the chatrooms
-        // fetchChatrooms();
-
         /* Start the Polling for notifications */
         mHandler = new Handler();
         mHandler.post(PollNotifications);// Start the initial runnable task by posting through the handler

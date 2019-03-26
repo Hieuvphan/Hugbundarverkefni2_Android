@@ -21,9 +21,9 @@ import hi.hugbo.verywowchat.controllers.R;
  * The SectionsPagerAdapter responsibility is to return a fragment corresponding to
  * one of the tabs that the user selected.
  * */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class HomePagerAdapter extends FragmentPagerAdapter {
 
-    public SectionsPagerAdapter(FragmentManager fm) {
+    public HomePagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

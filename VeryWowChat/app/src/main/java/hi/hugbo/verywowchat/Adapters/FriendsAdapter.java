@@ -80,6 +80,7 @@ public class FriendsAdapter extends RecyclerView.Adapter {
             textFriendName = itemView.findViewById(R.id.txtUserName);
             btnDeleteFriend = itemView.findViewById(R.id.bntRemoveFriend);
             mUserService = UserService.getInstance();
+
         }
 
         public void bind(final Friend friend) {
@@ -93,12 +94,12 @@ public class FriendsAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     final SharedPreferences UserInfo = v.getContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
-                    ShowSnackBar(friend.getUsername(),friend.getDisplayName(),UserInfo.getString("token","N/A"));
+                    ShowSnackBar(friend,UserInfo.getString("token","N/A"));
                 }
             });
         }
 
-        public void ShowSnackBar(final String friendUserName, final String friendDisplayName, final String token){
+        public void ShowSnackBar(final Friend friend, final String token){
             /*
              * A Snackbar is basically like a Toast its a pop up that is displayed for a short period of time
              * it is even ment to replace the Toast in the future, the reason why we use Snackbar here over toast is
@@ -107,14 +108,17 @@ public class FriendsAdapter extends RecyclerView.Adapter {
              *
              * We want to display this Snack for a short time, since the user should be 100% sure that he wants to remove his friend.
              * */
-            Snackbar snackbar = Snackbar.make(btnDeleteFriend,"Are you sure you want remove "+friendDisplayName+" from you're friends?",Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(btnDeleteFriend,"Are you sure you want remove "+friend.getDisplayName()+" from you're friends?",Snackbar.LENGTH_LONG);
 
             // Add a button in the Snack and give it the functionality to call the API to remove his friend.
             snackbar.setAction("YES Remove", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String removedFriend = mUserService.RemoveFriend(friendUserName,token);
+                    String removedFriend = mUserService.RemoveFriend(friend.getUsername(),token);
                     Toast.makeText(v.getContext(),removedFriend,Toast.LENGTH_LONG).show();
+                    int friendToRemove =  mFriends.indexOf(friend);
+                    mFriends.remove(friendToRemove);
+                    notifyItemRemoved(friendToRemove);
                 }
             });
             snackbar.show();

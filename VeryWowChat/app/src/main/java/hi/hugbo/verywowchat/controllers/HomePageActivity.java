@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import hi.hugbo.verywowchat.Adapters.SectionsPagerAdapter;
+import hi.hugbo.verywowchat.Adapters.HomePagerAdapter;
 
 /**
  * @Author Róman
@@ -51,7 +51,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
      * This adapter is responsible for calling the correct
      * fragment based on what tab is selected
      * */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private HomePagerAdapter mHomePagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +63,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
          * ----------------------------------------------------------------------------------------*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.
+drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         drawer.addDrawerListener(new RightMenuListener());
@@ -75,11 +75,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
 
         // Create the adapter that will return a fragment for each of the three  primary sections of the activity
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mHomePagerAdapter);
 
         // NOTE ! getting the 3 tabs we have made
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -95,6 +95,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, HomePageActivity.class);
+        // clear the history
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return i;
     }
@@ -140,7 +141,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
             Intent intent = new Intent(this,CreateChatroomActivity.class);
             startActivity(intent);
         } else if (id == R.id.pending_requests) {
-
+            Intent intent = new Intent(this,ManageInvitesActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

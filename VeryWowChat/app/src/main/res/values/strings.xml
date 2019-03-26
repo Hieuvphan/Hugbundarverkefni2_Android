@@ -43,6 +43,10 @@
     <string name="join_chatroom">Join Chatroom</string>
     <string name="leave_chatroom">Leave Chatroom</string>
     <string name="invite_member">Invite Member</string>
+    <string name="friend_requests">Friend Requests</string>
+    <string name="member_invites">Member Invites</string>
+    <string name="admin_invites">Admin Invites</string>
+    <string name="manage_invites">Manage Invites and Requests</string>
 
     <string name="account_setting_header">Account Settings</string>
     <string name="account_setting_display_label">Display Name</string>
@@ -57,4 +61,7 @@
     <string name="channel_name">New Chat Notification</string>
     <string name="channel_description">Displays the new chat notifications in the very wow chat app</string>
     <string name="friend_list_item_text_view_content">Placeholder for username</string>
+
+    <string name="invite_accept">Accept</string>
+    <string name="invite_reject">Reject</string>
 </resources>
