@@ -35,6 +35,7 @@ public class GlobalEnviroments {
 
     private final String BASEURL = "http://" + HOST + ":" + PORT + "/";
 
+
     public String getAPI_BASEURL() {
         return BASEURL;
     }

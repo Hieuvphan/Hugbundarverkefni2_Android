@@ -133,7 +133,6 @@ public class API_caller {
         if (token == null) {
             token = "";
         }
-
         /*
          * Create the HTTP Request
          * We always send the empty token and body,

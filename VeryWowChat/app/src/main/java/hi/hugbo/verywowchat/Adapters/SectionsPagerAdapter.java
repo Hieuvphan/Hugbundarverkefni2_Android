@@ -104,8 +104,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             openChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: fix hardcoded chatID
-                    startActivity(ChatRoomMessageActivity.newIntent(getActivity(),"rruchat"));
+                    startActivity(ChatRoomMessageActivity.newIntent(getActivity(),"rruChat"));
                 }
             });
             return rootView;
