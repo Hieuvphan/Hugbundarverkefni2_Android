@@ -27,7 +27,7 @@ public class GlobalEnviroments {
      *
      *   ifconfig | grep "inet" -
      */
-    private final String HOST = "130.208.151.175"; // "130.208.151.152"
+    private final String HOST = "10.0.2.2"; // "130.208.151.152"
 
     // Port of server
     private final int PORT = 9090;
