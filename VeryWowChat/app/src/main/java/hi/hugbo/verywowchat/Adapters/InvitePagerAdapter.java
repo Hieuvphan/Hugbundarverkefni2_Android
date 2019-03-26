@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import hi.hugbo.verywowchat.Fragments.ChatroomAdminInvitesListFragment;
 import hi.hugbo.verywowchat.Fragments.ChatroomInvitesListFragment;
+import hi.hugbo.verywowchat.Fragments.FriendRequestsListFragment;
 import hi.hugbo.verywowchat.Fragments.MyChatroomListFragment;
 import hi.hugbo.verywowchat.Fragments.SearchChatroomListFragment;
 import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
@@ -38,7 +39,7 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
 
         // if the position is 0 then we display friend requests
         if(position == 0) {
-            return PlaceholderFragment.newInstance(position + 1);
+            return FriendRequestsListFragment.newInstance();
         }
         // if the position is 1 then we display chatroom membership invites
         else if(position == 1) {
