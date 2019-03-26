@@ -1,16 +1,10 @@
 package hi.hugbo.verywowchat.Fragments;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,15 +15,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.ChatroomInviteItemAdapter;
-import hi.hugbo.verywowchat.Adapters.MyChatroomItemAdapter;
+import hi.hugbo.verywowchat.Adapters.ChatroomAdminInviteItemAdapter;
+import hi.hugbo.verywowchat.Adapters.FriendRequestItemAdapter;
 import hi.hugbo.verywowchat.Models.ChatRoomMessageService;
 import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
-import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
-import hi.hugbo.verywowchat.controllers.LoginActivity;
+import hi.hugbo.verywowchat.Models.UserService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
+import hi.hugbo.verywowchat.entities.User;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -37,30 +31,38 @@ import static android.content.Context.MODE_PRIVATE;
  * This component is responsible for displaying chatrooms the user is a member/admin/owner of
  * refer to MyChatroomItemAdapter to see how individual chatrooms are handled
  */
-public class ChatroomInvitesListFragment extends Fragment {
+public class FriendRequestsListFragment extends Fragment {
 
     private SharedPreferences mUserInfo; //  stored user info
 
-    private List<Chatroom> mChatrooms;
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
-    private ChatroomInviteItemAdapter mChatroomAdapter; // adapter that will display the messages
+    private List<User> mUsers;
+    private UserService userService = UserService.getInstance();
+    private FriendRequestItemAdapter mFriendRequestItemAdapter;
 
     Context context;
 
-    public ChatroomInvitesListFragment(){
-        mChatrooms = new ArrayList<>();
+    public FriendRequestsListFragment(){
+        mUsers = new ArrayList<>();
     }
 
-    public static ChatroomInvitesListFragment newInstance(){
-        ChatroomInvitesListFragment fragment = new ChatroomInvitesListFragment();
+    public static FriendRequestsListFragment newInstance(){
+        FriendRequestsListFragment fragment = new FriendRequestsListFragment();
 
         return fragment;
     }
 
+    /**
+     * Here I'm using setUserVisibleHint instead of onResume as the member invite tab
+     * affects this tab, and since they are neighbours, this one won't be refreshed when
+     * appropriate
+     * @param isVisibleToUser
+     */
     @Override
-    public void onResume(){
-        super.onResume();
-        fetchChatrooms();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        // make sure this isn't called before onCreateView finishes
+        if(isVisibleToUser && context != null){
+            fetchChatrooms();
+        }
     }
 
     @Override
@@ -84,8 +86,8 @@ public class ChatroomInvitesListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // define and assign adapter for recycle view
-        mChatroomAdapter = new ChatroomInviteItemAdapter(mChatrooms);
-        recyclerView.setAdapter(mChatroomAdapter);
+        mFriendRequestItemAdapter = new FriendRequestItemAdapter(mUsers);
+        recyclerView.setAdapter(mFriendRequestItemAdapter);
 
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT END ----------------------------------
@@ -100,15 +102,15 @@ public class ChatroomInvitesListFragment extends Fragment {
         String token = userInfo.getString("token","n/a");
 
         try {
-            List<Chatroom> newChatrooms = chatroomService.getChatroomInvites(token);
+            List<User> newUsers = userService.getFriendRequests(token);
 
             // empty the list
-            mChatrooms.removeAll(mChatrooms);
+            mUsers.removeAll(mUsers);
             // fill with the new collection of chatrooms
-            mChatrooms.addAll(newChatrooms);
+            mUsers.addAll(newUsers);
             // make adapter refresh list
-            mChatroomAdapter.notifyDataSetChanged();
-            Toast.makeText(context.getApplicationContext(),"Chatrooms successfully fetched",Toast.LENGTH_LONG).show();
+            mFriendRequestItemAdapter.notifyDataSetChanged();
+            Toast.makeText(context.getApplicationContext(),"Friend requestors successfully fetched",Toast.LENGTH_LONG).show();
         } catch(Exception e) {
             Toast.makeText(context.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
             e.printStackTrace();

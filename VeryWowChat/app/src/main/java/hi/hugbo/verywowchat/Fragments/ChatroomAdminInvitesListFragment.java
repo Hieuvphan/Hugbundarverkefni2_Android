@@ -30,10 +30,6 @@ import static android.content.Context.MODE_PRIVATE;
  * refer to MyChatroomItemAdapter to see how individual chatrooms are handled
  */
 public class ChatroomAdminInvitesListFragment extends Fragment {
-
-    private final String CHANNEL_ID = "USER_CHAT"; // channel name that the notifications are sent to
-    private Handler mHandler; // Task handler that will be used to poll chat updates
-    private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance(); // chat service to make http reuqests
     private SharedPreferences mUserInfo; //  stored user info
 
     private List<Chatroom> mChatrooms;
@@ -103,7 +99,7 @@ public class ChatroomAdminInvitesListFragment extends Fragment {
         String token = userInfo.getString("token","n/a");
 
         try {
-            List<Chatroom> newChatrooms = chatroomService.getChatroomInvites(token);
+            List<Chatroom> newChatrooms = chatroomService.getChatroomAdminInvites(token);
 
             // empty the list
             mChatrooms.removeAll(mChatrooms);

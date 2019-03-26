@@ -1,17 +1,11 @@
 package hi.hugbo.verywowchat.Adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.LongDef;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +13,8 @@ import android.widget.Toast;
 import java.util.List;
 
 import hi.hugbo.verywowchat.Models.UserService;
-import hi.hugbo.verywowchat.controllers.LoginActivity;
 import hi.hugbo.verywowchat.controllers.R;
-import hi.hugbo.verywowchat.entities.ChatMessage;
-import hi.hugbo.verywowchat.entities.Friend;
+import hi.hugbo.verywowchat.entities.User;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -41,9 +33,9 @@ import static android.content.Context.MODE_PRIVATE;
 public class FriendsAdapter extends RecyclerView.Adapter {
 
     // holds all the friends we display on the screen
-    private List<Friend> mFriends;
+    private List<User> mFriends;
 
-    public FriendsAdapter(List<Friend> friends) {
+    public FriendsAdapter(List<User> friends) {
         mFriends = friends;
     }
 
@@ -55,7 +47,7 @@ public class FriendsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        Friend friend = mFriends.get(i);
+        User friend = mFriends.get(i);
         ((FriendItemHolder) viewHolder).bind(friend);
     }
 
@@ -83,7 +75,7 @@ public class FriendsAdapter extends RecyclerView.Adapter {
 
         }
 
-        public void bind(final Friend friend) {
+        public void bind(final User friend) {
             textFriendName.setText(friend.getDisplayName());
 
             /**
@@ -99,7 +91,7 @@ public class FriendsAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void ShowSnackBar(final Friend friend, final String token){
+        public void ShowSnackBar(final User friend, final String token){
             /*
              * A Snackbar is basically like a Toast its a pop up that is displayed for a short period of time
              * it is even ment to replace the Toast in the future, the reason why we use Snackbar here over toast is

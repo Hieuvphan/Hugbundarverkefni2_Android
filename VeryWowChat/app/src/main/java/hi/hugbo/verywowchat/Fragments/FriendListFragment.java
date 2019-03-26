@@ -4,11 +4,9 @@ package hi.hugbo.verywowchat.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hi.hugbo.verywowchat.Adapters.FriendsAdapter;
-import hi.hugbo.verywowchat.Models.ChatRoomMessageService;
 import hi.hugbo.verywowchat.Models.UserService;
 import hi.hugbo.verywowchat.controllers.R;
-import hi.hugbo.verywowchat.entities.Friend;
+import hi.hugbo.verywowchat.entities.User;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -33,7 +30,7 @@ public class FriendListFragment extends Fragment {
 
     private UserService mUserService = UserService.getInstance();// want only a singleton of this instance
     private FriendsAdapter mFriendsAdapter;
-    private List<Friend> mFriends;
+    private List<User> mFriends;
     private Context mContext;
     private SharedPreferences mUserInfo; // user info
 
@@ -86,7 +83,7 @@ public class FriendListFragment extends Fragment {
      * </pre>
      */
     public void GetFriends() {
-       List<Friend> newFrieds = mUserService.GetFriends(mUserInfo.getString("username","N/A"),mUserInfo.getString("token","n/a"));
+       List<User> newFrieds = mUserService.getFriends(mUserInfo.getString("username","N/A"),mUserInfo.getString("token","n/a"));
        if(newFrieds == null) {
            return;
        }

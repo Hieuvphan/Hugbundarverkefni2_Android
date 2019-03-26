@@ -1,12 +1,5 @@
 package hi.hugbo.verywowchat.Models;
 
-import android.graphics.Bitmap;
-import android.util.ArrayMap;
-import android.util.Log;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +12,6 @@ import java.util.Map;
 
 import hi.hugbo.verywowchat.entities.ChatMessage;
 import hi.hugbo.verywowchat.entities.Chatroom;
-import hi.hugbo.verywowchat.entities.Friend;
 import hi.hugbo.verywowchat.entities.ResourceContent;
 
 /**

@@ -149,10 +149,4 @@ public interface ChatroomService {
      */
     public List<Chatroom> getChatroomAdminInvites(String token) throws Exception;
 
-    /**
-     * fetch a list of all users who have sent user a friend request
-     * @param token
-     * @throws Exception
-     */
-    public List<User> getFriendRequests(String token) throws Exception;
 }
