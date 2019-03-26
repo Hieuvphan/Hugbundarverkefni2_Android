@@ -3,6 +3,7 @@ package hi.hugbo.verywowchat.Models;
 import java.util.List;
 
 import hi.hugbo.verywowchat.entities.Chatroom;
+import hi.hugbo.verywowchat.entities.User;
 
 public interface ChatroomService {
 
@@ -133,4 +134,25 @@ public interface ChatroomService {
      * @throws Exception if no invite to chatroom received
      */
     public void declineChatroomAdminInvite(String token, String chatroomName) throws Exception;
+
+    /**
+     * fetch a list of all chatroom who have sent user a membership invite
+     * @param token
+     * @throws Exception
+     */
+    public List<Chatroom> getChatroomInvites(String token) throws Exception;
+
+    /**
+     * fetch a list of all chatroom who have sent user an admin invite
+     * @param token
+     * @throws Exception
+     */
+    public List<Chatroom> getChatroomAdminInvites(String token) throws Exception;
+
+    /**
+     * fetch a list of all users who have sent user a friend request
+     * @param token
+     * @throws Exception
+     */
+    public List<User> getFriendRequests(String token) throws Exception;
 }

@@ -1,51 +1,61 @@
 package hi.hugbo.verywowchat.Fragments;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.SearchChatroomItemAdapter;
+import hi.hugbo.verywowchat.Adapters.ChatroomInviteItemAdapter;
+import hi.hugbo.verywowchat.Adapters.MyChatroomItemAdapter;
+import hi.hugbo.verywowchat.Models.ChatRoomMessageService;
 import hi.hugbo.verywowchat.Models.ChatroomService;
 import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
+import hi.hugbo.verywowchat.controllers.LoginActivity;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
- * This component is responsible for chatroom searches
- * Search for chatrooms the logged in user is not a member of
- * refer to SearchChatroomItemAdapter to see how individual chatrooms are handled
+ * This component is responsible for displaying chatrooms the user is a member/admin/owner of
+ * refer to MyChatroomItemAdapter to see how individual chatrooms are handled
  */
-public class SearchChatroomListFragment extends Fragment {
+public class ChatroomInvitesListFragment extends Fragment {
 
-    private final List<Chatroom> mChatrooms;
+    private final String CHANNEL_ID = "USER_CHAT"; // channel name that the notifications are sent to
+    private Handler mHandler; // Task handler that will be used to poll chat updates
+    private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance(); // chat service to make http reuqests
+    private SharedPreferences mUserInfo; //  stored user info
+
+    private List<Chatroom> mChatrooms;
     private ChatroomService chatroomService = new ChatroomServiceImplementation();
-    private SearchChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
-
-    public SearchChatroomListFragment(){
-        mChatrooms = new ArrayList<>();
-    }
-
-    // widgets
-    TextView editSearch;
-    ImageButton btn_chatroom_search;
+    private ChatroomInviteItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     Context context;
 
-    public static SearchChatroomListFragment newInstance(){
-        SearchChatroomListFragment fragment = new SearchChatroomListFragment();
+    public ChatroomInvitesListFragment(){
+        mChatrooms = new ArrayList<>();
+    }
+
+    public static ChatroomInvitesListFragment newInstance(){
+        ChatroomInvitesListFragment fragment = new ChatroomInvitesListFragment();
 
         return fragment;
     }
@@ -53,20 +63,18 @@ public class SearchChatroomListFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        if(editSearch.getText().toString().length() == 1){
-            fetchChatrooms();
-        }
+        fetchChatrooms();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.chatroom_search, container, false);
+        View rootView = inflater.inflate(R.layout.chatroom_list, container, false);
         // fetch context to access toasts and user preferenes
         context = rootView.getContext();
-        // fetch the search bar widget
-        editSearch = rootView.findViewById(R.id.edit_chatroom_search);
-        btn_chatroom_search = rootView.findViewById(R.id.btn_chatroom_search);
 
+        /* Shared preferences allows us to store and retrieve data in a form of a (key,value) pairs.
+           UserInfo stores 3 keys  1 = displayname , 2 = username, 3 = token */
+        mUserInfo = context.getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT START ---------------------------------
          * -----------------------------------------------------------------------------------------*/
@@ -79,34 +87,23 @@ public class SearchChatroomListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // define and assign adapter for recycle view
-        mChatroomAdapter = new SearchChatroomItemAdapter(mChatrooms);
+        mChatroomAdapter = new ChatroomInviteItemAdapter(mChatrooms);
         recyclerView.setAdapter(mChatroomAdapter);
 
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT END ----------------------------------
          * -----------------------------------------------------------------------------------------*/
-
-        // make button do search
-        btn_chatroom_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fetchChatrooms();
-            }
-        });
-
         return rootView;
     }
 
     private void fetchChatrooms(){
-        // fetch the search string
-        String searchTerm = editSearch.getText().toString();
         // user token stored in shared preferences
-        SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", context.MODE_PRIVATE);
+        SharedPreferences userInfo = context.getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
         // JWT token for API authentication
         String token = userInfo.getString("token","n/a");
 
         try {
-            List<Chatroom> newChatrooms = chatroomService.chatroomSearch(token, searchTerm);
+            List<Chatroom> newChatrooms = chatroomService.getChatroomInvites(token);
 
             // empty the list
             mChatrooms.removeAll(mChatrooms);
@@ -120,5 +117,4 @@ public class SearchChatroomListFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 }
