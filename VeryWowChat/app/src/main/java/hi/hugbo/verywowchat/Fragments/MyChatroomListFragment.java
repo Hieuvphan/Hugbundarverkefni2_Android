@@ -45,6 +45,7 @@ public class MyChatroomListFragment extends Fragment {
     private final String CHANNEL_ID = "USER_CHAT"; // channel name that the notifications are sent to
     private Handler mHandler; // Task handler that will be used to poll chat updates
     private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance(); // chat service to make http reuqests
+    private SharedPreferences mCurrentChat;
     private SharedPreferences mUserInfo; //  stored user info
 
     private List<Chatroom> mChatrooms;
@@ -79,6 +80,7 @@ public class MyChatroomListFragment extends Fragment {
         /* Shared preferences allows us to store and retrieve data in a form of a (key,value) pairs.
            UserInfo stores 3 keys  1 = displayname , 2 = username, 3 = token */
         mUserInfo = context.getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
+        mCurrentChat = context.getApplicationContext().getSharedPreferences("CurrentChat",MODE_PRIVATE);
         /* -----------------------------------------------------------------------------------------
          * --------------------------------- RecycleView INIT START ---------------------------------
          * -----------------------------------------------------------------------------------------*/
@@ -154,7 +156,8 @@ public class MyChatroomListFragment extends Fragment {
                 // else we check if the chatroom has recivied new message
                 else {
                     // check if the chatroom recived new message
-                    if(mChatrooms.get(i).getLastRead() < updatedChat.getLastMessageReceived()){
+                    if(mChatrooms.get(i).getLastRead() < updatedChat.getLastMessageReceived()
+                            && !mChatrooms.get(i).getiAmRead() && !mCurrentChat.getString("ChatID","N/A").equals(mChatrooms.get(i).getChatroomName())){
                       // update the chat
                       mChatrooms.get(i).Update(updatedChat);
                       // display the  notification

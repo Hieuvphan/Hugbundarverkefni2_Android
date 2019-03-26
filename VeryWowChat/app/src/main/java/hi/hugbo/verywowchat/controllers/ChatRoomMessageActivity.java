@@ -59,6 +59,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     private ChatMessageAdapter mChatAdapter; // adapter that will display the messages
     private String mChatRoomID;  // id of the chatroom that the user is talking on
     private SharedPreferences mUserInfo; // user info
+    private SharedPreferences mCurrentChat; // current chat that is opened need to use this to comunicate between activities
     private Handler mHandler; // Hander is used for implementing polling
     private int mChatOffestFRONT; // offset on the chat
 
@@ -70,6 +71,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         /* Shared preferences allows us to store and retrieve data in a form of a (key,value) pairs.
            UserInfo stores 3 keys  1 = displayname , 2 = username, 3 = token */
         mUserInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
+        mCurrentChat = getApplicationContext().getSharedPreferences("CurrentChat", MODE_PRIVATE);
 
         // Fetch ChatRoomID from Extras
         Intent intent = getIntent(); // Fetch the intent that started this activity
@@ -77,6 +79,11 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         /* u can and should check if this string exists first but without this string
         *  this activity cannot function so we roll the dice ... (BE PERFECT LIKE HOLY PROGRAMMERS IN DOOM) */
         mChatRoomID = intent.getStringExtra(CHAT_ROOM_ID); // get the chatID
+
+        // the chat room ID so other acitvities know what what room is opened
+        SharedPreferences.Editor chatEditor = mCurrentChat.edit();
+        chatEditor.putString("ChatID",mChatRoomID);
+        chatEditor.commit();
 
         /* -----------------------------------------------------------------------------------------
         * --------------------------------- RecycleView INIT START ---------------------------------
@@ -111,18 +118,6 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         // Assign references to widgets that we use
         mUserTextMSG = findViewById(R.id.edit_chatroom_sendmsg);
-        mUserTextMSG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    mChatCaller.NotifyRead(mChatRoomID,mUserInfo.getString("token","n/a"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogOutUser();
-                }
-            }
-        });
-
 
         /* mBtnSendTxtMSG will listen to be clicked on, when it will be clicked it will
          * make HTTP request via api_caller to send the user's text msg to the chat room */
@@ -149,6 +144,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         // before stating the polling we need to know the initial offset of the chat room
         try {
+           mChatCaller.NotifyRead(mChatRoomID,mUserInfo.getString("token","n/a"));
            mChatOffestFRONT = mChatCaller.GetCountChatLogs(mChatRoomID,mUserInfo.getString("token","n/a"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,6 +170,9 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacks(PollChatMsg);
+        SharedPreferences.Editor chatEditor = mCurrentChat.edit();
+        chatEditor.clear();
+        chatEditor.commit();
     }
 
     /**

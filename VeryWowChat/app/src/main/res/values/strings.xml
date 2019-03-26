@@ -60,6 +60,8 @@
     <string name="account_setting_delete_buttun_label">Delete My Account</string>
     <string name="channel_name">New Chat Notification</string>
     <string name="channel_description">Displays the new chat notifications in the very wow chat app</string>
+    <string name="friend_list_item_text_view_content">Placeholder for username</string>
+
     <string name="invite_accept">Accept</string>
     <string name="invite_reject">Reject</string>
 </resources>
