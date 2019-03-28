@@ -24,15 +24,19 @@ import hi.hugbo.verywowchat.entities.ResourceContent;
  * We also want to ensure this service is a singleton instance in our app.
  * */
 public class ChatRoomMessageService implements IChatRoomMessageService {
-    private static final ChatRoomMessageService ourInstance = new ChatRoomMessageService();
-    private API_caller api_caller = API_caller.getInstance(); // need for making HTTP calls
 
+    private static final ChatRoomMessageService ourInstance = new ChatRoomMessageService();
     // need this for making singletons
     public static ChatRoomMessageService getInstance() {
         return ourInstance;
     }
-    private ChatRoomMessageService() {
-    }
+    private ChatRoomMessageService() {}
+
+    /**
+     * The api_caller is used to send http requests to the VeryWowChat server
+     * and also it is a singleton so we are dependant on reciving a instance of it from someone else
+     * */
+    private API_caller api_caller = API_caller.getInstance();
 
     /**
      * <pre>
