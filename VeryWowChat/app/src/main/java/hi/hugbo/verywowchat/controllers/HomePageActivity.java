@@ -143,6 +143,9 @@ drawer_layout);
         } else if (id == R.id.pending_requests) {
             Intent intent = new Intent(this,ManageInvitesActivity.class);
             startActivity(intent);
+        } else if (id == R.id.add_friend) {
+            Intent intent = new Intent(this,AddFriendActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
