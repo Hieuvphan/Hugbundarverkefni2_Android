@@ -1,4 +1,4 @@
-package hi.hugbo.verywowchat.Models;
+package hi.hugbo.verywowchat.Models.Implementations;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hi.hugbo.verywowchat.Models.API_caller;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatRoomMessageService;
 import hi.hugbo.verywowchat.entities.ChatMessage;
 import hi.hugbo.verywowchat.entities.Chatroom;
 import hi.hugbo.verywowchat.entities.ResourceContent;
@@ -21,7 +23,7 @@ import hi.hugbo.verywowchat.entities.ResourceContent;
  * getting chat messages from the chatroom, getting information of the chatroom etc...
  * We also want to ensure this service is a singleton instance in our app.
  * */
-public class ChatRoomMessageService {
+public class ChatRoomMessageService implements IChatRoomMessageService {
     private static final ChatRoomMessageService ourInstance = new ChatRoomMessageService();
     private API_caller api_caller = API_caller.getInstance(); // need for making HTTP calls
 
