@@ -3,8 +3,6 @@ package hi.hugbo.verywowchat.Models;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
-import com.google.gson.JsonArray;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,10 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import hi.hugbo.verywowchat.Models.Helpers.API_caller;
 import hi.hugbo.verywowchat.entities.Chatroom;
-import hi.hugbo.verywowchat.entities.User;
 
 public class ChatroomServiceImplementation implements ChatroomService {
 

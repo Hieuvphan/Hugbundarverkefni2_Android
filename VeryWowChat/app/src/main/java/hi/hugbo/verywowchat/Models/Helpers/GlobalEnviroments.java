@@ -1,6 +1,4 @@
-package hi.hugbo.verywowchat.Models;
-
-import java.util.PriorityQueue;
+package hi.hugbo.verywowchat.Models.Helpers;
 
 /**
  * @Author Róman

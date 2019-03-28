@@ -1,15 +1,11 @@
-package hi.hugbo.verywowchat.Models;
+package hi.hugbo.verywowchat.Models.Helpers;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 

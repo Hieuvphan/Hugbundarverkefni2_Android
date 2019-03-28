@@ -3,7 +3,6 @@ package hi.hugbo.verywowchat.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,14 +14,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Adapters.ChatroomAdminInviteItemAdapter;
 import hi.hugbo.verywowchat.Adapters.FriendRequestItemAdapter;
-import hi.hugbo.verywowchat.Models.ChatRoomMessageService;
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
 import hi.hugbo.verywowchat.Models.UserService;
 import hi.hugbo.verywowchat.controllers.R;
-import hi.hugbo.verywowchat.entities.Chatroom;
 import hi.hugbo.verywowchat.entities.User;
 
 import static android.content.Context.MODE_PRIVATE;

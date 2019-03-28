@@ -7,21 +7,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.os.Handler;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import hi.hugbo.verywowchat.Adapters.ChatMessageAdapter;
-import hi.hugbo.verywowchat.Models.ChatRoomMessageService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatRoomMessageService;
 import hi.hugbo.verywowchat.entities.ChatMessage;
 
 /** https://guides.codepath.com/android/using-the-recyclerview
