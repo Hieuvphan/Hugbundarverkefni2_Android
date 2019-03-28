@@ -42,6 +42,20 @@ public class AccountService implements IAccountService {
      * */
     private API_caller api_caller = API_caller.getInstance();
 
+    /**
+     * <pre>
+     *     Usage : Login(params, context, Userinfo)
+     *       For : params is a hash map of <String,String>
+     *             contect is the application context of the actvity that called this function
+     *             Userinfo is the Sharedpreferences of UserInfo
+     *      After: Performs HTTP POST Request on endpoint /login and returns null if the request
+     *             was successfull else a string that holds the error message from the response.
+     * </pre>
+     * @param params users Login parameters
+     * @param context the application context of the actvity that called this function
+     * @param UserInfo Sharedpreferences of UserInfo
+     * @return null is HTTP Request was successfull else string with the error
+     */
     public String Login(Map<String, String> params, Context context, SharedPreferences UserInfo) {
         /*
          *Send the HTTP request for login through the api_caller and then map the object
@@ -93,7 +107,53 @@ public class AccountService implements IAccountService {
         return "Something went wrong Unknown Error!";
     }
 
+    /**
+     * <pre>
+     *     Usage : Register(params)
+     *       For : params is a hash map of <String,String>
+     *     After : Sends a HTTP POST Request on endpoint/register and returns a the response from
+     *             the server in a form of a string
+     * </pre>
+     * @param params users register form
+     * @return response from the server in a form of a string
+     */
     public String Register(Map<String, String> params) {
-        return null;
+        /*
+         *Send the HTTP request for Registration through the api_caller and then map the object
+         *correctly based of the status code
+         **/
+        try {
+            // Make the Http Request
+            Map<String, String> result = api_caller.HttpRequest("register","POST","",params);
+            // Parse HTTP Status code
+            int status = Integer.parseInt(result.get("status"));
+
+            /*
+             *If status code is 204 from the API thats means the request was successful and
+             *no content was returned
+             **/
+            if(status == 204) {
+                // display a message
+                return "New User has been Created ! \nplease visit your email address for validation";
+            }
+            // if we made it here then it means we have an error and it also means we have a body
+            // parse the JSON string
+            JSONArray resp_body = new JSONArray(result.get("response"));
+            if(status >= 400 && status < 500){
+                // Create a List of errors
+                List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
+                // Display a pop-up error message to the user with the errors received from the API
+                return errorLogger.ErrorsToString(errors);
+            }
+
+        }
+        catch (IOException e) {
+            Log.e("RegisterError","IOException in Register \n message :"+e);
+            e.printStackTrace();
+        } catch (JSONException e) {
+            Log.e("RegisterError","JSONException in Register \n message :"+e);
+            e.printStackTrace();
+        }
+        return "Something went wrong Unknown Error!";
     }
 }

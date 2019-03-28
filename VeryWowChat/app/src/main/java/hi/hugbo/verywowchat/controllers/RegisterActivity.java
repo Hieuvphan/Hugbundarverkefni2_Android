@@ -4,23 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Models.Helpers.API_caller;
-import hi.hugbo.verywowchat.Models.Helpers.ErrorLogger;
-import hi.hugbo.verywowchat.entities.Error;
+import hi.hugbo.verywowchat.Models.Implementations.AccountService;
 
 /**
  * @Author : Róman
@@ -42,16 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Button mBtnRegister;
 
     /**
-     * The api_caller is used to send http requests to the VeryWowChat server
-     * and also it is a singleton so we are dependant on reciving a instance of it from someone else
+     * The service that will handle the Register in functionality
      * */
-    private API_caller api_caller = API_caller.getInstance();
-
-    /**
-     * The ErrorLogger is used to map Json String objects into POJOS and it also should be
-     * a singleton so we are dependant on receiving a instance of it from someone else
-     * */
-    private ErrorLogger errorLogger = ErrorLogger.getInstance();
+    private AccountService mAccountService = AccountService.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,43 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("passwordReap",mRegisterPasswordRepeat.getText().toString());
                 params.put("userName",mRegisterUsername.getText().toString());
 
-                /*
-                 *Send the HTTP request for Registration through the api_caller and then map the object
-                 *correctly based of the status code
-                 **/
-                try {
-                    // Make the Http Request
-                    Map<String, String> result = api_caller.HttpRequest("register","POST","",params);
-                    // Parse HTTP Status code
-                    int status = Integer.parseInt(result.get("status"));
-
-                    /*
-                     *If status code is 204 from the API thats means the request was successful and
-                     *no content was returned
-                     **/
-                    if(status == 204) {
-                        // display a message
-                        Toast.makeText(getApplicationContext(),"New User has been Created ! \nplease visit your email address for validation",Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    // if we made it here then it means we have an error and it also means we have a body
-                    // parse the JSON string
-                    JSONArray resp_body = new JSONArray(result.get("response"));
-                    if(status >= 400 && status < 500){
-                        // Create a List of errors
-                        List<Error> errors = errorLogger.CreateListOfErrors(resp_body.getJSONObject(0).getJSONArray("errors"));
-                        // Display a pop-up error message to the user with the errors received from the API
-                        Toast.makeText(getApplicationContext(),errorLogger.ErrorsToString(errors),Toast.LENGTH_LONG).show();
-                    }
-
-                }
-                catch (IOException e) {
-                    Log.e("RegisterError","IOException in Register \n message :"+e);
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    Log.e("RegisterError","JSONException in Register \n message :"+e);
-                    e.printStackTrace();
-                }
+                Toast.makeText(getApplicationContext(),mAccountService.Register(params),Toast.LENGTH_LONG).show();
             }
         });
     }

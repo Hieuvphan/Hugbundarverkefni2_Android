@@ -6,23 +6,16 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Models.Helpers.API_caller;
-import hi.hugbo.verywowchat.Models.Helpers.ErrorLogger;
+
 import hi.hugbo.verywowchat.Models.Implementations.AccountService;
-import hi.hugbo.verywowchat.entities.Error;
 
 /**
  * @Author : Róman
