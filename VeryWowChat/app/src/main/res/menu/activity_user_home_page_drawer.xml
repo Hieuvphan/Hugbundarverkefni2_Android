@@ -7,16 +7,20 @@
         <item
             android:id="@+id/account_settings"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Account Settings" />
+            android:title="@string/account_settings" />
 
         <item
             android:id="@+id/create_new_chat_room"
             android:icon="@drawable/add_circle_icon"
-            android:title="Create New Chatroom" />
+            android:title="@string/create_new_chatroom" />
         <item
             android:id="@+id/pending_requests"
             android:icon="@drawable/people_icon"
-            android:title="View Pending Requests" />
+            android:title="@string/view_pending_requests" />
+        <item
+            android:id="@+id/add_friend"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:title="@string/add_friend" />
     </group>
 
 </menu>

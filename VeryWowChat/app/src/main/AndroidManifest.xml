@@ -40,6 +40,7 @@
         <activity android:name=".AdminManageChatroomActivity" />
         <activity android:name=".MemberManageChatroomActivity" />
         <activity android:name=".ManageInvitesActivity" />
+        <activity android:name=".AddFriendActivity" />
     </application>
 
 </manifest>
