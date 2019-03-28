@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Models.API_caller;
-import hi.hugbo.verywowchat.Models.ErrorLogger;
+import hi.hugbo.verywowchat.Models.Helpers.API_caller;
+import hi.hugbo.verywowchat.Models.Helpers.ErrorLogger;
 import hi.hugbo.verywowchat.entities.Error;
 
 /**

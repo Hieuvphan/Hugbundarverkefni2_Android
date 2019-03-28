@@ -1,18 +1,10 @@
-package hi.hugbo.verywowchat.Models;
-
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+package hi.hugbo.verywowchat.Models.Helpers;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import hi.hugbo.verywowchat.entities.Error;
