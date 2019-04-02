@@ -1,5 +1,7 @@
 package hi.hugbo.verywowchat.Models.Implementations;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,11 +55,19 @@ public class ChatRoomMessageService implements IChatRoomMessageService {
      * @param token users JWT token
      * @param body Map<String,String> with one  key that is declared as 'message'
      */
-    public void SendChatMessage(String chatID,String token, Map body) throws Exception {
+    public void SendChatMessage(String chatID, String token, Map body) throws Exception {
         /* Send the HTTP request to send txt message to the chatroom */
         try {
+
+            String urlEndpoint = "auth/chatroom/"+chatID+"/message";
+            String method = "POST";
+
+            Log.d("dh", "SendChatMessage: " + token);
+
             // Make the HTTP Request
-            Map<String, String> result = api_caller.HttpRequest("auth/chatroom/"+chatID+"/message","POST",token,body);
+            Map<String, String> result = api_caller.HttpRequest(
+                    urlEndpoint, method, token, body
+            );
             // Parse the HTTP status code
             int status = Integer.parseInt(result.get("status"));
 

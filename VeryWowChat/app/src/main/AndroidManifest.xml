@@ -3,8 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="hi.hugbo.verywowchat.controllers">
 
+    <!-- USES PERMISSION - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Need to able to save full-size pictures. -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--
+ When taking a photo I need to be able to store the full size picture so that I can later
+    send it.  Here I'm trying to tell Android to save the picture in a private directory that
+    belongs to this app.
+    -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- USES FEATURE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Tell Google Play that we might need the camera, but it's not strictly required. -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -13,15 +25,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AccountSettingsActivity"
-            android:noHistory="true"></activity>
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/file_paths" />
+        <!-- APPLICATION PROVIDERS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!--
+ Configuration of file provider. When I take an image/photo I need to temporarily store
+        the picture, and for that I need to add this provider.
+        -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="hi.hugbo.verywowchat.fileprovider"
+            android:exported="false"
+            android:enabled="true"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- APPLICATION ACTIVITIES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <activity
+            android:name=".AccountSettingsActivity"
+            android:noHistory="true" />
         <activity
             android:name=".HomePageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+ dah38: I had to disable android:noHistory since when I take a picture I need to be
+         able to return to the original activity with the result (i.e. the picture).  If I
+         didn't disable noHistory, then the activity would be destroyed and I couldn't return
+         the result to the activity.  By disabling it, it would only stop it. :)
+        -->
         <activity
             android:name=".ChatRoomMessageActivity"
-            android:noHistory="true" />
+            android:noHistory="false" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
