@@ -317,7 +317,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             // Create a Map from the data provided by the user
 
             Map<String, String> params = new HashMap<String, String>();
-            params.put("message", "pic");
+            params.put("message", "");
             //params.put("attachments", "[{" + value + "}]");
 
             String chatID = mChatRoomID;
