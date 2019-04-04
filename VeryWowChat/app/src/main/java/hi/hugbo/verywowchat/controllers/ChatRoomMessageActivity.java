@@ -259,13 +259,15 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // NOTE: here messages are sent.
 
+                String message = mUserTextMSG.getText().toString().trim();
+
                 // if there is no text then we don't make the HTTP Request
-                if (mUserTextMSG.getText().toString().isEmpty()) {
+                if (message.isEmpty()) {
                     return;
                 }
                 // Create a Map from the data provided by the user
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("message", mUserTextMSG.getText().toString());
+                params.put("message", message);
                 try {
                     mChatCaller.SendChatMessage(mChatRoomID, mUserInfo.getString("token", "n/a"), params);
                 } catch (Exception e) {
@@ -441,16 +443,24 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         Log.d("dh", "onActivityResult()");
         Log.d("dh", "  Request code: " + requestCode);
         Log.d("dh", "  Result code: " + requestCode);
-        Log.d("dh", "  Intent: " + data.toString());
+        Log.d("dh", "  Data: " + data);
 
 
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
-                sendPicture();
+                if (data != null) {
+                    sendPicture();
+                } else {
+                    toast("Cancelled sending image!");
+                }
                 break;
             case REQUEST_PICK_FILE:
-                Uri uri = data.getData();
-                sendFile(uri);
+                if (data != null) {
+                    Uri uri = data.getData();
+                    sendFile(uri);
+                } else {
+                    toast("Cancelled sending file!");
+                }
                 break;
             default:
                 break;
