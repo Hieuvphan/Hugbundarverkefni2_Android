@@ -3,7 +3,6 @@ package hi.hugbo.verywowchat.Adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
@@ -37,7 +36,7 @@ public class ChatroomAdminInviteItemAdapter extends RecyclerView.Adapter {
     /** Holds over all the chat messages we display on the screen */
     private List<Chatroom> mChatrooms;
 
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private IChatroomService chatroomService = new ChatroomService();
 
     /** Just reminder for myself : You can pass the Context from the Activity to this constructor
      *  then u can implement listeners and other things on the inflated view widgets.*/

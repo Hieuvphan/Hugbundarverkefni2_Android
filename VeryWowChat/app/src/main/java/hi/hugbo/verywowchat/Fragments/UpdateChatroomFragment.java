@@ -15,8 +15,8 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.List;
 
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
@@ -37,7 +37,7 @@ public class UpdateChatroomFragment extends Fragment {
 
     }
 
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private IChatroomService chatroomService = new ChatroomService();
     private static final String CHATROOM_NAME = "join_chatroom_name";
     private String mChatroomName;
 

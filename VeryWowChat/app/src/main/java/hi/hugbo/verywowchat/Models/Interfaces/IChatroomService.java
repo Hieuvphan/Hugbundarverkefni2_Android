@@ -1,11 +1,11 @@
-package hi.hugbo.verywowchat.Models;
+package hi.hugbo.verywowchat.Models.Interfaces;
 
 import java.util.List;
 
 import hi.hugbo.verywowchat.entities.Chatroom;
 import hi.hugbo.verywowchat.entities.User;
 
-public interface ChatroomService {
+public interface IChatroomService {
 
     /**
      * fetch the chatroom with the corresponding chatroom name
