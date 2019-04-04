@@ -3,7 +3,6 @@ package hi.hugbo.verywowchat.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -35,8 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Adapters.ChatMessageAdapter;
-import hi.hugbo.verywowchat.Models.Implementations.ChatRoomMessageService;
+import hi.hugbo.verywowchat.adapters.ChatMessageAdapter;
+import hi.hugbo.verywowchat.models.implementations.ChatRoomMessageService;
 import hi.hugbo.verywowchat.entities.ChatMessage;
 
 /**

@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
-import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
+import hi.hugbo.verywowchat.models.interfaces.IChatroomService;
+import hi.hugbo.verywowchat.models.implementations.ChatroomService;
 import java.util.Arrays;
 import java.util.List;
 

@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import hi.hugbo.verywowchat.Adapters.HomePagerAdapter;
+import hi.hugbo.verywowchat.adapters.HomePagerAdapter;
 
 /**
  * @Author Róman

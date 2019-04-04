@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
-import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
+import hi.hugbo.verywowchat.models.interfaces.IChatroomService;
+import hi.hugbo.verywowchat.models.implementations.ChatroomService;
 
 public class ChatroomInviteActivity extends AppCompatActivity {
 

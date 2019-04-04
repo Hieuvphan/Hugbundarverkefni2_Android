@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Models.Implementations.AccountService;
+import hi.hugbo.verywowchat.models.implementations.AccountService;
 
 /**
  * @Author : Róman

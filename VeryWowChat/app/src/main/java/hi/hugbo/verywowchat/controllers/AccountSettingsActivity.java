@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Models.Implementations.UserService;
+import hi.hugbo.verywowchat.models.implementations.UserService;
 
 /**
  * @Author Róman
