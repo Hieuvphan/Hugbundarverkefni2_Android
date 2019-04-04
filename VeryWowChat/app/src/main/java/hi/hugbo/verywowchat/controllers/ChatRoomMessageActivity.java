@@ -337,26 +337,11 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
             String value = Base64.encodeToString(bytes, Base64.DEFAULT);
             Log.d("dh", "Base64 of file: " + value);
-
-            // NOTE: here messages are sent.
-
-            // Create a Map from the data provided by the user
-
             Map<String, String> params = new HashMap<String, String>();
             params.put("message", "");
-            //params.put("attachments", "[{" + value + "}]");
 
             String chatID = mChatRoomID;
             String token = mUserInfo.getString("token", "n/a");
-
-
-            Log.d("dh", "chatroom ID: " + mChatRoomID);
-            Log.d("dh", "token: " + token);
-            Log.d("dh", "params " + "");
-
-            Log.d("dh", "params " + "");
-            Log.d("dh", "message: " + "");
-            // Log.d("dh", "attachments: " +  "[{\"value\":\"" + value + "\",\"type\":\"base64file\"}]");
 
             params.put("attachment", value);
             try {
@@ -367,6 +352,11 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    private void sendFile(Uri uri) {
+        Log.d("dh", "Sending file...");
+        Log.d("dh", uri.getPath());
     }
 
     @Override
@@ -380,10 +370,11 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
-                // TODO: this might brake!
                 sendPicture();
                 break;
             case REQUEST_PICK_FILE:
+                Uri uri = data.getData();
+                sendFile(uri);
                 break;
             default:
                 break;
