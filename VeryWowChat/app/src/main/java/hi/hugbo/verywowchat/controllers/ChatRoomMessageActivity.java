@@ -22,10 +22,12 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,7 +93,6 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     private int mChatOffestFRONT; // offset on the chat
 
 
-
     // This is the request code that we then use to identify which *activity result* referred to
     // taking an image, i.e. when onActivityResult is called, a status code is sent with.  If the
     // status code is the same as this, then we have received an image.
@@ -141,10 +142,9 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
                 // TODO: figure out what we want to do here.
                 Log.e("dh", "Could not create file!");
                 ex.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to take picture", Toast.LENGTH_LONG).show();
+                toast("Error in taking picture");
+                return;
             }
-
-            // is.hi.hugbo.verywowchat
 
             if (photoFile != null) {
 
@@ -164,6 +164,8 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             }
 
 
+        } else {
+            toast("No app available to take picture.");
         }
     }
 
@@ -178,6 +180,14 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         // intent.setType("file/*");
 
         startActivityForResult(intent, REQUEST_PICK_FILE);
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(
+                getApplicationContext(),
+                msg,
+                Toast.LENGTH_LONG
+        ).show();
     }
 
 
@@ -316,7 +326,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     }
 
     private void sendPicture() {
-        File imgFile = new  File(currentPhotoPath);
+        File imgFile = new File(currentPhotoPath);
 
         if (imgFile.exists()) {
             Log.d("dh", "Image file exists!");
@@ -330,22 +340,28 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                toast("Unable to send picture");
+                return;
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                toast("Unable to send picture");
+                return;
             }
 
             String value = Base64.encodeToString(bytes, Base64.DEFAULT);
             Log.d("dh", "Base64 of file: " + value);
+
             Map<String, String> params = new HashMap<String, String>();
             params.put("message", "");
-
-            String chatID = mChatRoomID;
-            String token = mUserInfo.getString("token", "n/a");
-
             params.put("attachment", value);
+
             try {
-                mChatCaller.SendChatMessage(mChatRoomID, mUserInfo.getString("token", "n/a"), params);
+                mChatCaller.SendChatMessage(
+                        mChatRoomID,
+                        mUserInfo.getString("token", "n/a"),
+                        params
+                );
             } catch (Exception e) {
                 e.printStackTrace();
                 LogOutUser();
@@ -357,6 +373,46 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     private void sendFile(Uri uri) {
         Log.d("dh", "Sending file...");
         Log.d("dh", uri.getPath());
+
+        try {
+            InputStream is = getContentResolver().openInputStream(uri);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len;
+
+            while ((len = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+
+            byte[] bytes = baos.toByteArray();
+
+            String value = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+            Log.d("dh", "Value: " + value);
+
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("message", "");
+            params.put("attachment", value);
+
+            try {
+                mChatCaller.SendChatMessage(
+                        mChatRoomID,
+                        mUserInfo.getString("token", "n/a"),
+                        params
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+                toast("Unable to send chat message");
+                return;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            toast("Unable to send file");
+            return;
+        }
+
     }
 
     @Override
