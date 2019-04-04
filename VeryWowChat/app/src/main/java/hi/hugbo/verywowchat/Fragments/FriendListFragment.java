@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hi.hugbo.verywowchat.Adapters.FriendsAdapter;
-import hi.hugbo.verywowchat.Models.UserService;
+import hi.hugbo.verywowchat.Models.Implementations.UserService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.User;
 
@@ -83,7 +83,7 @@ public class FriendListFragment extends Fragment {
      * </pre>
      */
     public void GetFriends() {
-       List<User> newFrieds = mUserService.getFriends(mUserInfo.getString("username","N/A"),mUserInfo.getString("token","n/a"));
+       List<User> newFrieds = mUserService.getFriends(mUserInfo.getString("token","n/a"));
        if(newFrieds == null) {
            return;
        }

@@ -1,4 +1,4 @@
-package hi.hugbo.verywowchat.Models;
+package hi.hugbo.verywowchat.Models.Implementations;
 
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import hi.hugbo.verywowchat.Models.Helpers.API_caller;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
-public class ChatroomServiceImplementation implements ChatroomService {
+public class ChatroomService implements IChatroomService {
 
 
     private API_caller api_caller = API_caller.getInstance();
@@ -312,6 +313,9 @@ public class ChatroomServiceImplementation implements ChatroomService {
     }
 
     public void inviteMemberToChatroom(String token, String chatroomName, String userName) throws Exception{
+        if(userName == null || userName.length() == 0){
+            throw new Exception("No username given");
+        }
         Log.d("invitee", "invitee: "+userName);
         String path = "auth/chatroom/"+chatroomName+"/invite/"+userName;
         String method = "POST";
@@ -340,6 +344,9 @@ public class ChatroomServiceImplementation implements ChatroomService {
     }
 
     public void inviteAdminToChatroom(String token, String chatroomName, String userName) throws Exception{
+        if(userName == null || userName.length() == 0){
+            throw new Exception("No username given");
+        }
         String path = "auth/chatroom/"+chatroomName+"/admininvite/"+userName;
         String method = "POST";
         Map<String, Object> body = new ArrayMap<>();

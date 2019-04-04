@@ -1,4 +1,4 @@
-package hi.hugbo.verywowchat.Models;
+package hi.hugbo.verywowchat.Models.Implementations;
 
 import android.support.v4.util.ArrayMap;
 
@@ -34,7 +34,7 @@ public class UserService {
 
     /**
      * <pre>
-     *     Usage : UserService.UpdateUser(requestBody,token)
+     *     Usage : UserService.updateUser(requestBody,token)
      *       For : requestBody is a Map<String,String>
      *             token is a string
      *     After : Sends the HTTP PATCH to endpoint/auth/user with the request body and
@@ -43,7 +43,7 @@ public class UserService {
      * @param requestbody data for updating the user
      * @param token User's JWT
      */
-    public void UpdateUser(Map<String,String> requestbody,String token) throws Exception {
+    public void updateUser(Map<String,String> requestbody, String token) throws Exception {
         // Make the HTTP Request
         Map<String,String> result = api_caller.HttpRequest("auth/user/","PATCH",token,requestbody);
         // Parse the HTTP status code
@@ -57,14 +57,14 @@ public class UserService {
 
     /**
      * <pre>
-     *     Usage : UserService.DeleteMe(token)
+     *     Usage : UserService.deleteMe(token)
      *       For : token is a string (users JWT)
      *     After : Sends a HTTP DELETE Request to endpoint/auth/user
      *             to delete the account who is linked to the token.
      * </pre>
      * @param token users json web token
      */
-    public void DeleteMe(String token) throws Exception {
+    public void deleteMe(String token) throws Exception {
 
         // Make the HTTP Request
         Map<String, String> result = api_caller.HttpRequest("auth/user/", "DELETE", token, null);
@@ -156,6 +156,9 @@ public class UserService {
      * @throws Exception
      */
     public void addFriend(String token, String friendUsername) throws Exception {
+        if(friendUsername == null || friendUsername.length() == 0){
+            throw new Exception("No username given");
+        }
         String path = "auth/user/friends/" + friendUsername;
         String method = "POST";
         Map<String, Object> body = new ArrayMap<>();
@@ -180,22 +183,21 @@ public class UserService {
             throw new Exception(e.getMessage());
         }
     }
+
     /**
      * <pre>
-     *     Usage : GetFriends(userName,token)
-     *       For : username is a string
-     *             token is a string
+     *     Usage : GetFriends(token)
+     *       For : token is a string
      *     After : Performs a HTTP GET Request on /auth/user/userName/friends and
      *             parses the resposnse to List<Friends> and returns it.
      * </pre>
-     * @param userName users username
      * @param token users json webtoken
      * @return returns a list of users friends
      */
-    public List<User> getFriends(String userName, String token){
+    public List<User> getFriends(String token){
         List<User> friends = new ArrayList<>();
         try {
-            Map<String,String> friends_respsonse = api_caller.HttpRequest("auth/user/"+userName+"/friends","GET",token,null);
+            Map<String,String> friends_respsonse = api_caller.HttpRequest("auth/user/me/friends","GET",token,null);
             // Parse the HTTP status code
             int status = Integer.parseInt(friends_respsonse.get("status"));
             // if the status code is anything but 200 we return null

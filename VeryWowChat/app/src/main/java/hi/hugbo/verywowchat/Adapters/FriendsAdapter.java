@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import hi.hugbo.verywowchat.Models.UserService;
+import hi.hugbo.verywowchat.Models.Implementations.UserService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.User;
 

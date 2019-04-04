@@ -3,7 +3,6 @@ package hi.hugbo.verywowchat.controllers;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -11,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +22,7 @@ import hi.hugbo.verywowchat.entities.Chatroom;
  */
 public class CreateChatroomActivity extends AppCompatActivity {
 
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private IChatroomService chatroomService = new ChatroomService();
 
     private TextView edit_chatroom_name;
     private TextView edit_chatroom_displayname;
