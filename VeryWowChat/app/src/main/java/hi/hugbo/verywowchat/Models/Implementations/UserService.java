@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import hi.hugbo.verywowchat.Models.Helpers.API_caller;
+import hi.hugbo.verywowchat.Models.Interfaces.IUserService;
 import hi.hugbo.verywowchat.entities.User;
 
 /**
@@ -20,7 +21,7 @@ import hi.hugbo.verywowchat.entities.User;
  * to do with updating or deleting the user.
  * We also want this service to a singleton.
  * */
-public class UserService {
+public class UserService implements IUserService {
 
     private static final UserService ourInstance = new UserService();
     private API_caller api_caller = API_caller.getInstance(); // need for making HTTP calls
