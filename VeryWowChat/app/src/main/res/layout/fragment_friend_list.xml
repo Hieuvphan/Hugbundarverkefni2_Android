@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hi.hugbo.verywowchat.Fragments.FriendListFragment">
+    tools:context="hi.hugbo.verywowchat.fragments.FriendListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friendsList"

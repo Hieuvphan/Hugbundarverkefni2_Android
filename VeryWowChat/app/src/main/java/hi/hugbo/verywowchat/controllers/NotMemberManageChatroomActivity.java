@@ -3,16 +3,12 @@ package hi.hugbo.verywowchat.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import hi.hugbo.verywowchat.Fragments.JoinChatroomFragment;
-import hi.hugbo.verywowchat.Fragments.ViewChatroomFragment;
+import hi.hugbo.verywowchat.fragments.JoinChatroomFragment;
+import hi.hugbo.verywowchat.fragments.ViewChatroomFragment;
 
 public class NotMemberManageChatroomActivity extends FragmentActivity {
 

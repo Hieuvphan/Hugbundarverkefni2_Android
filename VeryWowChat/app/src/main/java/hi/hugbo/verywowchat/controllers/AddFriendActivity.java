@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hi.hugbo.verywowchat.Models.Implementations.UserService;
+import hi.hugbo.verywowchat.models.implementations.UserService;
 
 /**
  * This activity is responsible for allowing the user to send a friend request to another user

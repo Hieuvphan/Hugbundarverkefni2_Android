@@ -7,10 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.TextView;
 
-import hi.hugbo.verywowchat.Fragments.ChatroomInviteFragment;
-import hi.hugbo.verywowchat.Fragments.LeaveChatroomFragment;
-import hi.hugbo.verywowchat.Fragments.UpdateChatroomFragment;
-import hi.hugbo.verywowchat.Fragments.ViewChatroomFragment;
+import hi.hugbo.verywowchat.fragments.LeaveChatroomFragment;
+import hi.hugbo.verywowchat.fragments.ViewChatroomFragment;
 
 public class MemberManageChatroomActivity extends FragmentActivity {
 
