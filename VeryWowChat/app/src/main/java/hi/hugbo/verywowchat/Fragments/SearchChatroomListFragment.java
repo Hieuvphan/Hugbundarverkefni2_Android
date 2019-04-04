@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hi.hugbo.verywowchat.Adapters.SearchChatroomItemAdapter;
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
@@ -31,7 +30,7 @@ import hi.hugbo.verywowchat.entities.Chatroom;
 public class SearchChatroomListFragment extends Fragment {
 
     private final List<Chatroom> mChatrooms;
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private IChatroomService chatroomService = new ChatroomService();
     private SearchChatroomItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     public SearchChatroomListFragment(){

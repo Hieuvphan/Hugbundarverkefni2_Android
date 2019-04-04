@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hi.hugbo.verywowchat.Adapters.ChatroomInviteItemAdapter;
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
@@ -31,7 +31,7 @@ public class ChatroomInvitesListFragment extends Fragment {
     private SharedPreferences mUserInfo; //  stored user info
 
     private List<Chatroom> mChatrooms;
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private IChatroomService chatroomService = new ChatroomService();
     private ChatroomInviteItemAdapter mChatroomAdapter; // adapter that will display the messages
 
     Context context;

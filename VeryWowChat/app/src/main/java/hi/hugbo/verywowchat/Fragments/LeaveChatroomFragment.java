@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import hi.hugbo.verywowchat.Models.ChatroomService;
-import hi.hugbo.verywowchat.Models.ChatroomServiceImplementation;
+import hi.hugbo.verywowchat.Models.Interfaces.IChatroomService;
+import hi.hugbo.verywowchat.Models.Implementations.ChatroomService;
 import hi.hugbo.verywowchat.controllers.R;
 
 /**
@@ -23,7 +23,7 @@ public class LeaveChatroomFragment extends Fragment {
 
     }
 
-    private ChatroomService chatroomService = new ChatroomServiceImplementation();
+    private IChatroomService chatroomService = new ChatroomService();
     private static final String CHATROOM_NAME = "chatroom_name";
     private String mChatroomName;
 

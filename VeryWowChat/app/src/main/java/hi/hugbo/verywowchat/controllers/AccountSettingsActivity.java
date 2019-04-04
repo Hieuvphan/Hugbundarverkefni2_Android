@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-import hi.hugbo.verywowchat.Models.UserService;
+import hi.hugbo.verywowchat.Models.Implementations.UserService;
 
 /**
  * @Author Róman
@@ -96,7 +95,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 }
 
                 try {
-                    mUserService.UpdateUser(params,UserInfo.getString("token","N/A"));
+                    mUserService.updateUser(params,UserInfo.getString("token","N/A"));
                     SharedPreferences.Editor userEdit = UserInfo.edit();
                     userEdit.remove("displayname");
                     userEdit.putString("displayname",mDisplayName.getText().toString());
@@ -154,7 +153,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     // call the delete and if it goes through we clear the user toke and redirect the user to login page
-                    mUserService.DeleteMe(spreferences.getString("token","n/a"));
+                    mUserService.deleteMe(spreferences.getString("token","n/a"));
                     Toast.makeText(getApplicationContext(),"We are sad to see you go :( ",Toast.LENGTH_LONG).show();
                     SharedPreferences.Editor spreferencesE = spreferences.edit();
                     spreferencesE.clear();
