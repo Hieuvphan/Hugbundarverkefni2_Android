@@ -13,7 +13,6 @@ public class GlobalEnviroments {
     public static GlobalEnviroments getInstance() { return ourInstance; }
     private GlobalEnviroments() { }
 
-    //private final String BASEURL = "http://10.0.2.2:9090/";
     private final String BASEURL = "http://85.220.46.169:8443/";
 
 

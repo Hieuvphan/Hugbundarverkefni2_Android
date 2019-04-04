@@ -161,12 +161,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder{
 
         private TextView textMessage;
+        private TextView txtMessageName;
 
         public ReceivedMessageHolder(View itemView) {
             super(itemView);
             textMessage = itemView.findViewById(R.id.text_message_body);
+            txtMessageName = itemView.findViewById(R.id.txt_message_sender);
         }
         public void bind(ChatMessage message) {
+            txtMessageName.setText(message.getDisplayName());
             textMessage.setText(message.getMessage());
         }
     }
@@ -191,16 +194,19 @@ public class ChatMessageAdapter extends RecyclerView.Adapter {
 
         private TextView textMessage;
         private ImageView ImgView;
+        private TextView txtMessageName;
 
         public ReceiveImageHolder(View itemView) {
             super(itemView);
             textMessage = itemView.findViewById(R.id.text_message_body);
             ImgView = itemView.findViewById(R.id.img_view);
+            txtMessageName = itemView.findViewById(R.id.txt_message_sender);
         }
 
         public void bind(ChatMessage message) {
             ImgView.setImageBitmap(message.getBitmap());
             textMessage.setText(message.getMessage());
+            txtMessageName.setText(message.getDisplayName());
         }
     }
 }
