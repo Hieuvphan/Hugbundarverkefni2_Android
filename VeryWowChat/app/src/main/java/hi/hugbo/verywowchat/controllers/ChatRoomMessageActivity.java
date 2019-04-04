@@ -78,6 +78,8 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
     private ImageButton mBtnTakePicture; // button to take picture
 
+    private ImageButton mBtnSendAttachment; // button to pick
+
     // non-widgets
     private ChatRoomMessageService mChatCaller = ChatRoomMessageService.getInstance();// want only a singleton of this instance
     private List<ChatMessage> mChatMessages; // chat messages in the chat room
@@ -88,11 +90,14 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     private Handler mHandler; // Hander is used for implementing polling
     private int mChatOffestFRONT; // offset on the chat
 
+
+
     // This is the request code that we then use to identify which *activity result* referred to
     // taking an image, i.e. when onActivityResult is called, a status code is sent with.  If the
     // status code is the same as this, then we have received an image.
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 2;
+    static final int REQUEST_PICK_FILE = 3;
 
     private String currentPhotoPath;
 
@@ -160,6 +165,19 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    // dispatchTakePictureIntent();
+    private void dispatchUploadFile() {
+
+        Log.d("dh", "find and send attachment...");
+
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        // intent.setType("file/*");
+
+        startActivityForResult(intent, REQUEST_PICK_FILE);
     }
 
 
@@ -257,6 +275,14 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             }
         });
 
+        mBtnSendAttachment = findViewById(R.id.btn_submit_file);
+        mBtnSendAttachment.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dispatchUploadFile();
+            }
+        });
+
+
         // before stating the polling we need to know the initial offset of the chat room
         try {
             mChatCaller.NotifyRead(mChatRoomID, mUserInfo.getString("token", "n/a"));
@@ -311,46 +337,13 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
             String value = Base64.encodeToString(bytes, Base64.DEFAULT);
             Log.d("dh", "Base64 of file: " + value);
-
-            // NOTE: here messages are sent.
-
-            // Create a Map from the data provided by the user
-
             Map<String, String> params = new HashMap<String, String>();
             params.put("message", "");
-            //params.put("attachments", "[{" + value + "}]");
 
             String chatID = mChatRoomID;
             String token = mUserInfo.getString("token", "n/a");
 
-
-            Log.d("dh", "chatroom ID: " + mChatRoomID);
-            Log.d("dh", "token: " + token);
-            Log.d("dh", "params " + "");
-
-            Log.d("dh", "params " + "");
-            Log.d("dh", "message: " + "");
-            // Log.d("dh", "attachments: " +  "[{\"value\":\"" + value + "\",\"type\":\"base64file\"}]");
-
             params.put("attachment", value);
-
-
-
-            /*
-
-
-            Map<String, String> attachment = new HashMap<>();
-            attachment.put("value", value);
-            attachment.put("type", "base64file");
-
-            Log.d("dh", attachment.toString());
-             */
-
-
-
-
-
-            ///
             try {
                 mChatCaller.SendChatMessage(mChatRoomID, mUserInfo.getString("token", "n/a"), params);
             } catch (Exception e) {
@@ -361,9 +354,31 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         }
     }
 
+    private void sendFile(Uri uri) {
+        Log.d("dh", "Sending file...");
+        Log.d("dh", uri.getPath());
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        sendPicture();
+
+        Log.d("dh", "onActivityResult()");
+        Log.d("dh", "  Request code: " + requestCode);
+        Log.d("dh", "  Result code: " + requestCode);
+        Log.d("dh", "  Intent: " + data.toString());
+
+
+        switch (requestCode) {
+            case REQUEST_TAKE_PHOTO:
+                sendPicture();
+                break;
+            case REQUEST_PICK_FILE:
+                Uri uri = data.getData();
+                sendFile(uri);
+                break;
+            default:
+                break;
+        }
     }
 
 
