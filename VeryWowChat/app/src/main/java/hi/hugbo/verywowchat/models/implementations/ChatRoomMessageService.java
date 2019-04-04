@@ -107,8 +107,8 @@ public class ChatRoomMessageService implements IChatRoomMessageService {
 
             if(status >= 200 && status < 300 ){
                 int reps = Integer.parseInt(result.get("response"));
-                if(reps-20 > 0) {
-                    chatSize = reps-20;
+                if(reps-4 > 0) {
+                    chatSize = reps-4;
                 }
             }
             /* The way the API is written is that there is no possible way to get an error when sending a message expect
@@ -148,7 +148,7 @@ public class ChatRoomMessageService implements IChatRoomMessageService {
     public List<ChatMessage> GetChatLogs(String chatId,String token,int offset,String LoggeInUser,int lastTimeStamp) throws Exception {
         List<ChatMessage> newChatMessages = new ArrayList<>();
         try {
-            Map<String, String> result = api_caller.HttpRequest("auth/chatroom/"+chatId+"/messages/"+offset,"GET",token,null);
+            Map<String, String> result = api_caller.HttpRequest("auth/chatroom/"+chatId+"/messages/"+offset+"/5","GET",token,null);
             // Parse the HTTP status code
             int status = Integer.parseInt(result.get("status"));
 

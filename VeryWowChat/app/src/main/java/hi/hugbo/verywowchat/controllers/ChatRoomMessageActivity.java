@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -90,7 +91,8 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     private SharedPreferences mCurrentChat; // current chat that is opened need to use this to comunicate between activities
     private Handler mHandler; // Hander is used for implementing polling
     private int mChatOffestFRONT; // offset on the chat
-
+    private int mChatOffestBack; // back offset
+    private RecyclerView recyclerView;
 
     // This is the request code that we then use to identify which *activity result* referred to
     // taking an image, i.e. when onActivityResult is called, a status code is sent with.  If the
@@ -227,7 +229,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             - StaggeredGridLayoutManager shows items in a staggered grid.
          */
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         layoutManager.setStackFromEnd(true);
         /* We dont need a reference to the RecycleView since you should never work with it directly
         *  insted we want to use the Adapter to display new messages
@@ -237,7 +239,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
              - notifyItemRemoved(int pos)	Notify that items previously located at position has been removed from the data set.
              - notifyDataSetChanged()	Notify that the dataset has changed. Use only as last resort !!!!!!!!!!!!!!!!
          */
-        RecyclerView recyclerView = findViewById(R.id.chatMessages);
+        recyclerView = findViewById(R.id.chatMessages);
         recyclerView.setLayoutManager(layoutManager);
         mChatAdapter = new ChatMessageAdapter(mChatMessages);
         recyclerView.setAdapter(mChatAdapter);
@@ -296,6 +298,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         try {
             mChatCaller.NotifyRead(mChatRoomID, mUserInfo.getString("token", "n/a"));
             mChatOffestFRONT = mChatCaller.GetCountChatLogs(mChatRoomID, mUserInfo.getString("token", "n/a"));
+            mChatOffestBack = mChatOffestFRONT -1;
         } catch (Exception e) {
             e.printStackTrace();
             LogOutUser();
@@ -304,8 +307,24 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         /* Start the Polling */
         mHandler = new Handler();
         mHandler.post(PollChatMsg);// Start the initial runnable task by posting through the handler
-    }
 
+        // if the user scrolled to the top then we need to display older messages
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int pastVisibleItems = layoutManager.findFirstCompletelyVisibleItemPosition();
+                // check if the user has reached top of the screen
+                if (pastVisibleItems  == 0) {
+                    if(mChatMessages.size() < 4) { return;} // fixes small bug that would poll 2 many msg's at once
+                    if(mChatOffestBack < 4) { return; } // if nothing is left
+                    GetOldMessages(); // fetch old messages
+                }
+            }
+        });
+    }
 
     @Override
     protected void onStart() {
@@ -323,6 +342,8 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         i.putExtra(CHAT_ROOM_ID, chatID);
         return i;
     }
+
+
 
     private void sendPicture() {
         File imgFile = new File(currentPhotoPath);
@@ -480,6 +501,30 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         spreferencesEditor.commit();
         // redirect the user to the login activity
         startActivity(LoginActivity.newIntent(ChatRoomMessageActivity.this));
+    }
+
+    public void  GetOldMessages(){
+        try {
+
+            // get our new chat messages
+            List<ChatMessage> newMessages = mChatCaller.GetChatLogs(
+                    mChatRoomID,
+                    mUserInfo.getString("token", "n/a"),
+                    mChatOffestBack - 4,
+                    mUserInfo.getString("username", "n/a"),
+                    -1
+            );
+            if (newMessages.size() > 0) {
+                // add the new messages to the messages we already have
+                mChatMessages.addAll(0,newMessages);
+                mChatAdapter.notifyItemRangeInserted(0,newMessages.size());
+                // create a new offset
+                mChatOffestBack -= newMessages.size();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogOutUser();
+        }
     }
 
     /**
