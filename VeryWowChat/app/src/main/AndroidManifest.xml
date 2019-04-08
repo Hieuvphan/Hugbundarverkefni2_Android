@@ -60,8 +60,7 @@
          the result to the activity.  By disabling it, it would only stop it. :)
         -->
         <activity
-            android:name=".ChatRoomMessageActivity"
-            android:noHistory="false" />
+            android:name=".ChatRoomMessageActivity" />
 
         <activity android:name=".LoginActivity">
             <intent-filter>
