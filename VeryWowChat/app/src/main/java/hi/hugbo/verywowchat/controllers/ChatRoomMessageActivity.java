@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import hi.hugbo.verywowchat.adapters.ChatMessageAdapter;
+import hi.hugbo.verywowchat.models.helpers.RandomUtils;
 import hi.hugbo.verywowchat.models.implementations.ChatRoomMessageService;
 import hi.hugbo.verywowchat.entities.ChatMessage;
 
@@ -195,7 +196,9 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("dh", "onCreate()");
+
+        Log.d("dh", RandomUtils.getReport());
+        Log.d("dh", "" + savedInstanceState);
         setContentView(R.layout.activity_chat_room_message);
 
         //
@@ -340,6 +343,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
      * @return
      */
     public static Intent newIntent(Context packageContext, String chatID) {
+        Log.d("dh", RandomUtils.getReport());
         Intent i = new Intent(packageContext, ChatRoomMessageActivity.class);
         i.putExtra(CHAT_ROOM_ID, chatID);
         return i;

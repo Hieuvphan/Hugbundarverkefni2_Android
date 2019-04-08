@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import hi.hugbo.verywowchat.models.helpers.APICaller;
+import hi.hugbo.verywowchat.models.helpers.RandomUtils;
 import hi.hugbo.verywowchat.models.interfaces.IChatroomService;
 import hi.hugbo.verywowchat.entities.Chatroom;
 
@@ -257,8 +259,12 @@ public class ChatroomService implements IChatroomService {
     }
 
     public List<Chatroom> chatroomSearch(String token, String searchTerm) throws Exception{
-        String path = "auth/chatroom/search/listed/"+searchTerm;
+        String path = "auth/chatroom/search/listed/" + searchTerm;
         String method = "GET";
+
+        Log.d("dh", RandomUtils.getReport());
+        Log.d("dh", "token: " + token);
+        Log.d("dh", "searchTerm: " + searchTerm);
 
         if(searchTerm.length() == 0){
             throw new Exception("No search string");
@@ -267,9 +273,12 @@ public class ChatroomService implements IChatroomService {
         try{
             Map<String, String> result = api_caller.HttpRequest(path, method, token, null);
 
+
+            Log.d("dh", "result: " + result.toString());
+
             int status = Integer.parseInt(result.get("status"));
 
-            if(status == 200){
+            if (status == 200){
                 JSONArray resp_body = new JSONArray(result.get("response"));
 
                 List<Chatroom> chatrooms = new ArrayList<>();

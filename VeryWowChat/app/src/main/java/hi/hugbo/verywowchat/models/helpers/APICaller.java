@@ -1,5 +1,7 @@
 package hi.hugbo.verywowchat.models.helpers;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -66,8 +68,16 @@ public class APICaller {
      * @return  Map<String, String>  with 2 keys 1: status = status code  2: response = response body
      * @throws IOException
      * @throws JSONException
+     *
      */
-    public Map<String, String> HttpRequest(String urlEndPoint,String method,String token, Map body) throws IOException, JSONException {
+    @NonNull
+    public Map<String, String> HttpRequest(
+            @NonNull String urlEndPoint,
+            @NonNull String method,
+            @Nullable String token,
+            @Nullable Map body) throws IOException, JSONException {
+
+
 
         /*
          *If the body was passed then we create a request body
@@ -95,6 +105,7 @@ public class APICaller {
                 .addHeader("content-type", "application/json; charset=utf-8")
                 .build();
 
+        // TODO: response must be closed, otherwise it might leak memory
         // Create a Call object and dispatch the network request synchronously
         Response response = client.newCall(request).execute();
 
@@ -105,7 +116,7 @@ public class APICaller {
          *  - 2: the response body in json string form
          *  - 3: the type of object we are receiving
          **/
-        Map<String, String>  resp = new HashMap<String, String>();
+        Map<String, String> resp = new HashMap<String, String>();
 
         // add the status code to the response
         resp.put("status", String.valueOf(response.code()));
