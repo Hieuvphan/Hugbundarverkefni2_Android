@@ -17,6 +17,7 @@ import hi.hugbo.verywowchat.controllers.MemberManageChatroomActivity;
 import hi.hugbo.verywowchat.controllers.OwnerManageChatroomActivity;
 import hi.hugbo.verywowchat.controllers.R;
 import hi.hugbo.verywowchat.entities.Chatroom;
+import hi.hugbo.verywowchat.models.helpers.RandomUtils;
 
 /**
  * @Author Vilhelm
@@ -91,12 +92,19 @@ public class MyChatroomItemAdapter extends RecyclerView.Adapter {
         }
 
         public void bind(final Chatroom chatroom) {
+
+            Log.d("dh", RandomUtils.getReport());
+            Log.d("dh", "  chat room name: " + chatroom.getChatroomName());
+
+
             // set the text
             btn_open_chatroom.setText(chatroom.getUserRelation()+": "+chatroom.getDisplayName()+"("+chatroom.getChatroomName()+")");
 
             btn_open_chatroom.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("dh", RandomUtils.getReport());
+                    Log.d("dh", "  chat room name: " + chatroom.getChatroomName());
                 Context context = v.getContext();
                 context.startActivity(ChatRoomMessageActivity.newIntent(
                     context.getApplicationContext(),

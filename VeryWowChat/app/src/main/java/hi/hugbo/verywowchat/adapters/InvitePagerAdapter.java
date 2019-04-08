@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import hi.hugbo.verywowchat.fragments.ChatroomInvitesListFragment;
 import hi.hugbo.verywowchat.fragments.FriendRequestsListFragment;
 import hi.hugbo.verywowchat.controllers.ChatRoomMessageActivity;
 import hi.hugbo.verywowchat.controllers.R;
+import hi.hugbo.verywowchat.models.helpers.RandomUtils;
 
 /**
  * @Author Róman
@@ -80,6 +82,8 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            Log.d("dh", RandomUtils.getReport());
+            Log.d("dh", "  !!!");
             View rootView = inflater.inflate(R.layout.fragment_home_page, container, false);
             TextView textView = rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -87,6 +91,7 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
             openChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // TODO: suspicious activity here....
                     startActivity(ChatRoomMessageActivity.newIntent(getActivity(),"rruChat"));
                 }
             });

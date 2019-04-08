@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import hi.hugbo.verywowchat.adapters.ChatMessageAdapter;
 import hi.hugbo.verywowchat.models.helpers.RandomUtils;
@@ -198,7 +199,8 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Log.d("dh", RandomUtils.getReport());
-        Log.d("dh", "" + savedInstanceState);
+        Log.d("dh", "  savedInstanceState: " + savedInstanceState);
+        Log.d("dh", "  Id. hash code: " + System.identityHashCode(this));
         setContentView(R.layout.activity_chat_room_message);
 
         //
@@ -210,6 +212,17 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         // Fetch ChatRoomID from Extras
         Intent intent = getIntent(); // Fetch the intent that started this activity
+        Log.d("dh", "  intent: " + intent);
+
+        if (true) {
+            Bundle extras = intent.getExtras();
+            Set<String> keys = extras.keySet();
+            for (String key : keys) {
+                Object value = extras.get(key);
+                Log.d("dh", "  key: " + key);
+                Log.d("dh", "  value: " + value);
+            }
+        }
 
         /* u can and should check if this string exists first but without this string
          *  this activity cannot function so we roll the dice ... (BE PERFECT LIKE HOLY PROGRAMMERS IN DOOM) */
@@ -344,9 +357,25 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
      */
     public static Intent newIntent(Context packageContext, String chatID) {
         Log.d("dh", RandomUtils.getReport());
-        Intent i = new Intent(packageContext, ChatRoomMessageActivity.class);
-        i.putExtra(CHAT_ROOM_ID, chatID);
-        return i;
+        Intent intent = new Intent(packageContext, ChatRoomMessageActivity.class);
+        intent.putExtra(CHAT_ROOM_ID, chatID);
+
+
+        Log.d("dh", RandomUtils.getReport());
+
+        if (true) {
+            Bundle extras = intent.getExtras();
+            Set<String> keys = extras.keySet();
+            for (String key : keys) {
+                Object value = extras.get(key);
+                Log.d("dh", "  key: " + key);
+                Log.d("dh", "  value: " + value);
+            }
+        }
+
+        Log.d("dh", RandomUtils.getStackTrace());
+
+        return intent;
     }
 
 
@@ -444,7 +473,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        Log.d("dh", "onActivityResult()");
+        Log.d("dh", RandomUtils.getReport());
         Log.d("dh", "  Request code: " + requestCode);
         Log.d("dh", "  Result code: " + requestCode);
         Log.d("dh", "  Data: " + data);
@@ -475,20 +504,20 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("dh", "onResume()");
+        Log.d("dh", RandomUtils.getReport());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("dh", "onPause()");
+        Log.d("dh", RandomUtils.getReport());
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("dh", "onStop()");
+        Log.d("dh", RandomUtils.getReport());
     }
 
 
@@ -499,7 +528,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("dh", "onDestroy()");
+        Log.d("dh", RandomUtils.getReport());
         mHandler.removeCallbacks(PollChatMsg);
         SharedPreferences.Editor chatEditor = mCurrentChat.edit();
         chatEditor.clear();
@@ -556,8 +585,14 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
      * }
      */
     private Runnable PollChatMsg = new Runnable() {
+
+
+
         @Override
         public void run() {
+
+            Log.d("dh", RandomUtils.getReport());
+
             try {
                 int lastTime = -1;
                 /* if a timestamp exists we use it to prevent mapping of old messages */

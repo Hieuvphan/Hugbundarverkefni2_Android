@@ -1,5 +1,6 @@
 package hi.hugbo.verywowchat.fragments;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import hi.hugbo.verywowchat.adapters.MyChatroomItemAdapter;
+import hi.hugbo.verywowchat.models.helpers.RandomUtils;
 import hi.hugbo.verywowchat.models.implementations.ChatRoomMessageService;
 import hi.hugbo.verywowchat.models.interfaces.IChatroomService;
 import hi.hugbo.verywowchat.models.implementations.ChatroomService;
@@ -108,6 +112,7 @@ public class MyChatroomListFragment extends Fragment {
         // JWT token for API authentication
         String token = userInfo.getString("token","n/a");
 
+
         try {
             List<Chatroom> newChatrooms = chatroomService.getMyChatrooms(token);
 
@@ -142,6 +147,10 @@ public class MyChatroomListFragment extends Fragment {
     private Runnable PollNotifications = new Runnable() {
         @Override
         public void run() {
+
+            Log.d("dh", RandomUtils.getReport());
+            Log.d("dh", "  Id. hash code: " + System.identityHashCode(this));
+
             // For each chat we check if the spesific chat has a new notification
             for (int i = 0; i < mChatrooms.size() ; i++) {
                 Chatroom updatedChat = mChatCaller.UpdateChat(mChatrooms.get(i).getChatroomName(),mUserInfo.getString("token","n/a"));
@@ -178,6 +187,12 @@ public class MyChatroomListFragment extends Fragment {
      * @param chatName chatroom name
      */
     public void MakePopUpMessage(int id,String chatID,String chatName) {
+
+        Log.d("dh", RandomUtils.getReport());
+        Log.d("dh", "  id: " + id);
+        Log.d("dh", "  chatID: " + chatID);
+        Log.d("dh", "  chatName: " + chatName);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, ChatRoomMessageActivity.newIntent(getContext(),chatID), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
@@ -189,9 +204,16 @@ public class MyChatroomListFragment extends Fragment {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
+
+        Notification notification = builder.build();
+
+
+        Log.d("dh", "" + notification);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
         //  notificationId is a unique int for each notification that you must define
-        notificationManager.notify(id, builder.build());
+        notificationManager.notify(id, notification);
+
     }
 
     /**
