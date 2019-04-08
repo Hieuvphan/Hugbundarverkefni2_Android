@@ -178,7 +178,7 @@ public class MyChatroomListFragment extends Fragment {
      * @param chatName chatroom name
      */
     public void MakePopUpMessage(int id,String chatID,String chatName) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, ChatRoomMessageActivity.newIntent(getContext(),chatID), 0);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, ChatRoomMessageActivity.newIntent(getContext(),chatID), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.people_icon)
@@ -186,7 +186,7 @@ public class MyChatroomListFragment extends Fragment {
                 .setContentText(chatName+" has a new chat messages waiting for you")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
+                //.setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
