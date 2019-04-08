@@ -124,7 +124,7 @@ public class FriendRequestItemAdapter extends RecyclerView.Adapter {
                         // remove from invite list
                         removeInvite(user);
 
-                        Toast.makeText(context.getApplicationContext(),"Successfully became admin",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context.getApplicationContext(),"Successfully added friend",Toast.LENGTH_LONG).show();
                     } catch(Exception e) {
                         Toast.makeText(context.getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         e.printStackTrace();
