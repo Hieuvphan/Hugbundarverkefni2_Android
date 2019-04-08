@@ -260,6 +260,8 @@ public class ChatroomService implements IChatroomService {
         String path = "auth/chatroom/search/listed/"+searchTerm;
         String method = "GET";
 
+        searchTerm = searchTerm.trim();
+
         if(searchTerm.length() == 0){
             throw new Exception("No search string");
         }
