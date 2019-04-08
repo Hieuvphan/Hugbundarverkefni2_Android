@@ -87,9 +87,10 @@ public class FriendListFragment extends Fragment {
        if(newFrieds == null) {
            return;
        }
-       int currSize = mFriends.size();
+       mFriends.removeAll(mFriends);
+
        mFriends.addAll(newFrieds);
-       mFriendsAdapter.notifyItemRangeInserted(currSize,mFriends.size());
+       mFriendsAdapter.notifyDataSetChanged();
     }
 
     public static FriendListFragment newInstance() {

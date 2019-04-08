@@ -72,7 +72,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
     /* constant instead of literals to ensure we use the same key when putting and getting the extra
      *  this is something that andriod prefers we do.*/
-    private static final String CHAT_ROOM_ID = "CHAT_ID";
+    private static final String FINAL_ID = "MYFUCKINGASSPARTWHYUNOWORK";
 
     // widgets
     private ImageButton mBtnSendTxtMSG; // send text message button
@@ -198,8 +198,6 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         Log.d("dh", "onCreate()");
         setContentView(R.layout.activity_chat_room_message);
 
-        //
-
         /* Shared preferences allows us to store and retrieve data in a form of a (key,value) pairs.
            UserInfo stores 3 keys  1 = displayname , 2 = username, 3 = token */
         mUserInfo = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
@@ -210,7 +208,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
 
         /* u can and should check if this string exists first but without this string
          *  this activity cannot function so we roll the dice ... (BE PERFECT LIKE HOLY PROGRAMMERS IN DOOM) */
-        mChatRoomID = intent.getStringExtra(CHAT_ROOM_ID); // get the chatID
+        mChatRoomID = intent.getStringExtra(FINAL_ID); // get the chatID
 
         // the chat room ID so other acitvities know what what room is opened
         SharedPreferences.Editor chatEditor = mCurrentChat.edit();
@@ -328,12 +326,6 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("dh", "onStart()");
-    }
-
     /**
      * @param packageContext
      * @param chatID
@@ -341,7 +333,7 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
      */
     public static Intent newIntent(Context packageContext, String chatID) {
         Intent i = new Intent(packageContext, ChatRoomMessageActivity.class);
-        i.putExtra(CHAT_ROOM_ID, chatID);
+        i.putExtra(FINAL_ID, chatID);
         return i;
     }
 
@@ -465,26 +457,6 @@ public class ChatRoomMessageActivity extends AppCompatActivity {
             default:
                 break;
         }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("dh", "onResume()");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("dh", "onPause()");
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("dh", "onStop()");
     }
 
 
