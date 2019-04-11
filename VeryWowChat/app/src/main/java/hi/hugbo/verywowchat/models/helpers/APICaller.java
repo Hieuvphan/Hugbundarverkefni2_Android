@@ -178,8 +178,10 @@ public class APICaller {
 
         // Create a Call object and dispatch the network request synchronously
         Response response = client.newCall(request).execute();
+
+        ResourceContent returnContent = new ResourceContent(response.body().byteStream(),response.header("Content-Type"));
         response.close();
         // create a new instance of ResourceContent and return it to service/controller
-        return  new ResourceContent(response.body().byteStream(),response.header("Content-Type"));
+        return  returnContent ;
     }
 }
