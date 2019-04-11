@@ -131,7 +131,6 @@ public class APICaller {
         if(WrappedData.has("message")){
             Log.e("Api_Caller","Unexpected response from the server \n"+WrappedData.toString());
             resp.put("response",null);
-            response.close();
             return resp;
         }
 
@@ -150,7 +149,6 @@ public class APICaller {
         if(response.code() >= 400 && response.code() < 500 ) {
             resp.put("response",WrappedData.get("BadResp").toString());
         }
-        response.close();
         return resp;
     }
 
@@ -178,8 +176,9 @@ public class APICaller {
 
         // Create a Call object and dispatch the network request synchronously
         Response response = client.newCall(request).execute();
-        response.close();
+
+        ResourceContent returnContent = new ResourceContent(response.body().byteStream(),response.header("Content-Type"));
         // create a new instance of ResourceContent and return it to service/controller
-        return  new ResourceContent(response.body().byteStream(),response.header("Content-Type"));
+        return  returnContent ;
     }
 }
